@@ -6,6 +6,7 @@ import { VizSeedDSL } from '../core/VizSeedDSL';
 import { DataSet } from '../core/DataSet';
 import { DimensionOperator } from '../operations/DimensionOperator';
 import { SpecGenerator } from '../specs/SpecGenerator';
+import { CHART_TYPE_LIMITS } from '../config/chartLimits';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: IDataSet;
@@ -172,19 +173,11 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   public getSupportedChartTypes(library: ChartLibrary): ChartType[] {
-    // 暂时返回基本的图表类型
-    if (library === 'vtable') {
-      return ['table'];
-    }
-    return ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut'];
+    return CHART_TYPE_LIMITS[library] || [];
   }
 
   public getAllSupportedChartTypes(): Record<ChartLibrary, ChartType[]> {
-    return {
-      vchart: this.getSupportedChartTypes('vchart'),
-      vtable: this.getSupportedChartTypes('vtable'),
-      echarts: this.getSupportedChartTypes('echarts')
-    };
+    return CHART_TYPE_LIMITS;
   }
 
   private validateConfig(): void {

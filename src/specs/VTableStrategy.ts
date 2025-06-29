@@ -2,6 +2,7 @@ import { VizSeedDSL } from '../core/VizSeedDSL';
 import { VTableSpec, ChartLibrary } from '../types/specs';
 import { ChartType } from '../types/charts';
 import { SpecGenerationStrategy } from './SpecGenerationStrategy';
+import { CHART_TYPE_LIMITS } from '../config/chartLimits';
 
 export class VTableStrategy implements SpecGenerationStrategy {
   getLibraryName(): ChartLibrary {
@@ -9,7 +10,7 @@ export class VTableStrategy implements SpecGenerationStrategy {
   }
 
   getSupportedChartTypes(): ChartType[] {
-    return ['table'];
+    return CHART_TYPE_LIMITS.vtable;
   }
 
   generateSpec(vizSeed: VizSeedDSL): VTableSpec {

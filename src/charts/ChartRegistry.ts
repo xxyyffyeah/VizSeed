@@ -44,13 +44,6 @@ export class ChartRegistry {
       maxMeasures: 1,
       supportedSubTypes: []
     }],
-    ['donut', {
-      minDimensions: 1,
-      maxDimensions: 1,
-      minMeasures: 1,
-      maxMeasures: 1,
-      supportedSubTypes: []
-    }],
     ['table', {
       minDimensions: 0,
       maxDimensions: 10,

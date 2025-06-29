@@ -2,6 +2,7 @@ import { VizSeedDSL } from '../core/VizSeedDSL';
 import { EChartsSpec, ChartLibrary } from '../types/specs';
 import { ChartType } from '../types/charts';
 import { SpecGenerationStrategy } from './SpecGenerationStrategy';
+import { CHART_TYPE_LIMITS } from '../config/chartLimits';
 
 export class EChartsStrategy implements SpecGenerationStrategy {
   getLibraryName(): ChartLibrary {
@@ -9,7 +10,7 @@ export class EChartsStrategy implements SpecGenerationStrategy {
   }
 
   getSupportedChartTypes(): ChartType[] {
-    return ['bar', 'column', 'line', 'area', 'scatter', 'pie'];
+    return CHART_TYPE_LIMITS.echarts;
   }
 
   generateSpec(vizSeed: VizSeedDSL): EChartsSpec {

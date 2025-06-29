@@ -193,14 +193,18 @@ app.get('/api/capabilities', (req, res) => {
   res.json({
     libraries: ['vchart', 'echarts', 'vtable'],
     chartTypes: {
-      vchart: ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut'],
-      echarts: ['bar', 'column', 'line', 'area', 'scatter', 'pie'],
+      vchart: ['bar', 'column', 'area', 'line', 'scatter', 'pie'],
+      echarts: ['bar', 'column', 'area', 'line', 'scatter', 'pie'],
       vtable: ['table']
     },
     subTypes: {
       bar: ['grouped', 'stacked', 'percent'],
       column: ['grouped', 'stacked', 'percent'],
-      area: ['stacked', 'percent']
+      area: ['stacked', 'percent'],
+      line: [],
+      scatter: ['linear', 'grouped'],
+      pie: [],
+      table: []
     }
   });
 });
