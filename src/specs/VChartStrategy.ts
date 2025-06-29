@@ -53,8 +53,15 @@ export class VChartStrategy implements SpecGenerationStrategy {
       spec.seriesField = chartConfig.dimensions[1];
     }
 
-    spec.axes = this.buildAxes(chartConfig);
-    spec.legends = this.buildLegends(chartConfig);
+    // 饼图和环形图不需要坐标轴
+    if (!['pie', 'donut'].includes(chartConfig.type)) {
+      spec.axes = this.buildAxes(chartConfig);
+    }
+    
+    // 饼图和环形图通常不需要图例（会自动生成）
+    if (!['pie', 'donut'].includes(chartConfig.type)) {
+      spec.legends = this.buildLegends(chartConfig);
+    }
 
     if (metadata?.title) {
       spec.title = {

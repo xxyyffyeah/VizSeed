@@ -1,13 +1,14 @@
 import { VizSeedBuilder as IVizSeedBuilder, VizSeedDSL as IVizSeedDSL } from '../types';
 import { ChartSpec, ChartLibrary } from '../types/specs';
-import { DataSet, DataTransformation, Dimension, Measure } from '../types/data';
+import { DataSet as IDataSet, DataTransformation, Dimension, Measure, FieldInferenceOptions } from '../types/data';
 import { ChartType, ChartSubType, ChartConfig } from '../types/charts';
 import { VizSeedDSL } from '../core/VizSeedDSL';
+import { DataSet } from '../core/DataSet';
 import { DimensionOperator } from '../operations/DimensionOperator';
 import { SpecGenerator } from '../specs/SpecGenerator';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
-  private data: DataSet;
+  private data: IDataSet;
   private transformations: DataTransformation[] = [];
   private chartConfig: Partial<ChartConfig> = {
     dimensions: [],
@@ -16,9 +17,52 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private metadata: IVizSeedDSL['metadata'] = {};
   private specGenerator: SpecGenerator;
 
-  constructor(data: DataSet) {
-    this.data = data;
+  // 构造函数重载：支持直接传入rows或DataSet
+  constructor(rows: Record<string, any>[], options?: FieldInferenceOptions);
+  constructor(data: IDataSet);
+  constructor(
+    dataOrRows: IDataSet | Record<string, any>[], 
+    options?: FieldInferenceOptions
+  ) {
+    if (Array.isArray(dataOrRows)) {
+      // 直接传入rows数组的情况
+      this.data = new DataSet(dataOrRows, options);
+    } else {
+      // 传入DataSet对象的情况
+      this.data = dataOrRows;
+    }
     this.specGenerator = new SpecGenerator();
+  }
+
+  // 保留静态方法作为替代方式（可选）
+  public static fromRows(rows: Record<string, any>[], options?: FieldInferenceOptions): VizSeedBuilder {
+    return new VizSeedBuilder(rows, options);
+  }
+
+  // 静态方法：从旧版DataField格式创建Builder
+  public static fromLegacy(fields: (Dimension | Measure)[], rows: Record<string, any>[]): VizSeedBuilder {
+    const dataSet = DataSet.fromLegacy(fields, rows);
+    return new VizSeedBuilder(dataSet);
+  }
+
+  // 获取数据集信息
+  public getDataSet(): IDataSet {
+    return this.data;
+  }
+
+  // 获取所有可用字段
+  public getAvailableFields(): string[] {
+    return this.data.fields.map(f => f.name);
+  }
+
+  // 获取维度字段
+  public getAvailableDimensions(): string[] {
+    return this.data.fields.filter(f => f.role === 'dimension').map(f => f.name);
+  }
+
+  // 获取指标字段
+  public getAvailableMeasures(): string[] {
+    return this.data.fields.filter(f => f.role === 'measure').map(f => f.name);
   }
 
   public elevate(field: string, targetField?: string): VizSeedBuilder {

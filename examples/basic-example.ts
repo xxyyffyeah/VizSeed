@@ -1,45 +1,26 @@
-import { VizSeedBuilder } from '../src/builder/VizSeedBuilder';
-import { DataSet } from '../src/types/data';
+import { VizSeedBuilder, DataSet } from '../src';
 
-const sampleData: DataSet = {
-  fields: [
-    {
-      name: 'category',
-      type: 'string',
-      role: 'dimension',
-      values: ['水果', '蔬菜', '肉类']
-    },
-    {
-      name: 'product',
-      type: 'string',
-      role: 'dimension',
-      values: ['苹果', '香蕉', '胡萝卜', '白菜', '猪肉', '牛肉']
-    },
-    {
-      name: 'sales',
-      type: 'number',
-      role: 'measure',
-      values: [100, 80, 60, 45, 200, 180]
-    },
-    {
-      name: 'profit',
-      type: 'number',
-      role: 'measure',
-      values: [20, 15, 12, 8, 40, 35]
-    }
-  ],
-  rows: [
-    { category: '水果', product: '苹果', sales: 100, profit: 20 },
-    { category: '水果', product: '香蕉', sales: 80, profit: 15 },
-    { category: '蔬菜', product: '胡萝卜', sales: 60, profit: 12 },
-    { category: '蔬菜', product: '白菜', sales: 45, profit: 8 },
-    { category: '肉类', product: '猪肉', sales: 200, profit: 40 },
-    { category: '肉类', product: '牛肉', sales: 180, profit: 35 }
-  ]
-};
+// 新的简化数据格式 - 只需要rows！
+const sampleRows = [
+  { category: '水果', product: '苹果', sales: 100, profit: 20 },
+  { category: '水果', product: '香蕉', sales: 80, profit: 15 },
+  { category: '蔬菜', product: '胡萝卜', sales: 60, profit: 12 },
+  { category: '蔬菜', product: '白菜', sales: 45, profit: 8 },
+  { category: '肉类', product: '猪肉', sales: 200, profit: 40 },
+  { category: '肉类', product: '牛肉', sales: 180, profit: 35 }
+];
+
+// 🔥 演示不同的DataSet创建方式
+// const sampleData = new DataSet(sampleRows);  // 最简方式
+// const sampleData = DataSet.fromRows(sampleRows);  // 静态方法
 
 function createBarChart() {
-  const builder = new VizSeedBuilder(sampleData);
+  // 🎯 最简用法：直接传rows数组！
+  const builder = new VizSeedBuilder(sampleRows);
+  
+  // 其他方式也支持：
+  // const builder = new VizSeedBuilder(sampleData);  // 使用DataSet对象
+  // const builder = VizSeedBuilder.fromRows(sampleRows);  // 静态方法（可选）
   
   const vizSeed = builder
     .setChartType('bar', 'grouped')
@@ -63,7 +44,7 @@ function createBarChart() {
 }
 
 function createPieChart() {
-  const builder = new VizSeedBuilder(sampleData);
+  const builder = new VizSeedBuilder(sampleRows);
   
   const vizSeed = builder
     .setChartType('pie')
@@ -76,32 +57,18 @@ function createPieChart() {
 }
 
 function createLineChart() {
-  const timeSeriesData: DataSet = {
-    fields: [
-      {
-        name: 'date',
-        type: 'date',
-        role: 'dimension',
-        values: []
-      },
-      {
-        name: 'revenue',
-        type: 'number',
-        role: 'measure',
-        values: []
-      }
-    ],
-    rows: [
-      { date: '2024-01', revenue: 1000 },
-      { date: '2024-02', revenue: 1200 },
-      { date: '2024-03', revenue: 1100 },
-      { date: '2024-04', revenue: 1300 },
-      { date: '2024-05', revenue: 1500 },
-      { date: '2024-06', revenue: 1400 }
-    ]
-  };
+  // 新的简化方式 - 只需要rows数据！
+  const timeSeriesRows = [
+    { date: '2024-01', revenue: 1000 },
+    { date: '2024-02', revenue: 1200 },
+    { date: '2024-03', revenue: 1100 },
+    { date: '2024-04', revenue: 1300 },
+    { date: '2024-05', revenue: 1500 },
+    { date: '2024-06', revenue: 1400 }
+  ];
 
-  const builder = new VizSeedBuilder(timeSeriesData);
+  // 🔥 超简洁：直接传数组！
+  const builder = new VizSeedBuilder(timeSeriesRows);
   
   const vizSeed = builder
     .setChartType('line')
@@ -114,7 +81,7 @@ function createLineChart() {
 }
 
 function createTableView() {
-  const builder = new VizSeedBuilder(sampleData);
+  const builder = new VizSeedBuilder(sampleRows);
   
   // 表格不需要添加维度和指标，但需要设置图表类型
   const spec = builder
@@ -127,7 +94,7 @@ function createTableView() {
 function demonstrateMultiLibrarySupport() {
   console.log('=== 多图表库支持演示 ===');
   
-  const builder = new VizSeedBuilder(sampleData);
+  const builder = new VizSeedBuilder(sampleRows);
   builder
     .setChartType('bar')
     .addDimension('category')
@@ -166,7 +133,7 @@ function demonstrateMultiLibrarySupport() {
 }
 
 function demonstrateDimensionOperations() {
-  const builder = new VizSeedBuilder(sampleData);
+  const builder = new VizSeedBuilder(sampleRows);
   
   const vizSeed = builder
     .elevate('category', 'category_dim')
@@ -181,10 +148,45 @@ function demonstrateDimensionOperations() {
   console.log('维度重塑后的 VizSeed DSL:', JSON.stringify(vizSeed, null, 2));
 }
 
-if (require.main === module) {
-  console.log('=== VizSeed 基本示例 ===\n');
+function demonstrateNewFeatures() {
+  console.log('=== 💡 超简API演示：直接用数组创建图表！ ===');
   
-  console.log('1. 创建分组柱状图:');
+  // 🎯 现在可以直接用数组，无需任何包装！
+  const builder = new VizSeedBuilder(sampleRows);
+  
+  console.log('🔥 对比不同的创建方式：');
+  console.log('✅ 最简方式: new VizSeedBuilder(rows)');
+  console.log('✅ DataSet方式: new VizSeedBuilder(new DataSet(rows))');
+  console.log('✅ 静态方法: VizSeedBuilder.fromRows(rows)');
+  
+  console.log('\n📊 智能字段推断结果：');
+  
+  console.log('自动推断的字段信息:');
+  console.log('所有字段:', builder.getAvailableFields());
+  console.log('维度字段:', builder.getAvailableDimensions());
+  console.log('指标字段:', builder.getAvailableMeasures());
+  
+  // 查看DataSet的详细信息
+  const dataSet = builder.getDataSet();
+  console.log('\n字段详细信息:');
+  dataSet.fields.forEach(field => {
+    console.log(`- ${field.name}: ${field.type} (${field.role})`);
+    if (field.aggregation) {
+      console.log(`  默认聚合: ${field.aggregation}`);
+    }
+  });
+  
+  // 演示获取字段统计信息
+  console.log('\nsales字段统计:', dataSet.getFieldStats('sales'));
+}
+
+if (require.main === module) {
+  console.log('=== 🚀 VizSeed 超简API演示 ===\n');
+  
+  console.log('0. 💡 超简API演示:');
+  demonstrateNewFeatures();
+  
+  console.log('\n1. 创建分组柱状图:');
   createBarChart();
   
   console.log('\n2. 创建饼图:');  
