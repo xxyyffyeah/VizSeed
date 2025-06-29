@@ -4,7 +4,7 @@ import { DataSet, DataTransformation, Dimension, Measure } from '../types/data';
 import { ChartType, ChartSubType, ChartConfig } from '../types/charts';
 import { VizSeedDSL } from '../core/VizSeedDSL';
 import { DimensionOperator } from '../operations/DimensionOperator';
-import { SpecBuilder } from '../specs/SpecBuilder';
+import { SpecGenerator } from '../specs/SpecGenerator';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: DataSet;
@@ -14,8 +14,11 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     measures: []
   };
   private metadata: IVizSeedDSL['metadata'] = {};
+  private specGenerator: SpecGenerator;
+
   constructor(data: DataSet) {
     this.data = data;
+    this.specGenerator = new SpecGenerator();
   }
 
   public elevate(field: string, targetField?: string): VizSeedBuilder {
@@ -116,8 +119,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       vizSeedDSL.transformations,
       vizSeedDSL.metadata
     );
-    // 目前仅支持使用SpecBuilder生成规范，library参数暂时忽略
-    return SpecBuilder.build(vizSeed);
+    return this.specGenerator.generate(vizSeed, library);
   }
 
   public getSupportedLibraries(): ChartLibrary[] {

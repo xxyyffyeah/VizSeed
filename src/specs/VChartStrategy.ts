@@ -19,11 +19,19 @@ export class VChartStrategy implements SpecGenerationStrategy {
       type: this.mapChartType(chartConfig.type, chartConfig.subType),
       data: {
         values: data.rows
-      },
-      theme: metadata?.theme,
-      width: metadata?.width,
-      height: metadata?.height
+      }
     };
+    
+    // 添加可选属性
+    if (metadata?.theme) {
+      spec.theme = metadata.theme;
+    }
+    if (metadata?.width) {
+      spec.width = metadata.width;
+    }
+    if (metadata?.height) {
+      spec.height = metadata.height;
+    }
 
     if (chartConfig.dimensions.length > 0) {
       spec.xField = chartConfig.dimensions[0];

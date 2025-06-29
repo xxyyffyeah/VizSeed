@@ -24,7 +24,7 @@ export class EChartsStrategy implements SpecGenerationStrategy {
       spec.title = {
         text: metadata.title,
         left: 'center',
-        top: '10px'
+        top: 10
       };
     }
 
@@ -91,7 +91,7 @@ export class EChartsStrategy implements SpecGenerationStrategy {
       spec.legend = {
         data: groups,
         left: 'center',
-        top: '40px'
+        top: 40
       };
 
       spec.series = groups.map(group => ({
@@ -145,7 +145,7 @@ export class EChartsStrategy implements SpecGenerationStrategy {
       spec.legend = {
         data: groups,
         left: 'center',
-        top: '40px'
+        top: 40
       };
 
       spec.series = groups.map(group => ({

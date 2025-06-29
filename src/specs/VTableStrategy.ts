@@ -18,16 +18,14 @@ export class VTableStrategy implements SpecGenerationStrategy {
     const columns = data.fields.map(field => ({
       field: field.name,
       title: field.name,
-      cellType: this.mapFieldTypeToColumnType(field.type)
+      width: 120,
+      cellType: 'text' // VTable默认使用text类型
     }));
 
     return {
-      type: 'table',
-      data: {
-        values: data.rows
-      },
+      records: data.rows,
       columns: columns,
-      theme: metadata?.theme,
+      theme: metadata?.theme || 'default',
       pagination: {
         perPageCount: 20,
         currentPage: 1

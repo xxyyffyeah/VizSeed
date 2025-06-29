@@ -9,6 +9,7 @@ VizSeed是一个创新的数据可视化维度重塑与图表生成工具，基�
 核心创新：
 - **维度重塑方法** - 解决了数据可视化中维度与指标相对性的问题，同一字段在不同场景下可作为维度或指标使用
 - **多图表库支持** - 通过策略模式实现，一套DSL可生成不同图表库的规范
+- **官方类型集成** - 完整集成ECharts、VChart、VTable的官方TypeScript类型定义，确保类型安全
 
 ## Development Commands
 
@@ -67,9 +68,13 @@ VizSeedBuilder -> SpecGenerator -> SpecGenerationStrategy
 7. **EChartsStrategy** (`src/specs/EChartsStrategy.ts`): ECharts图表库策略实现  
 8. **VTableStrategy** (`src/specs/VTableStrategy.ts`): VTable表格库策略实现
 
+#### 官方类型集成组件
+9. **SpecAdapter** (`src/specs/adapters/SpecAdapter.ts`): 规范适配器，将VizSeed规范转换为官方格式
+10. **官方类型导出** (`src/types/specs.ts`): 重新导出ECharts、VChart、VTable的官方类型
+
 #### 辅助组件
-9. **ChartRegistry** (`src/charts/ChartRegistry.ts`): 图表类型注册表
-10. **DataProcessor** (`src/utils/DataProcessor.ts`): 数据处理工具
+11. **ChartRegistry** (`src/charts/ChartRegistry.ts`): 图表类型注册表
+12. **DataProcessor** (`src/utils/DataProcessor.ts`): 数据处理工具
 
 ### 类型系统
 - `src/types/data.ts`: 数据相关类型（Field, DataSet, Transformation）
@@ -124,20 +129,39 @@ VizSeedBuilder -> SpecGenerator -> SpecGenerationStrategy
 
 ### 多图表库使用示例
 ```typescript
+import { VizSeedBuilder } from 'vizseed';
+import { SpecAdapter } from 'vizseed/adapters';
+
 const builder = new VizSeedBuilder(data)
   .setChartType('bar')
   .addDimension('category')
   .addMeasure('sales');
 
-// 生成不同图表库的规范
+// 生成VizSeed简化规范
 const vchartSpec = builder.buildSpec('vchart');   // VChart规范
 const echartsSpec = builder.buildSpec('echarts'); // ECharts规范
 const vtableSpec = builder.buildSpec('vtable');   // VTable规范（仅table类型）
+
+// 转换为官方图表库格式（用于实际渲染）
+const officialVChartSpec = SpecAdapter.toVChart(vchartSpec);
+const officialEChartsSpec = SpecAdapter.toECharts(echartsSpec); 
+const officialVTableSpec = SpecAdapter.toVTable(vtableSpec);
+
+// 渲染到图表库
+// const vchart = new VChart(officialVChartSpec, { dom: 'container' });
+// const echartInstance = echarts.init(dom); echartInstance.setOption(officialEChartsSpec);
+// const vtable = new ListTable(dom, officialVTableSpec);
 
 // 查看支持的图表库和类型
 console.log(builder.getSupportedLibraries());     // ['vchart', 'vtable', 'echarts']
 console.log(builder.getAllSupportedChartTypes()); // 各库支持的类型映射
 ```
+
+### 官方类型集成特性
+- **类型安全**: 完整的TypeScript类型检查和智能提示
+- **适配器模式**: 简化DSL与官方API之间的转换
+- **兼容性保证**: 生成的规范完全符合官方图表库标准
+- **开发体验**: 统一的DSL语法 + 官方库的完整功能
 
 ## TypeScript Configuration
 
