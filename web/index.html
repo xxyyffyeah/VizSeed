@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VizSeed 图表演示</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    
+    .header h1 {
+      color: #2c3e50;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      color: #7f8c8d;
+      font-size: 1.2em;
+    }
+    
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .chart-section {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    
+    .chart-section h2 {
+      color: #34495e;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #3498db;
+      font-size: 1.4em;
+    }
+    
+    .chart-container {
+      width: 100%;
+      height: 400px;
+      margin: 20px 0;
+      border: 1px solid #ecf0f1;
+      border-radius: 8px;
+      position: relative;
+    }
+    
+    .table-container {
+      width: 100%;
+      max-height: 400px;
+      overflow: auto;
+      border: 1px solid #ecf0f1;
+      border-radius: 8px;
+    }
+    
+    .spec-display {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: Monaco, Consolas, monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      margin-top: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .spec-display pre {
+      margin: 0;
+      white-space: pre-wrap;
+    }
+    
+    .toggle-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    
+    .toggle-btn:hover {
+      background: #2980b9;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 400px;
+      color: #7f8c8d;
+      font-size: 18px;
+    }
+    
+    .error {
+      color: #e74c3c;
+      text-align: center;
+      padding: 20px;
+      background: #fdf2f2;
+      border-radius: 8px;
+      border: 1px solid #fecaca;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .stat-number {
+      font-size: 2em;
+      font-weight: bold;
+      color: #3498db;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      color: #7f8c8d;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚀 VizSeed 实时图表演示</h1>
+      <p>基于TypeScript的数据可视化DSL，支持VChart、ECharts、VTable</p>
+    </div>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">支持的图表库</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">7+</div>
+        <div class="stat-label">图表类型</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">TypeScript</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">可能性</div>
+      </div>
+    </div>
+    
+    <div class="chart-grid">
+      <!-- VChart 柱状图 -->
+      <div class="chart-section">
+        <h2>📊 VChart 分组柱状图</h2>
+        <div id="vchart-container" class="chart-container">
+          <div class="loading">正在加载VChart图表...</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleSpec('vchart')">显示/隐藏规范</button>
+        <div id="vchart-spec" class="spec-display" style="display: none;">
+          <pre></pre>
+        </div>
+      </div>
+      
+      <!-- ECharts 柱状图 -->
+      <div class="chart-section">
+        <h2>📈 ECharts 柱状图</h2>
+        <div id="echarts-container" class="chart-container">
+          <div class="loading">正在加载ECharts图表...</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleSpec('echarts')">显示/隐藏规范</button>
+        <div id="echarts-spec" class="spec-display" style="display: none;">
+          <pre></pre>
+        </div>
+      </div>
+      
+      <!-- ECharts 饼图 -->
+      <div class="chart-section">
+        <h2>🥧 ECharts 饼图</h2>
+        <div id="echarts-pie-container" class="chart-container">
+          <div class="loading">正在加载饼图...</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleSpec('echarts-pie')">显示/隐藏规范</button>
+        <div id="echarts-pie-spec" class="spec-display" style="display: none;">
+          <pre></pre>
+        </div>
+      </div>
+      
+      <!-- ECharts 折线图 -->
+      <div class="chart-section">
+        <h2>📉 ECharts 趋势图</h2>
+        <div id="echarts-line-container" class="chart-container">
+          <div class="loading">正在加载折线图...</div>
+        </div>
+        <button class="toggle-btn" onclick="toggleSpec('echarts-line')">显示/隐藏规范</button>
+        <div id="echarts-line-spec" class="spec-display" style="display: none;">
+          <pre></pre>
+        </div>
+      </div>
+    </div>
+    
+    <!-- VTable 表格 -->
+    <div class="chart-section">
+      <h2>📋 VTable 数据表格</h2>
+      <div id="vtable-container" class="table-container">
+        <div class="loading">正在加载VTable表格...</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleSpec('vtable')">显示/隐藏规范</button>
+      <div id="vtable-spec" class="spec-display" style="display: none;">
+        <pre></pre>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function toggleSpec(chartType) {
+      const specElement = document.getElementById(chartType + '-spec');
+      if (specElement.style.display === 'none') {
+        specElement.style.display = 'block';
+      } else {
+        specElement.style.display = 'none';
+      }
+    }
+  </script>
+  
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

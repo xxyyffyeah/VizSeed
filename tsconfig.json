@@ -7,7 +7,9 @@
     "dist",
     "examples",
     "tests",
-    "src/specs/disabled"
+    "src/specs/disabled",
+    "server",
+    "web"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */

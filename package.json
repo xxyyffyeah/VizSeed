@@ -14,16 +14,28 @@
     "start": "node dist/index.js",
     "example": "ts-node examples/basic-example.ts",
     "example:types": "ts-node examples/official-types-example.ts",
+    "web:dev": "vite",
+    "web:build": "vite build",
+    "web:preview": "vite preview",
+    "server:dev": "npm run build && node server/simple-server.js",
+    "server:ts": "ts-node --project server/tsconfig.json server/websocket-server.ts",
+    "dev:full": "concurrently \"npm run server:dev\" \"npm run web:dev\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^5.0.3",
     "@types/node": "^24.0.7",
+    "@types/ws": "^8.18.1",
+    "concurrently": "^9.2.0",
+    "express": "^5.1.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "ws": "^8.18.3"
   },
   "dependencies": {
     "@visactor/vchart": "^2.0.0",
