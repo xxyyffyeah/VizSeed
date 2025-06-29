@@ -54,8 +54,12 @@ function createBarChart() {
     
   console.log('VizSeed DSL:', JSON.stringify(vizSeed, null, 2));
   
-  const spec = builder.buildSpec();
-  console.log('VChart Spec:', JSON.stringify(spec, null, 2));
+  // 生成不同图表库的spec
+  const vchartSpec = builder.buildSpec('vchart');
+  console.log('VChart Spec:', JSON.stringify(vchartSpec, null, 2));
+  
+  const echartsSpec = builder.buildSpec('echarts');
+  console.log('ECharts Spec:', JSON.stringify(echartsSpec, null, 2));
 }
 
 function createPieChart() {
@@ -115,9 +119,50 @@ function createTableView() {
   // 表格不需要添加维度和指标，但需要设置图表类型
   const spec = builder
     .setChartType('table')
-    .buildSpec();
+    .buildSpec('vtable');
     
   console.log('表格 VTable Spec:', JSON.stringify(spec, null, 2));
+}
+
+function demonstrateMultiLibrarySupport() {
+  console.log('=== 多图表库支持演示 ===');
+  
+  const builder = new VizSeedBuilder(sampleData);
+  builder
+    .setChartType('bar')
+    .addDimension('category')
+    .addMeasure('sales')
+    .setTitle('不同图表库的柱状图');
+  
+  // 查看支持的图表库
+  console.log('支持的图表库:', builder.getSupportedLibraries());
+  
+  // 查看每个库支持的图表类型
+  console.log('各库支持的图表类型:', builder.getAllSupportedChartTypes());
+  
+  // 生成VChart规范
+  try {
+    const vchartSpec = builder.buildSpec('vchart');
+    console.log('VChart规范生成成功');
+  } catch (error) {
+    console.error('VChart规范生成失败:', (error as Error).message);
+  }
+  
+  // 生成ECharts规范
+  try {
+    const echartsSpec = builder.buildSpec('echarts');
+    console.log('ECharts规范生成成功');
+  } catch (error) {
+    console.error('ECharts规范生成失败:', (error as Error).message);
+  }
+  
+  // 尝试生成表格（应该失败，因为bar类型不支持vtable）
+  try {
+    const vtableSpec = builder.buildSpec('vtable');
+    console.log('VTable规范生成成功');
+  } catch (error) {
+    console.error('VTable规范生成失败:', (error as Error).message);
+  }
 }
 
 function demonstrateDimensionOperations() {
@@ -142,7 +187,7 @@ if (require.main === module) {
   console.log('1. 创建分组柱状图:');
   createBarChart();
   
-  console.log('\n2. 创建饼图:');
+  console.log('\n2. 创建饼图:');  
   createPieChart();
   
   console.log('\n3. 创建折线图:');
@@ -151,6 +196,9 @@ if (require.main === module) {
   console.log('\n4. 创建表格:');
   createTableView();
   
-  console.log('\n5. 维度操作示例:');
+  console.log('\n5. 多图表库支持演示:');
+  demonstrateMultiLibrarySupport();
+  
+  console.log('\n6. 维度操作示例:');
   demonstrateDimensionOperations();
 }

@@ -1,9 +1,10 @@
-import { VizSeedBuilder as IVizSeedBuilder, VizSeedDSL as IVizSeedDSL, VTableSpec, VChartSpec } from '../types';
+import { VizSeedBuilder as IVizSeedBuilder, VizSeedDSL as IVizSeedDSL } from '../types';
+import { ChartSpec, ChartLibrary } from '../types/specs';
 import { DataSet, DataTransformation, Dimension, Measure } from '../types/data';
 import { ChartType, ChartSubType, ChartConfig } from '../types/charts';
 import { VizSeedDSL } from '../core/VizSeedDSL';
 import { DimensionOperator } from '../operations/DimensionOperator';
-import { SpecBuilder } from '../specs/SpecBuilder';
+import { SpecGenerator } from '../specs/SpecGenerator';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: DataSet;
@@ -13,9 +14,11 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     measures: []
   };
   private metadata: IVizSeedDSL['metadata'] = {};
+  private specGenerator: SpecGenerator;
 
   constructor(data: DataSet) {
     this.data = data;
+    this.specGenerator = new SpecGenerator();
   }
 
   public elevate(field: string, targetField?: string): VizSeedBuilder {
@@ -108,9 +111,27 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     );
   }
 
-  public buildSpec(): VTableSpec | VChartSpec {
-    const vizSeed = this.build();
-    return SpecBuilder.build(vizSeed);
+  public buildSpec(library: ChartLibrary = 'vchart'): ChartSpec {
+    const vizSeedDSL = this.build();
+    const vizSeed = new VizSeedDSL(
+      vizSeedDSL.data,
+      vizSeedDSL.chartConfig,
+      vizSeedDSL.transformations,
+      vizSeedDSL.metadata
+    );
+    return this.specGenerator.generate(vizSeed, library);
+  }
+
+  public getSupportedLibraries(): ChartLibrary[] {
+    return this.specGenerator.getSupportedLibraries();
+  }
+
+  public getSupportedChartTypes(library: ChartLibrary): ChartType[] {
+    return this.specGenerator.getSupportedChartTypes(library);
+  }
+
+  public getAllSupportedChartTypes(): Record<ChartLibrary, ChartType[]> {
+    return this.specGenerator.getAllSupportedChartTypes();
   }
 
   private validateConfig(): void {

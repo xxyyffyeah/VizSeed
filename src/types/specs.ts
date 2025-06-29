@@ -56,3 +56,50 @@ export interface VChartSpec {
   width?: number;
   height?: number;
 }
+
+export interface EChartsSpec {
+  title?: {
+    text?: string;
+    left?: string;
+    top?: string;
+  };
+  tooltip?: {
+    trigger?: 'item' | 'axis';
+    formatter?: string;
+  };
+  legend?: {
+    data?: string[];
+    left?: string;
+    top?: string;
+  };
+  xAxis?: {
+    type?: 'category' | 'value' | 'time' | 'log';
+    data?: string[];
+    name?: string;
+  };
+  yAxis?: {
+    type?: 'category' | 'value' | 'time' | 'log';
+    name?: string;
+  };
+  series: Array<{
+    name?: string;
+    type: 'bar' | 'line' | 'pie' | 'scatter' | 'candlestick';
+    data: any[];
+    stack?: string;
+    label?: {
+      show?: boolean;
+      position?: string;
+    };
+  }>;
+  color?: string[];
+  grid?: {
+    left?: string;
+    right?: string;
+    top?: string;
+    bottom?: string;
+  };
+}
+
+export type ChartSpec = VTableSpec | VChartSpec | EChartsSpec;
+
+export type ChartLibrary = 'vchart' | 'vtable' | 'echarts';

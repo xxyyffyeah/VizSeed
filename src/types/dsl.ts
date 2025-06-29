@@ -1,6 +1,6 @@
 import { DataSet, DataTransformation } from './data';
-import { ChartConfig } from './charts';
-import { VTableSpec, VChartSpec } from './specs';
+import { ChartConfig, ChartType } from './charts';
+import { ChartSpec, ChartLibrary } from './specs';
 
 export interface VizSeedDSL {
   data: DataSet;
@@ -34,5 +34,8 @@ export interface VizSeedBuilder {
   addMeasure(field: string, aggregation?: string): VizSeedBuilder;
   
   build(): VizSeedDSL;
-  buildSpec(): VTableSpec | VChartSpec;
+  buildSpec(library?: ChartLibrary): ChartSpec;
+  getSupportedLibraries(): ChartLibrary[];
+  getSupportedChartTypes(library: ChartLibrary): ChartType[];
+  getAllSupportedChartTypes(): Record<ChartLibrary, ChartType[]>;
 }
