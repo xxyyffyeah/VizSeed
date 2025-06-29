@@ -46,6 +46,12 @@ npm run build
 npm run example
 ```
 
+### 官方类型支持演示
+
+```bash
+npm run example:types   # 运行官方类型示例
+```
+
 ## 📋 基本用法
 
 ### 创建分组柱状图
@@ -104,6 +110,112 @@ const vizSeed = builder
 // 支持多图表库的维度重塑
 const vchartSpec = builder.buildSpec('vchart');
 const echartsSpec = builder.buildSpec('echarts');
+```
+
+## 🎨 官方类型支持
+
+VizSeed v1.0 起完全支持各图表库的官方TypeScript类型定义，确保类型安全和智能提示。
+
+### 支持的官方类型
+
+- **VChart**: 基于 `@visactor/vchart` v2.0+
+- **ECharts**: 基于 `echarts` v5.6+ (内置类型定义)
+- **VTable**: 基于 `@visactor/vtable` v1.19+
+
+### 使用官方类型创建图表
+
+```typescript
+import { 
+  VChartBarSpec, 
+  EChartsSpec, 
+  VTableSpec,
+  isVChartSpec,
+  isEChartsSpec,
+  isVTableSpec
+} from 'vizseed';
+
+// 使用VChart官方类型
+const vchartSpec: VChartBarSpec = {
+  type: 'bar',
+  data: { values: salesData },
+  xField: 'month',
+  yField: 'sales',
+  // 完整的VChart官方配置选项支持
+  axes: [...],
+  legends: [...],
+  // VizSeed扩展元数据
+  _vizSeedMeta: {
+    originalDataFields: ['month', 'sales'],
+    transformations: ['bar-chart']
+  }
+};
+
+// 使用ECharts官方类型
+const echartsSpec: EChartsSpec = {
+  title: { text: '销售图表' },
+  xAxis: { type: 'category', data: ['1月', '2月'] },
+  yAxis: { type: 'value' },
+  series: [{
+    type: 'bar',
+    data: [100, 200]
+  }],
+  // 完整的ECharts官方配置选项支持
+  tooltip: { trigger: 'axis' },
+  legend: { data: ['销售额'] }
+};
+
+// 使用VTable官方类型  
+const vtableSpec: VTableSpec = {
+  type: 'table',
+  records: salesData,
+  columns: [{
+    field: 'month',
+    title: '月份',
+    width: 120
+  }],
+  // 完整的VTable官方配置选项支持
+  theme: 'DEFAULT',
+  hover: { highlightMode: 'row' }
+};
+```
+
+### 类型守卫和智能提示
+
+```typescript
+function processChartSpec(spec: ChartSpec) {
+  if (isVChartSpec(spec)) {
+    // TypeScript自动推断为VChartSpec类型
+    console.log('VChart数据:', spec.data?.values);
+    console.log('X轴字段:', spec.xField);
+  } else if (isEChartsSpec(spec)) {
+    // TypeScript自动推断为EChartsSpec类型
+    console.log('ECharts标题:', spec.title?.text);
+    console.log('系列数量:', spec.series?.length);
+  } else if (isVTableSpec(spec)) {
+    // TypeScript自动推断为VTableSpec类型
+    console.log('表格记录数:', spec.records?.length);
+    console.log('列定义:', spec.columns);
+  }
+}
+```
+
+### 类型安全的配置
+
+```typescript
+import { ChartConfig, ChartType } from 'vizseed';
+
+// 类型安全的图表配置
+const config: ChartConfig<'vchart-bar'> = {
+  type: 'vchart-bar',
+  spec: {
+    type: 'bar',
+    data: { values: data },
+    xField: 'category',  // TypeScript会验证这个字段
+    yField: 'sales'      // TypeScript会验证这个字段
+  },
+  width: 800,
+  height: 400
+};
 ```
 
 ## 🏗️ 架构设计

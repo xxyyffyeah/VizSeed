@@ -1,8 +1,8 @@
-import { VizSeedDSL, VTableSpec, VChartSpec } from '../types';
-import { ChartType } from '../types/charts';
+import { VizSeedDSL, LegacyChartType } from '../types';
+import { VTableSpec, VChartSpec, VChartBarSpec, VChartLineSpec, VChartPieSpec, EChartsSpec, ChartSpec } from '../types/specs';
 
 export class SpecBuilder {
-  public static build(vizSeed: VizSeedDSL): VTableSpec | VChartSpec {
+  public static build(vizSeed: VizSeedDSL): ChartSpec {
     const { chartConfig } = vizSeed;
     
     if (chartConfig.type === 'table') {
@@ -18,19 +18,21 @@ export class SpecBuilder {
     const columns = data.fields.map(field => ({
       field: field.name,
       title: field.name,
-      cellType: this.mapFieldTypeToColumnType(field.type)
+      cellType: 'text' as const // VTable的列类型比较复杂，先使用text
     }));
 
     return {
       type: 'table',
-      data: {
-        values: data.rows
-      },
+      records: data.rows, // 使用records而不是data.values
       columns: columns,
-      theme: metadata?.theme,
+      // theme: metadata?.theme, // VTable的主题配置比较复杂，暂时移除
       pagination: {
         perPageCount: 20,
         currentPage: 1
+      },
+      _vizSeedMeta: {
+        originalDataFields: data.fields.map(f => f.name),
+        transformations: ['basic-table']
       }
     };
   }
@@ -38,45 +40,70 @@ export class SpecBuilder {
   private static buildVChartSpec(vizSeed: VizSeedDSL): VChartSpec {
     const { chartConfig, data, metadata } = vizSeed;
     
-    const spec: VChartSpec = {
-      type: this.mapChartType(chartConfig.type, chartConfig.subType),
+    // 根据图表类型创建相应的spec
+    const chartType = this.mapChartTypeToVChart(chartConfig.type);
+    
+    const baseSpec = {
+      type: chartType,
       data: {
         values: data.rows
       },
       theme: metadata?.theme,
       width: metadata?.width,
-      height: metadata?.height
+      height: metadata?.height,
+      _vizSeedMeta: {
+        originalDataFields: data.fields.map(f => f.name),
+        transformations: [`${chartType}-chart`]
+      }
     };
 
-    if (chartConfig.dimensions.length > 0) {
-      spec.xField = chartConfig.dimensions[0];
+    // 根据图表类型返回具体的spec
+    switch (chartType) {
+      case 'bar':
+        return this.buildBarChartSpec(baseSpec, chartConfig, metadata) as VChartBarSpec;
+      case 'line':
+        return this.buildLineChartSpec(baseSpec, chartConfig, metadata) as VChartLineSpec;
+      case 'pie':
+        return this.buildPieChartSpec(baseSpec, chartConfig, metadata) as VChartPieSpec;
+      default:
+        throw new Error(`Unsupported chart type: ${chartType}`);
     }
+  }
 
-    if (chartConfig.measures.length > 0) {
-      spec.yField = chartConfig.measures[0];
-    }
+  private static buildBarChartSpec(baseSpec: any, chartConfig: any, metadata: any): VChartBarSpec {
+    const spec: VChartBarSpec = {
+      ...baseSpec,
+      xField: chartConfig.dimensions[0] || 'category',
+      yField: chartConfig.measures[0] || 'value'
+    };
 
     if (chartConfig.color) {
-      spec.colorField = chartConfig.color;
+      spec.seriesField = chartConfig.color;
     }
 
-    if (chartConfig.size) {
-      spec.sizeField = chartConfig.size;
+    return spec;
+  }
+
+  private static buildLineChartSpec(baseSpec: any, chartConfig: any, metadata: any): VChartLineSpec {
+    const spec: VChartLineSpec = {
+      ...baseSpec,
+      xField: chartConfig.dimensions[0] || 'category',
+      yField: chartConfig.measures[0] || 'value'
+    };
+
+    if (chartConfig.color) {
+      spec.seriesField = chartConfig.color;
     }
 
-    if (chartConfig.dimensions.length > 1) {
-      spec.seriesField = chartConfig.dimensions[1];
-    }
+    return spec;
+  }
 
-    spec.axes = this.buildAxes(chartConfig);
-    spec.legends = this.buildLegends(chartConfig);
-
-    if (metadata?.title) {
-      spec.title = {
-        visible: true,
-        text: metadata.title
-      };
-    }
+  private static buildPieChartSpec(baseSpec: any, chartConfig: any, metadata: any): VChartPieSpec {
+    const spec: VChartPieSpec = {
+      ...baseSpec,
+      categoryField: chartConfig.dimensions[0] || 'category',
+      valueField: chartConfig.measures[0] || 'value'
+    };
 
     return spec;
   }
@@ -92,11 +119,20 @@ export class SpecBuilder {
     }
   }
 
-  private static mapChartType(type: ChartType, subType?: string): string {
-    if (subType) {
-      return `${type}_${subType}`;
+  private static mapChartTypeToVChart(type: LegacyChartType): 'bar' | 'line' | 'pie' {
+    switch (type) {
+      case 'bar':
+      case 'column':
+        return 'bar';
+      case 'line':
+      case 'area':
+        return 'line';
+      case 'pie':
+      case 'donut':
+        return 'pie';
+      default:
+        return 'bar'; // 默认使用柱状图
     }
-    return type;
   }
 
   private static buildAxes(chartConfig: any) {

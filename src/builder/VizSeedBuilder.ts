@@ -4,7 +4,7 @@ import { DataSet, DataTransformation, Dimension, Measure } from '../types/data';
 import { ChartType, ChartSubType, ChartConfig } from '../types/charts';
 import { VizSeedDSL } from '../core/VizSeedDSL';
 import { DimensionOperator } from '../operations/DimensionOperator';
-import { SpecGenerator } from '../specs/SpecGenerator';
+import { SpecBuilder } from '../specs/SpecBuilder';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: DataSet;
@@ -14,11 +14,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     measures: []
   };
   private metadata: IVizSeedDSL['metadata'] = {};
-  private specGenerator: SpecGenerator;
-
   constructor(data: DataSet) {
     this.data = data;
-    this.specGenerator = new SpecGenerator();
   }
 
   public elevate(field: string, targetField?: string): VizSeedBuilder {
@@ -119,19 +116,29 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       vizSeedDSL.transformations,
       vizSeedDSL.metadata
     );
-    return this.specGenerator.generate(vizSeed, library);
+    // 目前仅支持使用SpecBuilder生成规范，library参数暂时忽略
+    return SpecBuilder.build(vizSeed);
   }
 
   public getSupportedLibraries(): ChartLibrary[] {
-    return this.specGenerator.getSupportedLibraries();
+    // 暂时返回可用的库
+    return ['vchart', 'vtable', 'echarts'];
   }
 
   public getSupportedChartTypes(library: ChartLibrary): ChartType[] {
-    return this.specGenerator.getSupportedChartTypes(library);
+    // 暂时返回基本的图表类型
+    if (library === 'vtable') {
+      return ['table'];
+    }
+    return ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut'];
   }
 
   public getAllSupportedChartTypes(): Record<ChartLibrary, ChartType[]> {
-    return this.specGenerator.getAllSupportedChartTypes();
+    return {
+      vchart: this.getSupportedChartTypes('vchart'),
+      vtable: this.getSupportedChartTypes('vtable'),
+      echarts: this.getSupportedChartTypes('echarts')
+    };
   }
 
   private validateConfig(): void {

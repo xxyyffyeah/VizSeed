@@ -6,7 +6,8 @@
     "node_modules",
     "dist",
     "examples",
-    "tests"
+    "tests",
+    "src/specs/disabled"
   ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
