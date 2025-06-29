@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VizSeed 图表演示</title>
+  <title>VizSeed 交互式编辑器</title>
   <style>
     * {
       margin: 0;
@@ -163,8 +163,8 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>🚀 VizSeed 实时图表演示</h1>
-      <p>基于TypeScript的数据可视化DSL，支持VChart、ECharts、VTable</p>
+      <h1>🚀 VizSeed 交互式编辑器</h1>
+      <p>基于TypeScript的数据可视化DSL，实时预览VChart、ECharts、VTable</p>
     </div>
     
     <div class="stats">
@@ -186,79 +186,8 @@
       </div>
     </div>
     
-    <div class="chart-grid">
-      <!-- VChart 柱状图 -->
-      <div class="chart-section">
-        <h2>📊 VChart 分组柱状图</h2>
-        <div id="vchart-container" class="chart-container">
-          <div class="loading">正在加载VChart图表...</div>
-        </div>
-        <button class="toggle-btn" onclick="toggleSpec('vchart')">显示/隐藏规范</button>
-        <div id="vchart-spec" class="spec-display" style="display: none;">
-          <pre></pre>
-        </div>
-      </div>
-      
-      <!-- ECharts 柱状图 -->
-      <div class="chart-section">
-        <h2>📈 ECharts 柱状图</h2>
-        <div id="echarts-container" class="chart-container">
-          <div class="loading">正在加载ECharts图表...</div>
-        </div>
-        <button class="toggle-btn" onclick="toggleSpec('echarts')">显示/隐藏规范</button>
-        <div id="echarts-spec" class="spec-display" style="display: none;">
-          <pre></pre>
-        </div>
-      </div>
-      
-      <!-- ECharts 饼图 -->
-      <div class="chart-section">
-        <h2>🥧 ECharts 饼图</h2>
-        <div id="echarts-pie-container" class="chart-container">
-          <div class="loading">正在加载饼图...</div>
-        </div>
-        <button class="toggle-btn" onclick="toggleSpec('echarts-pie')">显示/隐藏规范</button>
-        <div id="echarts-pie-spec" class="spec-display" style="display: none;">
-          <pre></pre>
-        </div>
-      </div>
-      
-      <!-- ECharts 折线图 -->
-      <div class="chart-section">
-        <h2>📉 ECharts 趋势图</h2>
-        <div id="echarts-line-container" class="chart-container">
-          <div class="loading">正在加载折线图...</div>
-        </div>
-        <button class="toggle-btn" onclick="toggleSpec('echarts-line')">显示/隐藏规范</button>
-        <div id="echarts-line-spec" class="spec-display" style="display: none;">
-          <pre></pre>
-        </div>
-      </div>
-    </div>
-    
-    <!-- VTable 表格 -->
-    <div class="chart-section">
-      <h2>📋 VTable 数据表格</h2>
-      <div id="vtable-container" class="table-container">
-        <div class="loading">正在加载VTable表格...</div>
-      </div>
-      <button class="toggle-btn" onclick="toggleSpec('vtable')">显示/隐藏规范</button>
-      <div id="vtable-spec" class="spec-display" style="display: none;">
-        <pre></pre>
-      </div>
-    </div>
   </div>
   
-  <script>
-    function toggleSpec(chartType) {
-      const specElement = document.getElementById(chartType + '-spec');
-      if (specElement.style.display === 'none') {
-        specElement.style.display = 'block';
-      } else {
-        specElement.style.display = 'none';
-      }
-    }
-  </script>
   
   <script type="module" src="/src/main.ts"></script>
 </body>

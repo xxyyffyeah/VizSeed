@@ -1,17 +1,12 @@
 // 交互式VizSeed演示
 import * as echarts from 'echarts';
-
-interface VizSeedWebSocketClient {
-  socket: WebSocket;
-  connected: boolean;
-  onMessage: (data: any) => void;
-  onError: (error: any) => void;
-}
+import VChart from '@visactor/vchart';
+import { ListTable } from '@visactor/vtable';
 
 class VizSeedIDE {
   private ws: WebSocket | null = null;
   private connected = false;
-  private currentChart: echarts.ECharts | null = null;
+  private currentChart: echarts.ECharts | any | null = null; // 支持多种图表类型
 
   constructor() {
     this.initializeUI();
@@ -80,9 +75,11 @@ class VizSeedIDE {
                   <label>图表类型:</label>
                   <select id="chart-type-select">
                     <option value="bar">柱状图</option>
+                    <option value="column">条形图</option>
+                    <option value="area">面积图</option>
                     <option value="line">折线图</option>
-                    <option value="pie">饼图</option>
                     <option value="scatter">散点图</option>
+                    <option value="pie">饼图</option>
                     <option value="table">表格</option>
                   </select>
                 </div>
@@ -281,6 +278,12 @@ class VizSeedIDE {
         font-size: 1.1em;
       }
       
+      .chart-container {
+        overflow: hidden !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      
       .placeholder {
         display: flex;
         align-items: center;
@@ -384,10 +387,18 @@ class VizSeedIDE {
     const executeBtn = document.getElementById('execute-btn') as HTMLButtonElement;
     const clearBtn = document.getElementById('clear-btn') as HTMLButtonElement;
     const clearLogsBtn = document.getElementById('clear-logs') as HTMLButtonElement;
+    const chartTypeSelect = document.getElementById('chart-type-select') as HTMLSelectElement;
+    const librarySelect = document.getElementById('library-select') as HTMLSelectElement;
 
     executeBtn?.addEventListener('click', () => this.executeCode());
     clearBtn?.addEventListener('click', () => this.clearAll());
     clearLogsBtn?.addEventListener('click', () => this.clearLogs());
+    chartTypeSelect?.addEventListener('change', () => this.updateSubTypeOptions());
+    librarySelect?.addEventListener('change', () => this.updateChartTypeOptions());
+    
+    // 初始化选项
+    this.updateChartTypeOptions();
+    this.updateSubTypeOptions();
   }
 
   private connectToServer() {
@@ -426,6 +437,109 @@ class VizSeedIDE {
       this.log(`❌ 连接失败: ${error}`, 'error');
       this.updateConnectionStatus(false);
     }
+  }
+
+  private updateChartTypeOptions() {
+    const librarySelect = document.getElementById('library-select') as HTMLSelectElement;
+    const chartTypeSelect = document.getElementById('chart-type-select') as HTMLSelectElement;
+    
+    if (!librarySelect || !chartTypeSelect) return;
+    
+    const library = librarySelect.value;
+    
+    // 定义每个图表库支持的图表类型（与后端 chartLimits.ts 保持一致）
+    const chartTypeOptions: Record<string, { value: string; label: string }[]> = {
+      vchart: [
+        { value: 'bar', label: '柱状图' },
+        { value: 'column', label: '条形图' },
+        { value: 'area', label: '面积图' },
+        { value: 'line', label: '折线图' },
+        { value: 'scatter', label: '散点图' },
+        { value: 'pie', label: '饼图' }
+      ],
+      echarts: [
+        { value: 'bar', label: '柱状图' },
+        { value: 'column', label: '条形图' },
+        { value: 'area', label: '面积图' },
+        { value: 'line', label: '折线图' },
+        { value: 'scatter', label: '散点图' },
+        { value: 'pie', label: '饼图' }
+      ],
+      vtable: [
+        { value: 'table', label: '表格' }
+      ]
+    };
+    
+    // 清空现有选项
+    chartTypeSelect.innerHTML = '';
+    
+    // 添加新选项
+    const options = chartTypeOptions[library] || chartTypeOptions.vchart;
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option.value;
+      optionElement.textContent = option.label;
+      chartTypeSelect.appendChild(optionElement);
+    });
+    
+    // 触发子类型更新
+    this.updateSubTypeOptions();
+  }
+
+  private updateSubTypeOptions() {
+    const chartTypeSelect = document.getElementById('chart-type-select') as HTMLSelectElement;
+    const subtypeSelect = document.getElementById('subtype-select') as HTMLSelectElement;
+    
+    if (!chartTypeSelect || !subtypeSelect) return;
+    
+    const chartType = chartTypeSelect.value;
+    
+    // 定义每种图表类型支持的子类型（与后端 chartLimits.ts 保持一致）
+    const subtypeOptions: Record<string, { value: string; label: string }[]> = {
+      bar: [
+        { value: '', label: '默认' },
+        { value: 'grouped', label: '分组' },
+        { value: 'stacked', label: '堆叠' },
+        { value: 'percent', label: '百分比' }
+      ],
+      column: [
+        { value: '', label: '默认' },
+        { value: 'grouped', label: '分组' },
+        { value: 'stacked', label: '堆叠' },
+        { value: 'percent', label: '百分比' }
+      ],
+      area: [
+        { value: '', label: '默认' },
+        { value: 'stacked', label: '堆叠' },
+        { value: 'percent', label: '百分比' }
+      ],
+      line: [
+        { value: '', label: '默认' }
+      ],
+      scatter: [
+        { value: '', label: '默认' },
+        { value: 'linear', label: '线性' },
+        { value: 'grouped', label: '分组' }
+      ],
+      pie: [
+        { value: '', label: '默认' }
+      ],
+      table: [
+        { value: '', label: '默认' }
+      ]
+    };
+    
+    // 清空现有选项
+    subtypeSelect.innerHTML = '';
+    
+    // 添加新选项
+    const options = subtypeOptions[chartType] || [{ value: '', label: '默认' }];
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option.value;
+      optionElement.textContent = option.label;
+      subtypeSelect.appendChild(optionElement);
+    });
   }
 
   private updateConnectionStatus(connected: boolean) {
@@ -493,30 +607,61 @@ class VizSeedIDE {
     try {
       // 清理现有图表
       if (this.currentChart) {
-        this.currentChart.dispose();
+        if (this.currentChart.dispose) {
+          this.currentChart.dispose();
+        } else if (this.currentChart.release) {
+          this.currentChart.release();
+        }
         this.currentChart = null;
       }
       
-      // 目前只支持ECharts
-      if (library === 'echarts') {
-        container.innerHTML = '';
-        container.style.height = '400px';
-        
-        this.currentChart = echarts.init(container);
-        this.currentChart.setOption(spec);
-        
-        // 响应式
-        window.addEventListener('resize', () => {
-          if (this.currentChart) {
-            this.currentChart.resize();
-          }
-        });
-        
-        this.log('🎉 图表渲染成功！', 'success');
-      } else {
-        container.innerHTML = `<div class="placeholder">暂不支持${library}的实时预览</div>`;
-        this.log(`⚠️ 暂不支持${library}的实时预览`, 'warning');
+      container.innerHTML = '';
+      container.style.height = '400px';
+      
+      switch (library) {
+        case 'echarts':
+          this.currentChart = echarts.init(container);
+          this.currentChart.setOption(spec);
+          this.log('🎉 ECharts图表渲染成功！', 'success');
+          break;
+          
+        case 'vchart':
+          // 获取容器尺寸并设置给VChart
+          const containerRect = container.getBoundingClientRect();
+          const vchartSpec = {
+            ...spec,
+            width: containerRect.width || 600,
+            height: containerRect.height || 400
+          };
+          this.currentChart = new VChart(vchartSpec, { dom: container });
+          this.currentChart.renderAsync();
+          this.log('🎉 VChart图表渲染成功！', 'success');
+          break;
+          
+        case 'vtable':
+          // VTable需要特殊处理，因为它是表格不是图表
+          container.style.height = 'auto';
+          this.currentChart = new ListTable(container, spec);
+          this.log('🎉 VTable表格渲染成功！', 'success');
+          break;
+          
+        default:
+          container.innerHTML = `<div class="placeholder">不支持的图表库: ${library}</div>`;
+          this.log(`❌ 不支持的图表库: ${library}`, 'error');
+          return;
       }
+      
+      // 响应式处理
+      window.addEventListener('resize', () => {
+        if (this.currentChart) {
+          if (this.currentChart.resize) {
+            this.currentChart.resize();
+          } else if (this.currentChart.updateOption) {
+            // VChart的响应式方法
+            this.currentChart.updateOption({ width: container.clientWidth });
+          }
+        }
+      });
       
     } catch (error) {
       this.log(`❌ 图表渲染失败: ${error}`, 'error');

@@ -1,18 +1,12 @@
 // 导入演示模块
-import { initializeDemo } from './simple-demo';
 import { initializeInteractiveDemo } from './interactive-demo';
 
 // 主函数
 function main() {
-  console.log('🚀 开始加载VizSeed图表演示...');
-  
-  // 初始化静态演示
-  initializeDemo();
+  console.log('🚀 开始加载VizSeed交互式演示...');
   
   // 初始化交互式演示
-  setTimeout(() => {
-    initializeInteractiveDemo();
-  }, 1000);
+  initializeInteractiveDemo();
 }
 
 // 页面加载完成后执行
