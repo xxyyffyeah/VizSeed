@@ -5,8 +5,8 @@ import { ChartType, ChartSubType, ChartConfig } from '../types/charts';
 import { VizSeedDSL } from '../core/VizSeedDSL';
 import { DataSet } from '../core/DataSet';
 import { DimensionOperator } from '../operations/DimensionOperator';
-import { SpecGenerator } from '../specs/SpecGenerator';
-import { CHART_TYPE_LIMITS } from '../config/chartLimits';
+import { PipelineRegistry } from '../pipeline/PipelineRegistry';
+import { PipelineContext } from '../pipeline/PipelineBuilder';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: IDataSet;
@@ -15,8 +15,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     dimensions: [],
     measures: []
   };
-  private metadata: IVizSeedDSL['metadata'] = {};
-  private specGenerator: SpecGenerator;
+  private metadata: IVizSeedDSL['metadata'] & { vizSeedObject?: any } = {};
 
   // 构造函数重载：支持直接传入rows或DataSet
   constructor(rows: Record<string, any>[], options?: FieldInferenceOptions);
@@ -32,7 +31,6 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       // 传入DataSet对象的情况
       this.data = dataOrRows;
     }
-    this.specGenerator = new SpecGenerator();
   }
 
   // 保留静态方法作为替代方式（可选）
@@ -148,36 +146,91 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   public build(): IVizSeedDSL {
     this.validateConfig();
     
+    // 使用Pipeline Builder构建VizSeed对象
+    const strategy = PipelineRegistry.getStrategy('vizseed-build');
+    if (!strategy) {
+      throw new Error('VizSeed构建策略未找到');
+    }
+
+    const context: PipelineContext = {
+      data: this.data,
+      chartConfig: this.chartConfig,
+      transformations: this.transformations,
+      metadata: this.metadata
+    };
+
+    const vizSeedObject = strategy.execute(context);
+    
+    // 创建增强的metadata，包含构建的VizSeed对象
+    const enhancedMetadata = {
+      ...this.metadata,
+      vizSeedObject
+    };
+    
     return new VizSeedDSL(
       this.data,
       this.chartConfig as ChartConfig,
       this.transformations,
-      this.metadata
+      enhancedMetadata
     );
   }
 
   public buildSpec(library: ChartLibrary = 'vchart'): ChartSpec {
-    const vizSeedDSL = this.build();
-    const vizSeed = new VizSeedDSL(
-      vizSeedDSL.data,
-      vizSeedDSL.chartConfig,
-      vizSeedDSL.transformations,
-      vizSeedDSL.metadata
-    );
-    return this.specGenerator.generate(vizSeed, library);
+    // 限制支持的库
+    if (library !== 'vchart' && library !== 'vtable') {
+      throw new Error(`不支持的图表库: ${library}，仅支持 vchart 和 vtable`);
+    }
+
+    this.validateConfig();
+    
+    // 使用Pipeline Builder构建图表规范
+    const chartType = this.chartConfig.type || 'bar';
+    
+    try {
+      const pipelineKey = PipelineRegistry.createKey(library, chartType);
+      const strategy = PipelineRegistry.getStrategy(pipelineKey);
+      
+      if (!strategy) {
+        throw new Error(`未找到 ${library}-${chartType} 的构建策略`);
+      }
+
+      // 先构建VizSeed对象
+      const vizSeedDSL = this.build();
+      const vizSeedObject = (vizSeedDSL.metadata as any)?.vizSeedObject;
+
+      const context: PipelineContext = {
+        vizSeed: vizSeedObject,
+        data: this.data,
+        chartConfig: this.chartConfig,
+        metadata: this.metadata
+      };
+
+      return strategy.execute(context);
+    } catch (error: any) {
+      throw new Error(`构建图表规范失败: ${error.message}`);
+    }
   }
 
-  public getSupportedLibraries(): ChartLibrary[] {
-    // 暂时返回可用的库
-    return ['vchart', 'vtable', 'echarts'];
+  public getSupportedLibraries(): ('vchart' | 'vtable')[] {
+    // 仅支持VChart和VTable
+    return ['vchart', 'vtable'];
   }
 
-  public getSupportedChartTypes(library: ChartLibrary): ChartType[] {
-    return CHART_TYPE_LIMITS[library] || [];
+  public getSupportedChartTypes(library: 'vchart' | 'vtable'): ChartType[] {
+    if (library === 'vchart') {
+      return ['bar', 'pie'];
+    } else if (library === 'vtable') {
+      return ['table'];
+    }
+    return [];
   }
 
   public getAllSupportedChartTypes(): Record<ChartLibrary, ChartType[]> {
-    return CHART_TYPE_LIMITS;
+    return {
+      vchart: ['bar', 'pie'],
+      vtable: ['table'],
+      echarts: [] // 不再支持，但保持接口兼容性
+    };
   }
 
   private validateConfig(): void {

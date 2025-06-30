@@ -35,12 +35,9 @@ function createBarChart() {
     
   console.log('VizSeed DSL:', JSON.stringify(vizSeed, null, 2));
   
-  // 生成不同图表库的spec
+  // 生成VChart图表库的spec
   const vchartSpec = builder.buildSpec('vchart');
   console.log('VChart Spec:', JSON.stringify(vchartSpec, null, 2));
-  
-  const echartsSpec = builder.buildSpec('echarts');
-  console.log('ECharts Spec:', JSON.stringify(echartsSpec, null, 2));
 }
 
 function createPieChart() {
@@ -115,12 +112,12 @@ function demonstrateMultiLibrarySupport() {
     console.error('VChart规范生成失败:', (error as Error).message);
   }
   
-  // 生成ECharts规范
+  // 尝试生成ECharts规范（应该失败，因为不再支持）
   try {
-    const echartsSpec = builder.buildSpec('echarts');
+    const echartsSpec = builder.buildSpec('echarts' as any);
     console.log('ECharts规范生成成功');
   } catch (error) {
-    console.error('ECharts规范生成失败:', (error as Error).message);
+    console.error('ECharts规范生成失败（预期）:', (error as Error).message);
   }
   
   // 尝试生成表格（应该失败，因为bar类型不支持vtable）

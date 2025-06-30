@@ -3,21 +3,7 @@
  * 这个文件集中管理所有第三方图表库的类型定义，方便统一管理和版本控制
  */
 
-// ECharts 官方类型
-export type { 
-  EChartsOption,
-  SeriesOption,
-  BarSeriesOption,
-  LineSeriesOption,
-  PieSeriesOption,
-  ScatterSeriesOption,
-  XAXisComponentOption,
-  YAXisComponentOption,
-  TitleComponentOption,
-  TooltipComponentOption,
-  LegendComponentOption,
-  GridComponentOption
-} from 'echarts';
+// ECharts 类型已移除，不再支持
 
 // VChart 官方类型
 export type {
