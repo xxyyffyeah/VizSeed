@@ -8,7 +8,7 @@ export interface PipelineContext {
   data?: any;
   vizSeed?: any;
   chartConfig?: any;
-  metadata?: any;
+  visualStyle?: any;
   [key: string]: any;
 }
 

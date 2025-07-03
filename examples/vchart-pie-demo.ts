@@ -1,4 +1,17 @@
 import { VizSeedBuilder } from '../src';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// 输出收集器
+const outputCollector: string[] = [];
+const originalConsoleLog = console.log;
+
+// 重写console.log以收集输出
+console.log = (...args: any[]) => {
+  const message = args.map(arg => typeof arg === 'string' ? arg : JSON.stringify(arg, null, 2)).join(' ');
+  outputCollector.push(message);
+  originalConsoleLog(...args); // 同时输出到控制台
+};
 
 console.log('=== 🥧 VChart 饼图完整演示 ===\n');
 
@@ -39,25 +52,14 @@ const vizSeedDSL = builder
 console.log('\n📋 VizSeed DSL 输出:');
 console.log(JSON.stringify(vizSeedDSL, null, 2));
 
-// 🎯 步骤5: 生成VChart规范
-console.log('\n🎨 VChart 规范 (可直接用于渲染):');
-const vchartSpec = builder.buildSpec('vchart');
-console.log(JSON.stringify(vchartSpec, null, 2));
+// 注意：buildSpec方法已被移除
+console.log('\n🎨 VChart 规范 (可直接用于渲染): buildSpec方法已被移除');
 
 // 🎯 步骤6: 演示如何在实际项目中使用
 console.log('\n💻 实际使用示例代码:');
 console.log(`
-// 1. 在React/Vue项目中使用:
-import VChart from '@visactor/vchart';
-
-const chartSpec = ${JSON.stringify(vchartSpec, null, 0)};
-
-// 渲染图表
-const chart = new VChart(chartSpec, { dom: 'chart-container' });
-chart.renderAsync();
-
-// 2. 响应式更新数据:
-chart.updateData('dataId', newSalesData);
+// 注意：buildSpec方法已被移除，无法直接生成图表库规范
+// 现在只能生成VizSeed DSL
 `);
 
 console.log('\n✨ 总结:');
@@ -72,12 +74,29 @@ console.log('\n🔄 饼图变体演示:');
 
 // 环形图 (donut)
 const donutBuilder = new VizSeedBuilder(salesData);
-const donutSpec = donutBuilder
+const donutDSL = donutBuilder
   .setChartType('donut')
   .addDimension('region')
   .addMeasure('sales')
   .setTitle('各地区销售额占比 (环形图)')
-  .buildSpec('vchart');
+  .build();
 
-console.log('\n🍩 环形图 VChart 规范:');
-console.log(JSON.stringify(donutSpec, null, 2));
+console.log('\n🍩 环形图 VizSeed DSL:');
+console.log(JSON.stringify(donutDSL, null, 2));
+console.log('注意：buildSpec方法已被移除');
+
+// 恢复原始console.log
+console.log = originalConsoleLog;
+
+// 保存输出到文件
+const outputDir = path.join(__dirname, 'outputs');
+const outputFile = path.join(outputDir, 'vchart-pie-demo-output.txt');
+
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+const outputText = outputCollector.join('\n');
+fs.writeFileSync(outputFile, outputText, 'utf8');
+
+console.log(`\n📁 输出已保存到: ${outputFile}`);

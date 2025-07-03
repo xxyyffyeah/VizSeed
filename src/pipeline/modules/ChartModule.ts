@@ -5,17 +5,25 @@
 
 import { PipelineStep, PipelineContext } from '../PipelineBuilder';
 
-// VChart柱状图初始化
+// VChart图表初始化（支持多种类型）
 export const initVChartBar: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { vizSeed } = context;
+  const { vizSeed, chartConfig } = context;
+  const chartType = chartConfig?.type || 'bar';
   
-  return {
+  // 根据图表类型设置不同的字段映射
+  const baseSpec = {
     ...spec,
-    type: 'bar',
+    type: chartType,
     xField: vizSeed?.visualChannel?.[0]?.x || 'category',
     yField: vizSeed?.visualChannel?.[0]?.y || 'value',
-    seriesField: vizSeed?.visualChannel?.[0]?.group
   };
+
+  // 为支持分组/颜色的图表类型添加seriesField
+  if (['bar', 'column', 'line', 'area'].includes(chartType)) {
+    baseSpec.seriesField = vizSeed?.visualChannel?.[0]?.group;
+  }
+
+  return baseSpec;
 };
 
 // VChart饼图初始化

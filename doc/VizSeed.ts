@@ -59,5 +59,6 @@ const vizSeed = {
         tooltip: {
             visible: true
         }
-    }
+    },
+    locale: 'zh_CN'
 }

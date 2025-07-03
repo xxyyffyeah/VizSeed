@@ -1,7 +1,6 @@
-import { VizSeedBuilder as IVizSeedBuilder, VizSeedDSL as IVizSeedDSL } from '../types';
-import { ChartSpec, ChartLibrary } from '../types/specs';
+import { VizSeedBuilder as IVizSeedBuilder, VizSeedDSL as IVizSeedDSL, ChartSpec } from '../types';
 import { DataSet as IDataSet, DataTransformation, Dimension, Measure, FieldInferenceOptions } from '../types/data';
-import { ChartType, ChartSubType, ChartConfig } from '../types/charts';
+import { ChartType, ChartConfig, ChannelMapping, CHART_REQUIREMENTS } from '../types/charts';
 import { VizSeedDSL } from '../core/VizSeedDSL';
 import { DataSet } from '../core/DataSet';
 import { DimensionOperator } from '../operations/DimensionOperator';
@@ -12,10 +11,9 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private data: IDataSet;
   private transformations: DataTransformation[] = [];
   private chartConfig: Partial<ChartConfig> = {
-    dimensions: [],
-    measures: []
+    mapping: {}
   };
-  private metadata: IVizSeedDSL['metadata'] & { vizSeedObject?: any } = {};
+  private visualStyle: IVizSeedDSL['visualStyle'] & { vizSeedObject?: any } = {};
 
   // 构造函数重载：支持直接传入rows或DataSet
   constructor(rows: Record<string, any>[], options?: FieldInferenceOptions);
@@ -42,6 +40,15 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   public static fromLegacy(fields: (Dimension | Measure)[], rows: Record<string, any>[]): VizSeedBuilder {
     const dataSet = DataSet.fromLegacy(fields, rows);
     return new VizSeedBuilder(dataSet);
+  }
+
+  // 静态方法：从VizSeed DSL格式创建Builder
+  public static from(vizSeed: IVizSeedDSL): VizSeedBuilder {
+    const builder = new VizSeedBuilder(vizSeed.data);
+    builder.chartConfig = { ...vizSeed.chartConfig };
+    builder.transformations = [...vizSeed.transformations];
+    builder.visualStyle = { ...vizSeed.visualStyle };
+    return builder;
   }
 
   // 获取数据集信息
@@ -88,58 +95,101 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this;
   }
 
-  public setChartType(type: ChartType, subType?: ChartSubType): VizSeedBuilder {
+  public setChartType(type: ChartType): VizSeedBuilder {
     this.chartConfig.type = type;
-    this.chartConfig.subType = subType;
     return this;
   }
 
+  // 通用通道设置方法
+  public setChannel(channel: string, field: string): VizSeedBuilder {
+    if (!this.chartConfig.mapping) {
+      this.chartConfig.mapping = {};
+    }
+    (this.chartConfig.mapping as any)[channel] = field;
+    return this;
+  }
+
+  // 便捷方法 - 通用通道
+  public setXField(field: string): VizSeedBuilder {
+    return this.setChannel('x', field);
+  }
+
+  public setYField(field: string): VizSeedBuilder {
+    return this.setChannel('y', field);
+  }
+
+  public setColorField(field: string): VizSeedBuilder {
+    return this.setChannel('color', field);
+  }
+
+  // 饼图专用方法
+  public setCategoryField(field: string): VizSeedBuilder {
+    return this.setChannel('category', field);
+  }
+
+  public setValueField(field: string): VizSeedBuilder {
+    return this.setChannel('value', field);
+  }
+
+  // 表格专用方法
+  public setRowDimension(field: string): VizSeedBuilder {
+    return this.setChannel('rowDimension', field);
+  }
+
+  public setColumnDimension(field: string): VizSeedBuilder {
+    return this.setChannel('columnDimension', field);
+  }
+
+  public setMeasureField(field: string): VizSeedBuilder {
+    return this.setChannel('measure', field);
+  }
+
+  // 向后兼容方法（已废弃）
+  /** @deprecated 使用setXField或setYField替代 */
   public addDimension(field: string): VizSeedBuilder {
-    if (!this.chartConfig.dimensions) {
-      this.chartConfig.dimensions = [];
-    }
-    if (!this.chartConfig.dimensions.includes(field)) {
-      this.chartConfig.dimensions.push(field);
-    }
-    return this;
+    console.warn('addDimension已废弃，请使用setXField或setYField');
+    return this.setXField(field);
   }
 
+  /** @deprecated 使用setValueField或setYField替代 */
   public addMeasure(field: string, aggregation?: string): VizSeedBuilder {
-    if (!this.chartConfig.measures) {
-      this.chartConfig.measures = [];
-    }
-    if (!this.chartConfig.measures.includes(field)) {
-      this.chartConfig.measures.push(field);
-    }
-    return this;
+    console.warn('addMeasure已废弃，请使用setValueField或setYField');
+    return this.setValueField(field);
   }
 
+  /** @deprecated 使用setColorField替代 */
   public setColor(field: string): VizSeedBuilder {
-    this.chartConfig.color = field;
-    return this;
+    console.warn('setColor已废弃，请使用setColorField');
+    return this.setColorField(field);
   }
 
+  /** @deprecated 不再支持size字段 */
   public setSizeField(field: string): VizSeedBuilder {
-    this.chartConfig.size = field;
+    console.warn('setSizeField已废弃');
     return this;
   }
 
   public setTitle(title: string): VizSeedBuilder {
-    if (!this.metadata) this.metadata = {};
-    this.metadata.title = title;
+    if (!this.visualStyle) this.visualStyle = {};
+    this.visualStyle.title = title;
     return this;
   }
 
-  public setTheme(theme: string): VizSeedBuilder {
-    if (!this.metadata) this.metadata = {};
-    this.metadata.theme = theme;
+  public setLegend(visible: boolean = true): VizSeedBuilder {
+    if (!this.visualStyle) this.visualStyle = {};
+    this.visualStyle.legend = visible;
     return this;
   }
 
-  public setDimensions(width: number, height: number): VizSeedBuilder {
-    if (!this.metadata) this.metadata = {};
-    this.metadata.width = width;
-    this.metadata.height = height;
+  public setLabel(visible: boolean = true): VizSeedBuilder {
+    if (!this.visualStyle) this.visualStyle = {};
+    this.visualStyle.label = visible;
+    return this;
+  }
+
+  public setTooltip(visible: boolean = true): VizSeedBuilder {
+    if (!this.visualStyle) this.visualStyle = {};
+    this.visualStyle.tooltip = visible;
     return this;
   }
 
@@ -156,35 +206,26 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       data: this.data,
       chartConfig: this.chartConfig,
       transformations: this.transformations,
-      metadata: this.metadata
+      visualStyle: this.visualStyle
     };
 
     const vizSeedObject = strategy.execute(context);
     
-    // 创建增强的metadata，包含构建的VizSeed对象
-    const enhancedMetadata = {
-      ...this.metadata,
-      vizSeedObject
-    };
-    
+    // metadata只包含纯粹的元数据，不包含业务对象
     return new VizSeedDSL(
       this.data,
       this.chartConfig as ChartConfig,
       this.transformations,
-      enhancedMetadata
+      this.visualStyle
     );
   }
 
-  public buildSpec(library: ChartLibrary = 'vchart'): ChartSpec {
-    // 限制支持的库
-    if (library !== 'vchart' && library !== 'vtable') {
-      throw new Error(`不支持的图表库: ${library}，仅支持 vchart 和 vtable`);
-    }
-
+  public buildSpec(): ChartSpec {
     this.validateConfig();
     
-    // 使用Pipeline Builder构建图表规范
+    // 根据图表类型自动选择图表库
     const chartType = this.chartConfig.type || 'bar';
+    const library = this.selectLibrary(chartType);
     
     try {
       const pipelineKey = PipelineRegistry.createKey(library, chartType);
@@ -194,15 +235,26 @@ export class VizSeedBuilder implements IVizSeedBuilder {
         throw new Error(`未找到 ${library}-${chartType} 的构建策略`);
       }
 
-      // 先构建VizSeed对象
-      const vizSeedDSL = this.build();
-      const vizSeedObject = (vizSeedDSL.metadata as any)?.vizSeedObject;
+      // 直接构建VizSeed对象用于图表规范生成
+      const vizSeedStrategy = PipelineRegistry.getStrategy('vizseed-build');
+      if (!vizSeedStrategy) {
+        throw new Error('VizSeed构建策略未找到');
+      }
+
+      const vizSeedContext: PipelineContext = {
+        data: this.data,
+        chartConfig: this.chartConfig,
+        transformations: this.transformations,
+        visualStyle: this.visualStyle
+      };
+
+      const vizSeedObject = vizSeedStrategy.execute(vizSeedContext);
 
       const context: PipelineContext = {
         vizSeed: vizSeedObject,
         data: this.data,
         chartConfig: this.chartConfig,
-        metadata: this.metadata
+        visualStyle: this.visualStyle
       };
 
       return strategy.execute(context);
@@ -211,26 +263,13 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     }
   }
 
-  public getSupportedLibraries(): ('vchart' | 'vtable')[] {
-    // 仅支持VChart和VTable
-    return ['vchart', 'vtable'];
-  }
-
-  public getSupportedChartTypes(library: 'vchart' | 'vtable'): ChartType[] {
-    if (library === 'vchart') {
-      return ['bar', 'pie'];
-    } else if (library === 'vtable') {
-      return ['table'];
+  private selectLibrary(chartType: ChartType): 'vchart' | 'vtable' {
+    // 表格类型使用VTable
+    if (chartType === 'table') {
+      return 'vtable';
     }
-    return [];
-  }
-
-  public getAllSupportedChartTypes(): Record<ChartLibrary, ChartType[]> {
-    return {
-      vchart: ['bar', 'pie'],
-      vtable: ['table'],
-      echarts: [] // 不再支持，但保持接口兼容性
-    };
+    // 其他类型使用VChart
+    return 'vchart';
   }
 
   private validateConfig(): void {
@@ -238,15 +277,31 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       throw new Error('图表类型未设置');
     }
     
-    // 表格类型允许没有维度和指标
-    if (this.chartConfig.type === 'table') {
-      return;
+    const mapping = this.chartConfig.mapping || {};
+    const chartType = this.chartConfig.type;
+    
+    // 获取图表类型要求
+    const requirement = CHART_REQUIREMENTS[chartType];
+    if (!requirement) {
+      throw new Error(`不支持的图表类型: ${chartType}`);
     }
     
-    if (!this.chartConfig.dimensions || this.chartConfig.dimensions.length === 0) {
-      if (!this.chartConfig.measures || this.chartConfig.measures.length === 0) {
-        throw new Error('至少需要设置一个维度或指标');
+    // 检查必需字段
+    for (const requiredChannel of requirement.required) {
+      if (!mapping[requiredChannel as keyof ChannelMapping]) {
+        throw new Error(`图表类型 ${chartType} 缺少必需的通道: ${requiredChannel}`);
       }
+    }
+    
+    // 自定义验证
+    if (requirement.validation && !requirement.validation(mapping)) {
+      throw new Error(`图表类型 ${chartType} 的通道配置验证失败`);
+    }
+    
+    // 检查最少字段数
+    const setChannels = Object.values(mapping).filter(v => v).length;
+    if (setChannels < requirement.minFields) {
+      throw new Error(`图表类型 ${chartType} 至少需要 ${requirement.minFields} 个字段，当前只有 ${setChannels} 个`);
     }
   }
 }

@@ -1,4 +1,17 @@
 import { VizSeedBuilder, DataSet } from '../src';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// 输出收集器
+const outputCollector: string[] = [];
+const originalConsoleLog = console.log;
+
+// 重写console.log以收集输出
+console.log = (...args: any[]) => {
+  const message = args.map(arg => typeof arg === 'string' ? arg : JSON.stringify(arg, null, 2)).join(' ');
+  outputCollector.push(message);
+  originalConsoleLog(...args); // 同时输出到控制台
+};
 
 // 新的简化数据格式 - 只需要rows！
 const sampleRows = [
@@ -23,20 +36,20 @@ function createBarChart() {
   // const builder = VizSeedBuilder.fromRows(sampleRows);  // 静态方法（可选）
   
   const vizSeed = builder
-    .setChartType('bar', 'grouped')
-    .addDimension('category')
-    .addMeasure('sales')
-    .addMeasure('profit')
-    .setColor('category')
+    .setChartType('bar')
+    .setXField('category')     // X轴（维度）
+    .setYField('sales')        // Y轴（指标）
+    .setColorField('category') // 颜色字段
     .setTitle('销售和利润对比')
-    .setTheme('dark')
-    .setDimensions(800, 400)
+    .setLegend(true)
+    .setLabel(true)
+    .setTooltip(true)
     .build();
     
   console.log('VizSeed DSL:', JSON.stringify(vizSeed, null, 2));
   
   // 生成VChart图表库的spec
-  const vchartSpec = builder.buildSpec('vchart');
+  const vchartSpec = builder.buildSpec();
   console.log('VChart Spec:', JSON.stringify(vchartSpec, null, 2));
 }
 
@@ -45,8 +58,8 @@ function createPieChart() {
   
   const vizSeed = builder
     .setChartType('pie')
-    .addDimension('category')
-    .addMeasure('sales')
+    .setCategoryField('category') // 分类维度
+    .setValueField('sales')       // 数值指标
     .setTitle('各类别销售占比')
     .build();
     
@@ -69,8 +82,8 @@ function createLineChart() {
   
   const vizSeed = builder
     .setChartType('line')
-    .addDimension('date')
-    .addMeasure('revenue')
+    .setXField('date')        // X轴（指标）
+    .setYField('revenue')     // Y轴（维度）
     .setTitle('月度收入趋势')
     .build();
     
@@ -83,7 +96,7 @@ function createTableView() {
   // 表格不需要添加维度和指标，但需要设置图表类型
   const spec = builder
     .setChartType('table')
-    .buildSpec('vtable');
+    .buildSpec();
     
   console.log('表格 VTable Spec:', JSON.stringify(spec, null, 2));
 }
@@ -94,35 +107,21 @@ function demonstrateMultiLibrarySupport() {
   const builder = new VizSeedBuilder(sampleRows);
   builder
     .setChartType('bar')
-    .addDimension('category')
-    .addMeasure('sales')
+    .setXField('category')     // X轴（维度）
+    .setYField('sales')        // Y轴（指标）
     .setTitle('不同图表库的柱状图');
-  
-  // 查看支持的图表库
-  console.log('支持的图表库:', builder.getSupportedLibraries());
-  
-  // 查看每个库支持的图表类型
-  console.log('各库支持的图表类型:', builder.getAllSupportedChartTypes());
   
   // 生成VChart规范
   try {
-    const vchartSpec = builder.buildSpec('vchart');
+    const vchartSpec = builder.buildSpec();
     console.log('VChart规范生成成功');
   } catch (error) {
     console.error('VChart规范生成失败:', (error as Error).message);
   }
   
-  // 尝试生成ECharts规范（应该失败，因为不再支持）
-  try {
-    const echartsSpec = builder.buildSpec('echarts' as any);
-    console.log('ECharts规范生成成功');
-  } catch (error) {
-    console.error('ECharts规范生成失败（预期）:', (error as Error).message);
-  }
-  
   // 尝试生成表格（应该失败，因为bar类型不支持vtable）
   try {
-    const vtableSpec = builder.buildSpec('vtable');
+    const vtableSpec = builder.setChartType('table').buildSpec();
     console.log('VTable规范生成成功');
   } catch (error) {
     console.error('VTable规范生成失败:', (error as Error).message);
@@ -137,8 +136,8 @@ function demonstrateDimensionOperations() {
     .reduce('profit', 'profit_measure')
     .groupReduce(['sales', 'profit'], 'value')
     .setChartType('bar')
-    .addDimension('variable')
-    .addMeasure('value')
+    .setXField('variable')     // X轴（维度）
+    .setYField('value')        // Y轴（指标）
     .setTitle('维度重塑示例')
     .build();
     
@@ -200,4 +199,20 @@ if (require.main === module) {
   
   console.log('\n6. 维度操作示例:');
   demonstrateDimensionOperations();
+  
+  // 恢复原始console.log
+  console.log = originalConsoleLog;
+  
+  // 保存输出到文件
+  const outputDir = path.join(__dirname, 'outputs');
+  const outputFile = path.join(outputDir, 'basic-example-output.txt');
+  
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+  
+  const outputText = outputCollector.join('\n');
+  fs.writeFileSync(outputFile, outputText, 'utf8');
+  
+  console.log(`\n📁 输出已保存到: ${outputFile}`);
 }

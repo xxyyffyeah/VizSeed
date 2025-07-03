@@ -90,25 +90,27 @@ export class VizSeedBuildPipelineStrategy implements ChartPipelineStrategy {
       // 视觉通道映射步骤
       (vizSeed: any, context: PipelineContext) => {
         const { chartConfig } = context;
+        const mapping = chartConfig?.mapping || {};
+        
         return {
           ...vizSeed,
           visualChannel: [{
-            x: chartConfig?.dimensions?.[0] || 'category',
-            y: chartConfig?.measures?.[0] || '__MeasureValue__',
-            group: chartConfig?.color || '__MeasureName__'
+            x: mapping.x || mapping.category || 'category',
+            y: mapping.y || mapping.value || '__MeasureValue__',
+            group: mapping.color || '__MeasureName__'
           }]
         };
       },
       // 视觉样式步骤
       (vizSeed: any, context: PipelineContext) => {
-        const { metadata } = context;
+        const { visualStyle } = context;
         return {
           ...vizSeed,
           visualStyle: {
-            title: { visible: !!metadata?.title },
-            legend: { visible: true },
-            label: { visible: true },
-            tooltip: { visible: true }
+            title: { visible: !!visualStyle?.title },
+            legend: { visible: visualStyle?.legend !== false },
+            label: { visible: visualStyle?.label !== false },
+            tooltip: { visible: visualStyle?.tooltip !== false }
           }
         };
       }

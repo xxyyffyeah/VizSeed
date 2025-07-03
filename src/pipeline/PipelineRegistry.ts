@@ -46,8 +46,13 @@ export class PipelineRegistry {
     // 映射到已知的策略键
     switch (key) {
       case 'vchart-bar':
-        return 'vchart-bar';
+      case 'vchart-column':
+      case 'vchart-line':
+      case 'vchart-area':
+      case 'vchart-scatter':
+        return 'vchart-bar'; // 这些图表类型都使用相似的数据结构
       case 'vchart-pie':
+      case 'vchart-donut':
         return 'vchart-pie';
       case 'vtable-table':
         return 'vtable-table';
