@@ -3,17 +3,17 @@
  * 可重用的Pipeline步骤，用于处理图表样式配置
  */
 
-import { PipelineStep, PipelineContext } from '../PipelineBuilder';
+import { PipelineStep, PipelineContext } from '../PipelineCore';
 
 // 图例配置步骤
 export const configureLegend: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { vizSeed } = context;
-  if (!vizSeed?.visualStyle?.legend) return spec;
+  const { visualStyle } = context;
+  if (!visualStyle) return spec;
 
   return {
     ...spec,
     legends: {
-      visible: vizSeed.visualStyle.legend.visible ?? true,
+      visible: visualStyle.legend !== false,
       orient: 'right',
       position: 'middle'
     }
@@ -22,34 +22,32 @@ export const configureLegend: PipelineStep = (spec: any, context: PipelineContex
 
 // 标签配置步骤
 export const configureLabel: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { vizSeed } = context;
-  if (!vizSeed?.visualStyle?.label) return spec;
+  const { visualStyle } = context;
+  if (!visualStyle) return spec;
 
   return {
     ...spec,
     label: {
-      visible: vizSeed.visualStyle.label.visible ?? true
+      visible: visualStyle.label !== false
     }
   };
 };
 
 // 工具提示配置步骤
 export const configureTooltip: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { vizSeed } = context;
-  if (!vizSeed?.visualStyle?.tooltip) return spec;
+  const { visualStyle } = context;
+  if (!visualStyle) return spec;
 
   return {
     ...spec,
     tooltip: {
-      visible: vizSeed.visualStyle.tooltip.visible ?? true
+      visible: visualStyle.tooltip !== false
     }
   };
 };
 
 // 坐标轴配置步骤
 export const configureAxes: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { vizSeed } = context;
-  
   return {
     ...spec,
     axes: [

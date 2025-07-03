@@ -30,9 +30,22 @@ export interface VizSeedBuilder {
   groupReduce(fields: string[], targetField?: string): VizSeedBuilder;
   
   setChartType(type: string): VizSeedBuilder;
+  
+  // 新的通道映射方法
+  setXField(field: string): VizSeedBuilder;
+  setYField(field: string): VizSeedBuilder;
+  setColorField(field: string): VizSeedBuilder;
+  setCategoryField(field: string): VizSeedBuilder;
+  setValueField(field: string): VizSeedBuilder;
+  setRowDimension(field: string): VizSeedBuilder;
+  setColumnDimension(field: string): VizSeedBuilder;
+  setMeasureField(field: string): VizSeedBuilder;
+  
+  // 废弃的方法（向后兼容）
   addDimension(field: string): VizSeedBuilder;
   addMeasure(field: string, aggregation?: string): VizSeedBuilder;
   
-  build(): VizSeedDSL;
+  // 返回函数式pipeline构建的对象
+  build(): any;
   buildSpec(): ChartSpec;
 }

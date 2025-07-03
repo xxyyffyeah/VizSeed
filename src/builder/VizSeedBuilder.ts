@@ -1,11 +1,11 @@
-import { VizSeedBuilder as IVizSeedBuilder, VizSeedDSL as IVizSeedDSL, ChartSpec } from '../types';
+import { VizSeedBuilder as IVizSeedBuilder, ChartSpec } from '../types';
 import { DataSet as IDataSet, DataTransformation, Dimension, Measure, FieldInferenceOptions } from '../types/data';
 import { ChartType, ChartConfig, ChannelMapping, CHART_REQUIREMENTS } from '../types/charts';
-import { VizSeedDSL } from '../core/VizSeedDSL';
+// VizSeedDSL类已不再使用，改为函数式pipeline构建
 import { DataSet } from '../core/DataSet';
 import { DimensionOperator } from '../operations/DimensionOperator';
-import { PipelineRegistry } from '../pipeline/PipelineRegistry';
-import { PipelineContext } from '../pipeline/PipelineBuilder';
+import { PipelineContext } from '../pipeline/PipelineCore';
+import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: IDataSet;
@@ -13,7 +13,18 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private chartConfig: Partial<ChartConfig> = {
     mapping: {}
   };
-  private visualStyle: IVizSeedDSL['visualStyle'] & { vizSeedObject?: any } = {};
+  private visualStyle: {
+    title?: string;
+    description?: string;
+    legend?: boolean;
+    label?: boolean;
+    tooltip?: boolean;
+    vizSeedObject?: any;
+  } = {
+    legend: true,
+    label: true,
+    tooltip: true
+  };
 
   // 构造函数重载：支持直接传入rows或DataSet
   constructor(rows: Record<string, any>[], options?: FieldInferenceOptions);
@@ -42,8 +53,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return new VizSeedBuilder(dataSet);
   }
 
-  // 静态方法：从VizSeed DSL格式创建Builder
-  public static from(vizSeed: IVizSeedDSL): VizSeedBuilder {
+  // 静态方法：从VizSeed对象创建Builder
+  public static from(vizSeed: any): VizSeedBuilder {
     const builder = new VizSeedBuilder(vizSeed.data);
     builder.chartConfig = { ...vizSeed.chartConfig };
     builder.transformations = [...vizSeed.transformations];
@@ -152,7 +163,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   /** @deprecated 使用setValueField或setYField替代 */
-  public addMeasure(field: string, aggregation?: string): VizSeedBuilder {
+  public addMeasure(field: string, _aggregation?: string): VizSeedBuilder {
     console.warn('addMeasure已废弃，请使用setValueField或setYField');
     return this.setValueField(field);
   }
@@ -164,7 +175,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   /** @deprecated 不再支持size字段 */
-  public setSizeField(field: string): VizSeedBuilder {
+  public setSizeField(_field: string): VizSeedBuilder {
     console.warn('setSizeField已废弃');
     return this;
   }
@@ -193,15 +204,10 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this;
   }
 
-  public build(): IVizSeedDSL {
+  public build(): any {
     this.validateConfig();
     
-    // 使用Pipeline Builder构建VizSeed对象
-    const strategy = PipelineRegistry.getStrategy('vizseed-build');
-    if (!strategy) {
-      throw new Error('VizSeed构建策略未找到');
-    }
-
+    // 使用函数式Pipeline构建VizSeed对象
     const context: PipelineContext = {
       data: this.data,
       chartConfig: this.chartConfig,
@@ -209,15 +215,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       visualStyle: this.visualStyle
     };
 
-    const vizSeedObject = strategy.execute(context);
-    
-    // metadata只包含纯粹的元数据，不包含业务对象
-    return new VizSeedDSL(
-      this.data,
-      this.chartConfig as ChartConfig,
-      this.transformations,
-      this.visualStyle
-    );
+    // 直接返回pipeline构建的VizSeed对象
+    return buildVizSeed(context);
   }
 
   public buildSpec(): ChartSpec {
@@ -228,36 +227,16 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     const library = this.selectLibrary(chartType);
     
     try {
-      const pipelineKey = PipelineRegistry.createKey(library, chartType);
-      const strategy = PipelineRegistry.getStrategy(pipelineKey);
-      
-      if (!strategy) {
-        throw new Error(`未找到 ${library}-${chartType} 的构建策略`);
-      }
-
-      // 直接构建VizSeed对象用于图表规范生成
-      const vizSeedStrategy = PipelineRegistry.getStrategy('vizseed-build');
-      if (!vizSeedStrategy) {
-        throw new Error('VizSeed构建策略未找到');
-      }
-
-      const vizSeedContext: PipelineContext = {
+      // 直接使用Builder的数据构建规范上下文
+      const specContext: PipelineContext = {
         data: this.data,
         chartConfig: this.chartConfig,
         transformations: this.transformations,
         visualStyle: this.visualStyle
       };
 
-      const vizSeedObject = vizSeedStrategy.execute(vizSeedContext);
-
-      const context: PipelineContext = {
-        vizSeed: vizSeedObject,
-        data: this.data,
-        chartConfig: this.chartConfig,
-        visualStyle: this.visualStyle
-      };
-
-      return strategy.execute(context);
+      // 使用简化的pipeline构建规范
+      return buildSpec(chartType, library, specContext);
     } catch (error: any) {
       throw new Error(`构建图表规范失败: ${error.message}`);
     }

@@ -1,0 +1,147 @@
+=== 🥧 VChart 饼图演示 ===
+
+📊 原始输入:
+[
+  {
+    "region": "华东",
+    "sales": 2800
+  },
+  {
+    "region": "华北",
+    "sales": 2200
+  },
+  {
+    "region": "华南",
+    "sales": 1900
+  },
+  {
+    "region": "华中",
+    "sales": 1600
+  },
+  {
+    "region": "西北",
+    "sales": 1200
+  },
+  {
+    "region": "西南",
+    "sales": 1000
+  }
+]
+
+📋 VizSeed DSL:
+{
+  "chartType": "pie",
+  "datasets": [
+    {
+      "region": "华东",
+      "sales": 2800
+    },
+    {
+      "region": "华北",
+      "sales": 2200
+    },
+    {
+      "region": "华南",
+      "sales": 1900
+    },
+    {
+      "region": "华中",
+      "sales": 1600
+    },
+    {
+      "region": "西北",
+      "sales": 1200
+    },
+    {
+      "region": "西南",
+      "sales": 1000
+    }
+  ],
+  "fieldMap": {
+    "region": {
+      "id": "region",
+      "type": "string",
+      "alias": "region",
+      "role": "dimension"
+    },
+    "sales": {
+      "id": "sales",
+      "type": "number",
+      "alias": "sales",
+      "role": "measure"
+    },
+    "__MeasureValue__": {
+      "id": "__MeasureValue__",
+      "alias": "指标值"
+    },
+    "__MeasureName__": {
+      "id": "__MeasureName__",
+      "alias": "指标名称"
+    }
+  },
+  "visualChannel": [
+    {
+      "x": "region",
+      "y": "sales",
+      "group": "__MeasureName__"
+    }
+  ],
+  "visualStyle": {
+    "title": {
+      "visible": true
+    },
+    "legend": {
+      "visible": true
+    },
+    "label": {
+      "visible": true
+    },
+    "tooltip": {
+      "visible": true
+    }
+  }
+}
+
+🎨 VChart Spec:
+{
+  "type": "pie",
+  "categoryField": "region",
+  "valueField": "sales",
+  "data": [
+    {
+      "region": "华东",
+      "sales": 2800
+    },
+    {
+      "region": "华北",
+      "sales": 2200
+    },
+    {
+      "region": "华南",
+      "sales": 1900
+    },
+    {
+      "region": "华中",
+      "sales": 1600
+    },
+    {
+      "region": "西北",
+      "sales": 1200
+    },
+    {
+      "region": "西南",
+      "sales": 1000
+    }
+  ],
+  "legends": {
+    "visible": true,
+    "orient": "right",
+    "position": "middle"
+  },
+  "label": {
+    "visible": true
+  },
+  "tooltip": {
+    "visible": true
+  }
+}
