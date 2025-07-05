@@ -3,7 +3,7 @@
  * 负责处理数据重塑后的dataMap更新
  */
 
-import { PipelineStep, PipelineContext, PipelineStepResult } from '../PipelineCore';
+import { PipelineStep, PipelineContext } from '../PipelineCore';
 import { dataReshapeStep } from './DataReshapeModule';
 
 /**
@@ -12,17 +12,13 @@ import { dataReshapeStep } from './DataReshapeModule';
  */
 export const vizSeedDataMapStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
   const result = dataReshapeStep(vizSeed, context);
-  const updatedContext = result.context || context;
   
-  // 获取重塑后的数据放入dataMap
-  const dataMap = updatedContext.dataMap || context.data?.rows || [];
+  // 直接使用原始数据作为dataMap，因为新的纯函数Pipeline不维护context状态
+  const dataMap = context.data?.rows || [];
   
   return {
-    result: {
-      ...vizSeed,
-      dataMap, // 更新dataMap
-      reshapeInfo: result.reshapeInfo // 保留重塑信息用于fieldMap更新
-    },
-    context: updatedContext
+    ...vizSeed,
+    dataMap, // 更新dataMap
+    reshapeInfo: result.reshapeInfo // 保留重塑信息用于fieldMap更新
   };
 };

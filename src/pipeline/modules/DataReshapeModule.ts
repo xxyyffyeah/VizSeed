@@ -281,8 +281,7 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
       reshapeInfo: {
         reshapeType: 'none',
         reason: 'fieldSelection为空，使用原始数据'
-      },
-      context: updatedContext
+      }
     };
   }
 
@@ -320,7 +319,6 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
     reshapeInfo: {
       ...reshapeResult.reshapeInfo,
       reshapeType: reshapeResult.reshapeType
-    },
-    context: updatedContext
+    }
   };
 };

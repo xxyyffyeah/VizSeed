@@ -3,7 +3,7 @@
  * 根据重塑后的fieldSelection自动创建chartConfig.mapping
  */
 
-import { PipelineStep, PipelineContext, FieldSelection, PipelineStepResult } from '../PipelineCore';
+import { PipelineStep, PipelineContext, FieldSelection } from '../PipelineCore';
 import { ChartType, ChannelMapping } from '../../types/charts';
 
 // 通道映射策略接口
@@ -207,11 +207,8 @@ export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: Pipe
   };
 
   return {
-    result: {
-      ...vizSeed,
-      chartConfig: updatedChartConfig,
-      autoChannelMapping: autoMapping
-    },
-    context: updatedContext
+    ...vizSeed,
+    chartConfig: updatedChartConfig,
+    autoChannelMapping: autoMapping
   };
 };

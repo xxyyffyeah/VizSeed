@@ -48,39 +48,14 @@ export interface PipelineContext {
   [key: string]: any;
 }
 
-// Pipeline步骤结果接口
-export interface PipelineStepResult<T = any> {
-  result: T;
-  context: PipelineContext;
-}
+// Pipeline管道函数类型 - 简化为纯函数
+export type PipelineStep<T = any> = (input: T, context: PipelineContext) => T;
 
-// Pipeline管道函数类型
-export type PipelineStep<T = any> = (input: T, context: PipelineContext) => T | PipelineStepResult<T>;
-
-// 检查返回值是否为PipelineStepResult
-const isPipelineStepResult = <T>(value: any): value is PipelineStepResult<T> => {
-  return value && typeof value === 'object' && 'result' in value && 'context' in value;
-};
-
-// 管道函数工厂 - 创建可执行的管道函数，支持context更新
+// 简化的管道函数工厂 - 使用reduce实现函数式组合
 export const pipeline = <T>(steps: PipelineStep<T>[], initialValue: T) => {
-  return (initialContext: PipelineContext) => {
-    let currentContext = initialContext;
-    let currentResult = initialValue;
-    
-    for (const step of steps) {
-      const stepResult = step(currentResult, currentContext);
-      
-      // 如果步骤返回了标准的PipelineStepResult，使用新的context
-      if (isPipelineStepResult<T>(stepResult)) {
-        currentContext = stepResult.context;
-        currentResult = stepResult.result;
-      } else {
-        // 普通返回值，保持原有context
-        currentResult = stepResult;
-      }
-    }
-    
-    return currentResult;
+  return (context: PipelineContext) => {
+    return steps.reduce((result, step) => {
+      return step(result, context);
+    }, initialValue);
   };
 };
