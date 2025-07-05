@@ -31,23 +31,3 @@ export const mapFields: PipelineStep = (spec: any, context: PipelineContext) => 
   };
 };
 
-// 维度重塑数据处理
-export const processDimensionData: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { data, transformations } = context;
-  if (!data || !transformations || transformations.length === 0) return spec;
-
-  // 如果有维度重塑操作，检查数据是否包含__MeasureValue__和__MeasureName__
-  const hasReduceOperation = transformations.some((t: any) => t.type === 'reduce' || t.type === 'group_reduce');
-  
-  if (hasReduceOperation && data.rows && data.rows.some((item: any) => item.__MeasureValue__ !== undefined)) {
-    return {
-      ...spec,
-      data: data.rows,
-      categoryField: 'category',
-      valueField: '__MeasureValue__',
-      seriesField: '__MeasureName__'
-    };
-  }
-
-  return spec;
-};

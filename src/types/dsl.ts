@@ -1,19 +1,6 @@
-import { DataSet, DataTransformation } from './data';
+import { DataSet } from './data';
 import { ChartConfig, ChartType } from './charts';
 import { ChartSpec } from './specs';
-
-export interface VizSeedDSL {
-  data: DataSet;
-  transformations: DataTransformation[];
-  chartConfig: ChartConfig;
-  visualStyle?: {
-    title?: string;
-    description?: string;
-    legend?: boolean;
-    label?: boolean;
-    tooltip?: boolean;
-  };
-}
 
 export interface DimensionOperation {
   type: 'elevate' | 'reduce' | 'group_elevate' | 'group_reduce';
@@ -24,14 +11,17 @@ export interface DimensionOperation {
 }
 
 export interface VizSeedBuilder {
-  elevate(field: string, targetField?: string): VizSeedBuilder;
-  reduce(field: string, targetField?: string): VizSeedBuilder;
-  groupElevate(field: string, groupBy: string[]): VizSeedBuilder;
-  groupReduce(fields: string[], targetField?: string): VizSeedBuilder;
+  // 字段选择API
+  setDimensions(dimensions: string[]): VizSeedBuilder;
+  setMeasures(measures: string[]): VizSeedBuilder;
+  addDimensionToArray(dimension: string): VizSeedBuilder;
+  addMeasureToArray(measure: string): VizSeedBuilder;
+  getDimensions(): string[];
+  getMeasures(): string[];
   
-  setChartType(type: string): VizSeedBuilder;
+  setChartType(type: ChartType): VizSeedBuilder;
   
-  // 新的通道映射方法
+  // 通道映射方法
   setXField(field: string): VizSeedBuilder;
   setYField(field: string): VizSeedBuilder;
   setColorField(field: string): VizSeedBuilder;
@@ -40,10 +30,6 @@ export interface VizSeedBuilder {
   setRowDimension(field: string): VizSeedBuilder;
   setColumnDimension(field: string): VizSeedBuilder;
   setMeasureField(field: string): VizSeedBuilder;
-  
-  // 废弃的方法（向后兼容）
-  addDimension(field: string): VizSeedBuilder;
-  addMeasure(field: string, aggregation?: string): VizSeedBuilder;
   
   // 返回函数式pipeline构建的对象
   build(): any;

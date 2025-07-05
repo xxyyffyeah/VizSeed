@@ -1,15 +1,19 @@
 import { VizSeedBuilder as IVizSeedBuilder, ChartSpec } from '../types';
-import { DataSet as IDataSet, DataTransformation, Dimension, Measure, FieldInferenceOptions } from '../types/data';
+import { DataSet as IDataSet, FieldInferenceOptions } from '../types/data';
 import { ChartType, ChartConfig, ChannelMapping, CHART_REQUIREMENTS } from '../types/charts';
 // VizSeedDSL类已不再使用，改为函数式pipeline构建
 import { DataSet } from '../core/DataSet';
-import { DimensionOperator } from '../operations/DimensionOperator';
-import { PipelineContext } from '../pipeline/PipelineCore';
+import { PipelineContext, ReshapeConfig, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
 import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private data: IDataSet;
-  private transformations: DataTransformation[] = [];
+  private fieldSelection: FieldSelection = {
+    dimensions: [],
+    measures: []
+  };
+  private fieldMap: FieldMap = {};
+  private dataMap: Record<string, any>[] = []; // 新增dataMap
   private chartConfig: Partial<ChartConfig> = {
     mapping: {}
   };
@@ -24,6 +28,12 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     legend: true,
     label: true,
     tooltip: true
+  };
+  
+  // 维度重塑配置
+  private reshapeConfig: ReshapeConfig = {
+    strategy: 'auto',
+    enabled: true
   };
 
   // 构造函数重载：支持直接传入rows或DataSet
@@ -40,6 +50,38 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       // 传入DataSet对象的情况
       this.data = dataOrRows;
     }
+    
+    // fieldMap初始为空，等待用户选择字段后按需添加
+  }
+  
+  // 根据字段名从DataSet创建字段定义
+  private createFieldDefinition(fieldName: string): any {
+    const field = this.data.fields.find(f => f.name === fieldName);
+    if (!field) {
+      throw new Error(`字段 ${fieldName} 不存在于数据集中`);
+    }
+    
+    return {
+      id: field.name,
+      type: field.type,
+      alias: field.name, // 默认使用字段名作为别名
+      location: field.role,
+      domain: this.extractFieldDomain(field.name),
+      format: {}
+    };
+  }
+  
+  // 提取字段的域值
+  private extractFieldDomain(fieldName: string): any[] {
+    const values = this.data.rows.map(row => row[fieldName]);
+    return [...new Set(values)].slice(0, 10); // 最多10个示例值
+  }
+  
+  // 将字段添加到fieldMap中
+  private addFieldToMap(fieldName: string): void {
+    if (!this.fieldMap[fieldName]) {
+      this.fieldMap[fieldName] = this.createFieldDefinition(fieldName);
+    }
   }
 
   // 保留静态方法作为替代方式（可选）
@@ -47,17 +89,22 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return new VizSeedBuilder(rows, options);
   }
 
-  // 静态方法：从旧版DataField格式创建Builder
-  public static fromLegacy(fields: (Dimension | Measure)[], rows: Record<string, any>[]): VizSeedBuilder {
-    const dataSet = DataSet.fromLegacy(fields, rows);
-    return new VizSeedBuilder(dataSet);
-  }
 
   // 静态方法：从VizSeed对象创建Builder
   public static from(vizSeed: any): VizSeedBuilder {
     const builder = new VizSeedBuilder(vizSeed.data);
     builder.chartConfig = { ...vizSeed.chartConfig };
-    builder.transformations = [...vizSeed.transformations];
+    
+    // 恢复 fieldMap
+    if (vizSeed.fieldMap) {
+      builder.fieldMap = { ...vizSeed.fieldMap };
+    }
+    
+    // 恢复 fieldSelection
+    if (vizSeed.fieldSelection) {
+      builder.fieldSelection = { ...vizSeed.fieldSelection };
+    }
+    
     builder.visualStyle = { ...vizSeed.visualStyle };
     return builder;
   }
@@ -67,44 +114,140 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this.data;
   }
 
-  // 获取所有可用字段
+  // 获取所有可用字段（从 DataSet）
   public getAvailableFields(): string[] {
     return this.data.fields.map(f => f.name);
   }
 
-  // 获取维度字段
+  // 获取可用维度字段（从 DataSet）
   public getAvailableDimensions(): string[] {
     return this.data.fields.filter(f => f.role === 'dimension').map(f => f.name);
   }
 
-  // 获取指标字段
+  // 获取可用指标字段（从 DataSet）
   public getAvailableMeasures(): string[] {
     return this.data.fields.filter(f => f.role === 'measure').map(f => f.name);
   }
+  
+  // 获取当前选中的字段（从 fieldMap）
+  public getSelectedFields(): string[] {
+    return Object.keys(this.fieldMap);
+  }
 
-  public elevate(field: string, targetField?: string): VizSeedBuilder {
-    const transformation = DimensionOperator.elevate(field, targetField);
-    this.transformations.push(transformation);
+  // 字段选择API - 选择同时自动添加到fieldMap
+  public setDimensions(dimensions: string[]): VizSeedBuilder {
+    this.fieldSelection.dimensions = [...dimensions];
+    // 将选中的维度字段添加到fieldMap
+    dimensions.forEach(dim => this.addFieldToMap(dim));
     return this;
   }
 
-  public reduce(field: string, targetField?: string): VizSeedBuilder {
-    const transformation = DimensionOperator.reduce(field, targetField);
-    this.transformations.push(transformation);
+  public setMeasures(measures: string[]): VizSeedBuilder {
+    this.fieldSelection.measures = [...measures];
+    // 将选中的指标字段添加到fieldMap
+    measures.forEach(measure => this.addFieldToMap(measure));
     return this;
   }
 
-  public groupElevate(field: string, groupBy: string[]): VizSeedBuilder {
-    const transformation = DimensionOperator.groupElevate(field, groupBy);
-    this.transformations.push(transformation);
+  public addDimensionToArray(dimension: string): VizSeedBuilder {
+    if (!this.fieldSelection.dimensions.includes(dimension)) {
+      this.fieldSelection.dimensions.push(dimension);
+      // 添加到fieldMap
+      this.addFieldToMap(dimension);
+    }
     return this;
   }
 
-  public groupReduce(fields: string[], targetField?: string): VizSeedBuilder {
-    const transformation = DimensionOperator.groupReduce(fields, targetField);
-    this.transformations.push(transformation);
+  public addMeasureToArray(measure: string): VizSeedBuilder {
+    if (!this.fieldSelection.measures.includes(measure)) {
+      this.fieldSelection.measures.push(measure);
+      // 添加到fieldMap
+      this.addFieldToMap(measure);
+    }
     return this;
   }
+
+  public getDimensions(): string[] {
+    return [...this.fieldSelection.dimensions];
+  }
+
+  public getMeasures(): string[] {
+    return [...this.fieldSelection.measures];
+  }
+
+  // FieldMap相关API
+  public getFieldMap(): FieldMap {
+    return { ...this.fieldMap };
+  }
+
+  public setFieldMap(fieldMap: FieldMap): VizSeedBuilder {
+    this.fieldMap = { ...fieldMap };
+    return this;
+  }
+  
+  public getFieldSelection(): FieldSelection {
+    return { ...this.fieldSelection };
+  }
+
+  public setFieldSelection(fieldSelection: FieldSelection): VizSeedBuilder {
+    this.fieldSelection = { ...fieldSelection };
+    return this;
+  }
+  
+  // 更新字段别名
+  public setFieldAlias(fieldId: string, alias: string): VizSeedBuilder {
+    const field = this.fieldMap[fieldId];
+    if (field) {
+      field.alias = alias;
+    } else if (this.hasField(fieldId)) {
+      // 如果字段存在于DataSet但不在fieldMap中，先添加再设置别名
+      this.addFieldToMap(fieldId);
+      const newField = this.fieldMap[fieldId];
+      if (newField) {
+        newField.alias = alias;
+      }
+    } else {
+      throw new Error(`字段 ${fieldId} 不存在于数据集中`);
+    }
+    return this;
+  }
+  
+  // 获取所有可用字段名称（从 DataSet）
+  public getAvailableFieldNames(): string[] {
+    return this.data.fields.map(f => f.name);
+  }
+  
+  // 检查字段是否存在
+  public hasField(fieldName: string): boolean {
+    return this.data.fields.some(f => f.name === fieldName);
+  }
+
+  // 维度重塑相关API
+  public enableAutoReshape(enabled: boolean = true): VizSeedBuilder {
+    this.reshapeConfig.enabled = enabled;
+    if (enabled) {
+      this.reshapeConfig.strategy = 'auto';
+    }
+    return this;
+  }
+
+  public setReshapeStrategy(strategy: 'auto' | 'elevate' | 'reduce' | 'none'): VizSeedBuilder {
+    this.reshapeConfig.strategy = strategy;
+    if (strategy !== 'none') {
+      this.reshapeConfig.enabled = true;
+    }
+    return this;
+  }
+
+  public setTargetDimension(dimension: string): VizSeedBuilder {
+    this.reshapeConfig.targetDimension = dimension;
+    return this;
+  }
+
+  public getReshapeConfig(): ReshapeConfig {
+    return { ...this.reshapeConfig };
+  }
+
 
   public setChartType(type: ChartType): VizSeedBuilder {
     this.chartConfig.type = type;
@@ -155,30 +298,6 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this.setChannel('measure', field);
   }
 
-  // 向后兼容方法（已废弃）
-  /** @deprecated 使用setXField或setYField替代 */
-  public addDimension(field: string): VizSeedBuilder {
-    console.warn('addDimension已废弃，请使用setXField或setYField');
-    return this.setXField(field);
-  }
-
-  /** @deprecated 使用setValueField或setYField替代 */
-  public addMeasure(field: string, _aggregation?: string): VizSeedBuilder {
-    console.warn('addMeasure已废弃，请使用setValueField或setYField');
-    return this.setValueField(field);
-  }
-
-  /** @deprecated 使用setColorField替代 */
-  public setColor(field: string): VizSeedBuilder {
-    console.warn('setColor已废弃，请使用setColorField');
-    return this.setColorField(field);
-  }
-
-  /** @deprecated 不再支持size字段 */
-  public setSizeField(_field: string): VizSeedBuilder {
-    console.warn('setSizeField已废弃');
-    return this;
-  }
 
   public setTitle(title: string): VizSeedBuilder {
     if (!this.visualStyle) this.visualStyle = {};
@@ -205,14 +324,18 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   public build(): any {
-    this.validateConfig();
+    // 强化前置验证 - 要求用户必须设置足够的字段
+    this.validateFieldRequirements();
     
-    // 使用函数式Pipeline构建VizSeed对象
+    // 使用简化的Pipeline构建VizSeed对象
     const context: PipelineContext = {
       data: this.data,
       chartConfig: this.chartConfig,
-      transformations: this.transformations,
-      visualStyle: this.visualStyle
+      fieldMap: this.fieldMap,
+      fieldSelection: this.fieldSelection,
+      dataMap: this.dataMap,
+      visualStyle: this.visualStyle,
+      reshapeConfig: this.reshapeConfig
     };
 
     // 直接返回pipeline构建的VizSeed对象
@@ -231,8 +354,11 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       const specContext: PipelineContext = {
         data: this.data,
         chartConfig: this.chartConfig,
-        transformations: this.transformations,
-        visualStyle: this.visualStyle
+        fieldMap: this.fieldMap,
+        fieldSelection: this.fieldSelection,
+        dataMap: this.dataMap,
+        visualStyle: this.visualStyle,
+        reshapeConfig: this.reshapeConfig
       };
 
       // 使用简化的pipeline构建规范
@@ -249,6 +375,57 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     }
     // 其他类型使用VChart
     return 'vchart';
+  }
+
+  private validateFieldRequirements(): void {
+    if (!this.chartConfig.type) {
+      throw new Error('图表类型未设置，请先调用 setChartType()');
+    }
+    
+    const chartType = this.chartConfig.type;
+    const { dimensions, measures } = this.fieldSelection;
+    const totalFields = dimensions.length + measures.length;
+    
+    // 检查用户是否设置了字段
+    if (totalFields === 0) {
+      throw new Error(`请先设置字段，调用 setDimensions() 和 setMeasures() 方法`);
+    }
+    
+    // 基于图表类型检查最低字段要求
+    switch (chartType) {
+      case 'pie':
+      case 'donut':
+        if (dimensions.length === 0 || measures.length === 0) {
+          throw new Error(`${chartType}图表需要至少1个维度和1个指标，当前: ${dimensions.length}个维度, ${measures.length}个指标`);
+        }
+        break;
+        
+      case 'scatter':
+        if (totalFields < 2) {
+          throw new Error(`散点图需要至少2个字段（2个指标 或 1个维度+1个指标），当前: ${dimensions.length}个维度, ${measures.length}个指标`);
+        }
+        break;
+        
+      case 'bar':
+      case 'column':
+      case 'line':
+      case 'area':
+        if (totalFields < 2) {
+          throw new Error(`${chartType}图表需要至少2个字段（1个维度+1个指标），当前: ${dimensions.length}个维度, ${measures.length}个指标`);
+        }
+        break;
+        
+      case 'table':
+        if (totalFields === 0) {
+          throw new Error('表格需要至少1个字段');
+        }
+        break;
+        
+      default:
+        if (totalFields === 0) {
+          throw new Error('请设置至少1个字段');
+        }
+    }
   }
 
   private validateConfig(): void {

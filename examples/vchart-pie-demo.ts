@@ -18,12 +18,14 @@ console.log('=== 🥧 VChart 饼图演示 ===\n');
 // 原始输入数据
 console.log('📊 原始输入:');
 const salesData = [
-  { region: '华东', sales: 2800 },
-  { region: '华北', sales: 2200 },
-  { region: '华南', sales: 1900 },
-  { region: '华中', sales: 1600 },
-  { region: '西北', sales: 1200 },
-  { region: '西南', sales: 1000 }
+  { store: '苹果专卖店', city: '北京', category: '手机', brand: 'iPhone', sales: 15000, profit: 3000 },
+  { store: '苹果专卖店', city: '北京', category: '手机', brand: 'Samsung', sales: 8000, profit: 1600 },
+  { store: '苹果专卖店', city: '北京', category: '平板', brand: 'iPad', sales: 6000, profit: 1200 },
+  { store: '电子城', city: '上海', category: '手机', brand: 'iPhone', sales: 12000, profit: 2400 },
+  { store: '电子城', city: '上海', category: '手机', brand: 'Samsung', sales: 9000, profit: 1800 },
+  { store: '电子城', city: '上海', category: '平板', brand: 'iPad', sales: 5000, profit: 1000 },
+  { store: '数码广场', city: '广州', category: '手机', brand: 'iPhone', sales: 10000, profit: 2000 },
+  { store: '数码广场', city: '广州', category: '平板', brand: 'iPad', sales: 4000, profit: 800 }
 ];
 console.log(JSON.stringify(salesData, null, 2));
 
@@ -31,9 +33,10 @@ console.log(JSON.stringify(salesData, null, 2));
 const builder = new VizSeedBuilder(salesData);
 const vizSeedDSL = builder
   .setChartType('pie')
-  .setCategoryField('region')
-  .setValueField('sales')
-  .setTitle('各地区销售额占比')
+  .setDimensions(['store', 'city', 'category', 'brand'])
+  .setMeasures(['sales', 'profit'])
+  .setCategoryField('store')  // 添加必需的category通道
+  .setValueField('sales')     // 添加必需的value通道
   .build();
 
 const vchartSpec = builder.buildSpec();

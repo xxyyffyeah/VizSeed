@@ -11,24 +11,6 @@ export interface FieldMeta {
   isDiscrete?: boolean; // 仅用于dimension
 }
 
-// 为向后兼容保留的接口
-export interface Field {
-  name: string;
-  type: FieldType;
-  values: Array<string | number | Date | boolean>;
-}
-
-export interface Dimension extends Field {
-  role: 'dimension';
-  isDiscrete?: boolean;
-}
-
-export interface Measure extends Field {
-  role: 'measure';
-  aggregation?: 'sum' | 'avg' | 'count' | 'max' | 'min' | 'none';
-}
-
-export type DataField = Dimension | Measure;
 
 // 字段推断配置
 export interface FieldInferenceOptions {
@@ -65,18 +47,6 @@ export interface DataSetOptions {
   inferenceOptions?: FieldInferenceOptions;
 }
 
-// DataSet类的接口
-export interface DataSetStatic {
-  new(rows: Record<string, any>[], options?: FieldInferenceOptions): DataSet;
-  new(options: DataSetOptions): DataSet;
-  fromRows(rows: Record<string, any>[], options?: FieldInferenceOptions): DataSet;
-  fromLegacy(fields: DataField[], rows: Record<string, any>[]): DataSet;
-}
-
-export interface DataTransformation {
-  type: 'pivot' | 'unpivot' | 'aggregate' | 'filter' | 'sort';
-  params: Record<string, any>;
-}
 
 // 字段统计信息
 export interface FieldStats {

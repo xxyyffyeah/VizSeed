@@ -37,7 +37,3 @@ export type {
   PivotChart
 } from '@visactor/vtable';
 
-// 常用类型别名
-export type ChartData = Record<string, any>[];
-export type ChartSeries = any[];
-export type ChartAxis = any;

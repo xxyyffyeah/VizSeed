@@ -1,4 +1,4 @@
-import { DataSet as IDataSet, FieldMeta, DataField, FieldInferenceOptions, DataSetOptions } from '../types/data';
+import { DataSet as IDataSet, FieldMeta, FieldInferenceOptions, DataSetOptions } from '../types/data';
 import { DataProcessor } from '../utils/DataProcessor';
 
 export class DataSet implements IDataSet {
@@ -35,11 +35,6 @@ export class DataSet implements IDataSet {
     return new DataSet({ rows, inferenceOptions: options });
   }
 
-  // 从旧版DataField格式转换
-  public static fromLegacy(fields: DataField[], rows: Record<string, any>[]): DataSet {
-    const fieldMetas = DataProcessor.convertLegacyFields(fields);
-    return new DataSet({ fields: fieldMetas, rows });
-  }
 
   // 获取字段的所有唯一值（替代原来的Field.values）
   public getFieldValues(fieldName: string): any[] {
@@ -84,20 +79,4 @@ export class DataSet implements IDataSet {
     this.fields = this.fields.filter(f => f.name !== fieldName);
   }
 
-  // 转换为旧版格式（向后兼容）
-  public toLegacyFormat(): { fields: DataField[], rows: Record<string, any>[] } {
-    const legacyFields: DataField[] = this.fields.map(field => ({
-      name: field.name,
-      type: field.type,
-      role: field.role,
-      values: this.getFieldValues(field.name),
-      ...(field.role === 'measure' && { aggregation: field.aggregation }),
-      ...(field.role === 'dimension' && { isDiscrete: field.isDiscrete })
-    } as DataField));
-
-    return {
-      fields: legacyFields,
-      rows: this.rows
-    };
-  }
 }

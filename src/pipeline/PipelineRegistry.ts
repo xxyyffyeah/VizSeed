@@ -4,9 +4,15 @@
  */
 
 import { pipeline, PipelineStep, PipelineContext } from './PipelineCore';
-import { initData, processDimensionData } from './modules/DataModule';
+import { initData } from './modules/DataModule';
 import { configureLegend, configureLabel, configureTooltip, configureAxes } from './modules/StyleModule';
 import { initVChartBar, initVChartPie, initVTableList } from './modules/ChartModule';
+import { chartAdapterStep } from './modules/ChartAdapterModule';
+import { vizSeedInitStep } from './modules/VizSeedInitModule';
+import { vizSeedDataMapStep } from './modules/VizSeedDataMapModule';
+import { vizSeedFieldMapStep } from './modules/VizSeedFieldMapModule';
+import { vizSeedCleanupStep } from './modules/VizSeedCleanupModule';
+import { autoChannelMappingStep } from './modules/AutoChannelMappingModule';
 
 // Pipeline函数类型
 type PipelineFunction = (context: PipelineContext) => any;
@@ -15,7 +21,6 @@ type PipelineFunction = (context: PipelineContext) => any;
 const createVChartPipeline = () => pipeline([
   initVChartBar,
   initData,
-  processDimensionData,
   configureAxes,
   configureLegend,
   configureLabel,
@@ -26,7 +31,6 @@ const createVChartPipeline = () => pipeline([
 const createVChartPiePipeline = () => pipeline([
   initVChartPie,
   initData,
-  processDimensionData,
   configureLegend,
   configureLabel,
   configureTooltip
@@ -38,73 +42,26 @@ const createVTablePipeline = () => pipeline([
   initData
 ], {});
 
-// 创建VizSeed构建Pipeline
+// 创建VizSeed构建Pipeline - 简化流程，要求用户必须设置字段
 const createVizSeedBuildPipeline = () => {
-  const buildFieldMap = (data: any): any => {
-    const fieldMap: any = {};
-    
-    if (data?.fields) {
-      data.fields.forEach((field: any) => {
-        fieldMap[field.name] = {
-          id: field.name,
-          type: field.type,
-          alias: field.name,
-          role: field.role
-        };
-      });
-    }
-
-    // 添加维度重塑的特殊字段
-    fieldMap['__MeasureValue__'] = {
-      id: '__MeasureValue__',
-      alias: '指标值'
-    };
-    fieldMap['__MeasureName__'] = {
-      id: '__MeasureName__',
-      alias: '指标名称'
-    };
-
-    return fieldMap;
-  };
-
   const buildVizSeedSteps: PipelineStep[] = [
-    // 数据处理步骤
-    (vizSeed: any, context: PipelineContext) => {
-      const { data, chartConfig } = context;
-      return {
-        ...vizSeed,
-        chartType: chartConfig?.type || 'bar',
-        datasets: data?.rows || [],
-        fieldMap: buildFieldMap(data)
-      };
-    },
-    // 视觉通道映射步骤
-    (vizSeed: any, context: PipelineContext) => {
-      const { chartConfig } = context;
-      const mapping = chartConfig?.mapping || {};
-      
-      return {
-        ...vizSeed,
-        visualChannel: [{
-          x: mapping.x || mapping.category || 'category',
-          y: mapping.y || mapping.value || '__MeasureValue__',
-          group: mapping.color || '__MeasureName__'
-        }]
-      };
-    },
-    // 视觉样式步骤
-    (vizSeed: any, context: PipelineContext) => {
-      const { visualStyle } = context;
-      return {
-        ...vizSeed,
-        visualStyle: {
-          title: { visible: !!visualStyle?.title },
-          legend: { visible: visualStyle?.legend !== false },
-          label: { visible: visualStyle?.label !== false },
-          tooltip: { visible: visualStyle?.tooltip !== false }
-        }
-      };
-    }
+    // 1. 基础VizSeed初始化
+    vizSeedInitStep,
+    
+    // 2. 图表适配分析步骤
+    chartAdapterStep,
+    
+    // 3. 数据重塑并更新dataMap
+    vizSeedDataMapStep,
+    
+    // 4. 自动通道映射（根据用户设置的字段）
+    autoChannelMappingStep,
+    
+    // 5. 更新字段映射（基于重塑结果）
+    vizSeedFieldMapStep,
+    
+    // 6. 最终清理 - 只保留5个核心属性
+    vizSeedCleanupStep
   ];
 
   return pipeline(buildVizSeedSteps, {});

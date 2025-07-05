@@ -3,134 +3,799 @@
 📊 原始输入:
 [
   {
-    "region": "华东",
-    "sales": 2800
+    "store": "苹果专卖店",
+    "city": "北京",
+    "category": "手机",
+    "brand": "iPhone",
+    "sales": 15000,
+    "profit": 3000
   },
   {
-    "region": "华北",
-    "sales": 2200
+    "store": "苹果专卖店",
+    "city": "北京",
+    "category": "手机",
+    "brand": "Samsung",
+    "sales": 8000,
+    "profit": 1600
   },
   {
-    "region": "华南",
-    "sales": 1900
+    "store": "苹果专卖店",
+    "city": "北京",
+    "category": "平板",
+    "brand": "iPad",
+    "sales": 6000,
+    "profit": 1200
   },
   {
-    "region": "华中",
-    "sales": 1600
+    "store": "电子城",
+    "city": "上海",
+    "category": "手机",
+    "brand": "iPhone",
+    "sales": 12000,
+    "profit": 2400
   },
   {
-    "region": "西北",
-    "sales": 1200
+    "store": "电子城",
+    "city": "上海",
+    "category": "手机",
+    "brand": "Samsung",
+    "sales": 9000,
+    "profit": 1800
   },
   {
-    "region": "西南",
-    "sales": 1000
+    "store": "电子城",
+    "city": "上海",
+    "category": "平板",
+    "brand": "iPad",
+    "sales": 5000,
+    "profit": 1000
+  },
+  {
+    "store": "数码广场",
+    "city": "广州",
+    "category": "手机",
+    "brand": "iPhone",
+    "sales": 10000,
+    "profit": 2000
+  },
+  {
+    "store": "数码广场",
+    "city": "广州",
+    "category": "平板",
+    "brand": "iPad",
+    "sales": 4000,
+    "profit": 800
   }
 ]
+👤 用户已设置完整通道映射，跳过自动映射
 
 📋 VizSeed DSL:
 {
   "chartType": "pie",
-  "datasets": [
+  "dataMap": [
     {
-      "region": "华东",
-      "sales": 2800
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_手机_iPhone_sales",
+      "__MeasureValue__": 15000
     },
     {
-      "region": "华北",
-      "sales": 2200
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_手机_iPhone_profit",
+      "__MeasureValue__": 3000
     },
     {
-      "region": "华南",
-      "sales": 1900
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_手机_Samsung_sales",
+      "__MeasureValue__": 8000
     },
     {
-      "region": "华中",
-      "sales": 1600
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_手机_Samsung_profit",
+      "__MeasureValue__": 1600
     },
     {
-      "region": "西北",
-      "sales": 1200
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_手机_iPad_sales",
+      "__MeasureValue__": 0
     },
     {
-      "region": "西南",
-      "sales": 1000
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_平板_iPad_sales",
+      "__MeasureValue__": 6000
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "北京_平板_iPad_profit",
+      "__MeasureValue__": 1200
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_手机_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_手机_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_平板_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "上海_平板_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_手机_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_手机_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_平板_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "苹果专卖店",
+      "__MeasureName__": "广州_平板_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_手机_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_手机_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_平板_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "北京_平板_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_手机_iPhone_sales",
+      "__MeasureValue__": 12000
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_手机_iPhone_profit",
+      "__MeasureValue__": 2400
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_手机_Samsung_sales",
+      "__MeasureValue__": 9000
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_手机_Samsung_profit",
+      "__MeasureValue__": 1800
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_平板_iPad_sales",
+      "__MeasureValue__": 5000
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "上海_平板_iPad_profit",
+      "__MeasureValue__": 1000
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_手机_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_手机_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_平板_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "电子城",
+      "__MeasureName__": "广州_平板_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_手机_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_手机_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_平板_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "北京_平板_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_手机_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_手机_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_平板_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "上海_平板_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_手机_iPhone_sales",
+      "__MeasureValue__": 10000
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_手机_iPhone_profit",
+      "__MeasureValue__": 2000
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_手机_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_手机_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_手机_iPad_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_手机_iPad_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_平板_iPhone_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_平板_iPhone_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_平板_Samsung_sales",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_平板_Samsung_profit",
+      "__MeasureValue__": 0
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_平板_iPad_sales",
+      "__MeasureValue__": 4000
+    },
+    {
+      "store": "数码广场",
+      "__MeasureName__": "广州_平板_iPad_profit",
+      "__MeasureValue__": 800
     }
   ],
   "fieldMap": {
-    "region": {
-      "id": "region",
+    "store": {
+      "id": "store",
       "type": "string",
-      "alias": "region",
-      "role": "dimension"
+      "alias": "store",
+      "location": "dimension",
+      "domain": [
+        "苹果专卖店",
+        "电子城",
+        "数码广场"
+      ],
+      "format": {}
+    },
+    "city": {
+      "id": "city",
+      "type": "string",
+      "alias": "city",
+      "location": "dimension",
+      "domain": [
+        "北京",
+        "上海",
+        "广州"
+      ],
+      "format": {}
+    },
+    "category": {
+      "id": "category",
+      "type": "string",
+      "alias": "category",
+      "location": "dimension",
+      "domain": [
+        "手机",
+        "平板"
+      ],
+      "format": {}
+    },
+    "brand": {
+      "id": "brand",
+      "type": "string",
+      "alias": "brand",
+      "location": "dimension",
+      "domain": [
+        "iPhone",
+        "Samsung",
+        "iPad"
+      ],
+      "format": {}
     },
     "sales": {
       "id": "sales",
       "type": "number",
       "alias": "sales",
-      "role": "measure"
+      "location": "measure",
+      "domain": [
+        15000,
+        8000,
+        6000,
+        12000,
+        9000,
+        5000,
+        10000,
+        4000
+      ],
+      "format": {}
+    },
+    "profit": {
+      "id": "profit",
+      "type": "number",
+      "alias": "profit",
+      "location": "measure",
+      "domain": [
+        3000,
+        1600,
+        1200,
+        2400,
+        1800,
+        1000,
+        2000,
+        800
+      ],
+      "format": {}
     },
     "__MeasureValue__": {
       "id": "__MeasureValue__",
-      "alias": "指标值"
+      "type": "number",
+      "alias": "指标值",
+      "location": "measure",
+      "domain": [],
+      "format": {}
     },
     "__MeasureName__": {
       "id": "__MeasureName__",
-      "alias": "指标名称"
+      "type": "string",
+      "alias": "指标名称",
+      "location": "dimension",
+      "domain": [],
+      "format": {}
     }
   },
-  "visualChannel": [
-    {
-      "x": "region",
-      "y": "sales",
-      "group": "__MeasureName__"
-    }
-  ],
+  "chartConfig": {
+    "mapping": {
+      "category": "store",
+      "value": "sales"
+    },
+    "type": "pie"
+  },
   "visualStyle": {
-    "title": {
-      "visible": true
-    },
-    "legend": {
-      "visible": true
-    },
-    "label": {
-      "visible": true
-    },
-    "tooltip": {
-      "visible": true
-    }
+    "legend": true,
+    "label": true,
+    "tooltip": true
   }
 }
 
 🎨 VChart Spec:
 {
   "type": "pie",
-  "categoryField": "region",
+  "categoryField": "store",
   "valueField": "sales",
   "data": [
     {
-      "region": "华东",
-      "sales": 2800
+      "store": "苹果专卖店",
+      "city": "北京",
+      "category": "手机",
+      "brand": "iPhone",
+      "sales": 15000,
+      "profit": 3000
     },
     {
-      "region": "华北",
-      "sales": 2200
+      "store": "苹果专卖店",
+      "city": "北京",
+      "category": "手机",
+      "brand": "Samsung",
+      "sales": 8000,
+      "profit": 1600
     },
     {
-      "region": "华南",
-      "sales": 1900
+      "store": "苹果专卖店",
+      "city": "北京",
+      "category": "平板",
+      "brand": "iPad",
+      "sales": 6000,
+      "profit": 1200
     },
     {
-      "region": "华中",
-      "sales": 1600
+      "store": "电子城",
+      "city": "上海",
+      "category": "手机",
+      "brand": "iPhone",
+      "sales": 12000,
+      "profit": 2400
     },
     {
-      "region": "西北",
-      "sales": 1200
+      "store": "电子城",
+      "city": "上海",
+      "category": "手机",
+      "brand": "Samsung",
+      "sales": 9000,
+      "profit": 1800
     },
     {
-      "region": "西南",
-      "sales": 1000
+      "store": "电子城",
+      "city": "上海",
+      "category": "平板",
+      "brand": "iPad",
+      "sales": 5000,
+      "profit": 1000
+    },
+    {
+      "store": "数码广场",
+      "city": "广州",
+      "category": "手机",
+      "brand": "iPhone",
+      "sales": 10000,
+      "profit": 2000
+    },
+    {
+      "store": "数码广场",
+      "city": "广州",
+      "category": "平板",
+      "brand": "iPad",
+      "sales": 4000,
+      "profit": 800
     }
   ],
   "legends": {
