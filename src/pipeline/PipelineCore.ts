@@ -3,13 +3,6 @@
  * 简化的函数式管道处理系统
  */
 
-// 重塑配置接口
-export interface ReshapeConfig {
-  strategy: 'auto' | 'elevate' | 'reduce' | 'none';
-  targetDimension?: string;  // 降维时的目标维度
-  enabled: boolean;          // 是否启用重塑
-}
-
 // 字段定义接口
 export interface FieldDefinition {
   id: string;
@@ -33,15 +26,14 @@ export interface FieldSelection {
 
 // Pipeline上下文接口
 export interface PipelineContext {
-  data?: any;
-  chartConfig?: any;
-  fieldMap?: FieldMap;        // 完整字段映射定义
-  fieldSelection?: FieldSelection;  // 用户字段选择
-  dataMap?: Record<string, any>[]; // 数据映射数组
+  data: any;
+  chartConfig: any;
+  fieldMap: FieldMap;        // 完整字段映射定义
+  fieldSelection: FieldSelection;  // 用户字段选择
+  dataMap: Record<string, any>[]; // 数据映射数组
   visualStyle?: any;
   
   // 维度重塑相关
-  reshapeConfig?: ReshapeConfig;
   analysisResult?: any;       // 图表适配分析结果
   reshapeDecision?: 'elevate' | 'reduce' | 'none';  // 重塑决策
   

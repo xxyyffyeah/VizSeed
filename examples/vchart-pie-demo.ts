@@ -35,8 +35,6 @@ const vizSeedDSL = builder
   .setChartType('pie')
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
-  .setCategoryField('store')  // 添加必需的category通道
-  .setValueField('sales')     // 添加必需的value通道
   .build();
 
 const vchartSpec = builder.buildSpec();

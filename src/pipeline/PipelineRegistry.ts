@@ -9,7 +9,7 @@ import { configureLegend, configureLabel, configureTooltip, configureAxes } from
 import { initVChartBar, initVChartPie, initVTableList } from './modules/ChartModule';
 import { chartAdapterStep } from './modules/ChartAdapterModule';
 import { vizSeedInitStep } from './modules/VizSeedInitModule';
-import { vizSeedDataMapStep } from './modules/VizSeedDataMapModule';
+import { dataReshapeStep } from './modules/DataReshapeModule';
 import { vizSeedFieldMapStep } from './modules/VizSeedFieldMapModule';
 import { vizSeedCleanupStep } from './modules/VizSeedCleanupModule';
 import { autoChannelMappingStep } from './modules/AutoChannelMappingModule';
@@ -52,7 +52,7 @@ const createVizSeedBuildPipeline = () => {
     chartAdapterStep,
     
     // 3. 数据重塑并更新dataMap
-    vizSeedDataMapStep,
+    dataReshapeStep,
     
     // 4. 自动通道映射（根据用户设置的字段）
     autoChannelMappingStep,

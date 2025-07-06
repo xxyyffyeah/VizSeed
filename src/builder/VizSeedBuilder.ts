@@ -1,9 +1,9 @@
 import { VizSeedBuilder as IVizSeedBuilder, ChartSpec } from '../types';
 import { DataSet as IDataSet, FieldInferenceOptions } from '../types/data';
-import { ChartType, ChartConfig, ChannelMapping, CHART_REQUIREMENTS } from '../types/charts';
+import { ChartType, ChartConfig ,CHART_DATA_REQUIREMENTS} from '../types/charts';
 // VizSeedDSL类已不再使用，改为函数式pipeline构建
 import { DataSet } from '../core/DataSet';
-import { PipelineContext, ReshapeConfig, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
+import { PipelineContext, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
 import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
@@ -30,11 +30,6 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     tooltip: true
   };
   
-  // 维度重塑配置
-  private reshapeConfig: ReshapeConfig = {
-    strategy: 'auto',
-    enabled: true
-  };
 
   // 构造函数重载：支持直接传入rows或DataSet
   constructor(rows: Record<string, any>[], options?: FieldInferenceOptions);
@@ -51,7 +46,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       this.data = dataOrRows;
     }
     
-    // fieldMap初始为空，等待用户选择字段后按需添加
+
   }
   
   // 根据字段名从DataSet创建字段定义
@@ -222,34 +217,12 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this.data.fields.some(f => f.name === fieldName);
   }
 
-  // 维度重塑相关API
-  public enableAutoReshape(enabled: boolean = true): VizSeedBuilder {
-    this.reshapeConfig.enabled = enabled;
-    if (enabled) {
-      this.reshapeConfig.strategy = 'auto';
-    }
-    return this;
-  }
-
-  public setReshapeStrategy(strategy: 'auto' | 'elevate' | 'reduce' | 'none'): VizSeedBuilder {
-    this.reshapeConfig.strategy = strategy;
-    if (strategy !== 'none') {
-      this.reshapeConfig.enabled = true;
-    }
-    return this;
-  }
-
-  public setTargetDimension(dimension: string): VizSeedBuilder {
-    this.reshapeConfig.targetDimension = dimension;
-    return this;
-  }
-
-  public getReshapeConfig(): ReshapeConfig {
-    return { ...this.reshapeConfig };
-  }
 
 
   public setChartType(type: ChartType): VizSeedBuilder {
+  if (!CHART_DATA_REQUIREMENTS[type]) {
+    throw new Error(`不支持的图表类型: ${type}`);
+  }
     this.chartConfig.type = type;
     return this;
   }
@@ -334,8 +307,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       fieldMap: this.fieldMap,
       fieldSelection: this.fieldSelection,
       dataMap: this.dataMap,
-      visualStyle: this.visualStyle,
-      reshapeConfig: this.reshapeConfig
+      visualStyle: this.visualStyle
     };
 
     // 直接返回pipeline构建的VizSeed对象
@@ -343,22 +315,25 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   public buildSpec(): ChartSpec {
-    this.validateConfig();
+    // 先验证字段要求
+    this.validateFieldRequirements();
     
     // 根据图表类型自动选择图表库
     const chartType = this.chartConfig.type || 'bar';
     const library = this.selectLibrary(chartType);
     
     try {
-      // 直接使用Builder的数据构建规范上下文
+      // 先构建VizSeed以获得自动通道映射
+      const vizSeed = this.build();
+      
+      // 使用构建后的VizSeed数据构建规范上下文
       const specContext: PipelineContext = {
         data: this.data,
-        chartConfig: this.chartConfig,
-        fieldMap: this.fieldMap,
-        fieldSelection: this.fieldSelection,
-        dataMap: this.dataMap,
-        visualStyle: this.visualStyle,
-        reshapeConfig: this.reshapeConfig
+        chartConfig: vizSeed.chartConfig, // 使用经过自动映射的配置
+        fieldMap: vizSeed.fieldMap,
+        fieldSelection: vizSeed.currentFieldSelection || this.fieldSelection,
+        dataMap: vizSeed.dataMap,
+        visualStyle: this.visualStyle
       };
 
       // 使用简化的pipeline构建规范
@@ -391,73 +366,15 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       throw new Error(`请先设置字段，调用 setDimensions() 和 setMeasures() 方法`);
     }
     
-    // 基于图表类型检查最低字段要求
-    switch (chartType) {
-      case 'pie':
-      case 'donut':
-        if (dimensions.length === 0 || measures.length === 0) {
-          throw new Error(`${chartType}图表需要至少1个维度和1个指标，当前: ${dimensions.length}个维度, ${measures.length}个指标`);
-        }
-        break;
-        
-      case 'scatter':
-        if (totalFields < 2) {
-          throw new Error(`散点图需要至少2个字段（2个指标 或 1个维度+1个指标），当前: ${dimensions.length}个维度, ${measures.length}个指标`);
-        }
-        break;
-        
-      case 'bar':
-      case 'column':
-      case 'line':
-      case 'area':
-        if (totalFields < 2) {
-          throw new Error(`${chartType}图表需要至少2个字段（1个维度+1个指标），当前: ${dimensions.length}个维度, ${measures.length}个指标`);
-        }
-        break;
-        
-      case 'table':
-        if (totalFields === 0) {
-          throw new Error('表格需要至少1个字段');
-        }
-        break;
-        
-      default:
-        if (totalFields === 0) {
-          throw new Error('请设置至少1个字段');
-        }
-    }
-  }
-
-  private validateConfig(): void {
-    if (!this.chartConfig.type) {
-      throw new Error('图表类型未设置');
-    }
-    
-    const mapping = this.chartConfig.mapping || {};
-    const chartType = this.chartConfig.type;
-    
-    // 获取图表类型要求
-    const requirement = CHART_REQUIREMENTS[chartType];
-    if (!requirement) {
-      throw new Error(`不支持的图表类型: ${chartType}`);
-    }
-    
-    // 检查必需字段
-    for (const requiredChannel of requirement.required) {
-      if (!mapping[requiredChannel as keyof ChannelMapping]) {
-        throw new Error(`图表类型 ${chartType} 缺少必需的通道: ${requiredChannel}`);
+    // 检查指标数量：如果指标为0且不是特殊图表类型，则抛出错误
+    if (measures.length === 0) {
+      const allowedTypesWithoutMeasures = ['wordcloud', 'listtable', 'pivottable'];
+      if (!allowedTypesWithoutMeasures.includes(chartType)) {
+        throw new Error(`${chartType}图表需要添加相应的指标字段，请调用 setMeasures() 或 addMeasureToArray() 方法添加指标`);
       }
     }
     
-    // 自定义验证
-    if (requirement.validation && !requirement.validation(mapping)) {
-      throw new Error(`图表类型 ${chartType} 的通道配置验证失败`);
-    }
-    
-    // 检查最少字段数
-    const setChannels = Object.values(mapping).filter(v => v).length;
-    if (setChannels < requirement.minFields) {
-      throw new Error(`图表类型 ${chartType} 至少需要 ${requirement.minFields} 个字段，当前只有 ${setChannels} 个`);
-    }
+
   }
+
 }

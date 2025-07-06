@@ -67,7 +67,46 @@
     "profit": 800
   }
 ]
-👤 用户已设置完整通道映射，跳过自动映射
+🤖 自动通道映射: 图表类型为 pie，字段选择: {
+  "dimensions": [
+    "store",
+    "city",
+    "category",
+    "brand"
+  ],
+  "measures": [
+    "sales",
+    "profit"
+  ]
+}
+🎨 自动通道映射 (饼图: category(维度) + value(指标)): {
+  "category": "store",
+  "value": "sales"
+}
+🔗 合并后的通道映射: {
+  "category": "store",
+  "value": "sales"
+}
+🤖 自动通道映射: 图表类型为 pie，字段选择: {
+  "dimensions": [
+    "store",
+    "city",
+    "category",
+    "brand"
+  ],
+  "measures": [
+    "sales",
+    "profit"
+  ]
+}
+🎨 自动通道映射 (饼图: category(维度) + value(指标)): {
+  "category": "store",
+  "value": "sales"
+}
+🔗 合并后的通道映射: {
+  "category": "store",
+  "value": "sales"
+}
 
 📋 VizSeed DSL:
 {

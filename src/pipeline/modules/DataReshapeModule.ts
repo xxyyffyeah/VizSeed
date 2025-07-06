@@ -1,10 +1,11 @@
 /**
- * 数据重塑模块 - 直接操作data.rows实现维度重塑
+ * 数据重塑模块 - 使用Pipeline子模块实现维度重塑
  * 基于fieldMap和图表要求，在pipeline中修改数据结构
  */
 
 import { PipelineStep, PipelineContext, FieldSelection } from '../PipelineCore';
-import { CHART_DATA_REQUIREMENTS } from './ChartAdapterModule';
+import { CHART_DATA_REQUIREMENTS } from '../../types/charts';
+import { field } from '@visactor/vchart/esm/util';
 
 // 重塑结果接口
 export interface DataReshapeResult {
@@ -19,26 +20,80 @@ export interface DataReshapeResult {
   };
 }
 
+// 获取数据源的辅助函数
+const getDataSource = (vizSeed: any, context: PipelineContext): any[] => {
+  // 优先使用dataMap，如果为空则使用data.rows
+  if(vizSeed.dataMap && vizSeed.dataMap.length > 0){
+    return vizSeed.dataMap;
+  }
+  if (context.dataMap && context.dataMap.length > 0) {
+    return context.dataMap;
+  }
+  return context.data?.rows || [];
+};
+
+// 获取字段选择的辅助函数
+const getFieldSelection = (context: PipelineContext): FieldSelection => {
+  return context.fieldSelection || { dimensions: [], measures: [] };
+};
+
+// 更新fieldMap的辅助函数
+const updateFieldMapAndFieldSelection = (context: PipelineContext, newFieldSelection: FieldSelection) => {
+  if (context.fieldMap) {
+    // 更新fieldMap中的字段位置
+    Object.keys(context.fieldMap).forEach(key => {
+      if (newFieldSelection.dimensions.includes(key)) {
+        context.fieldMap![key].location = 'dimension';
+      } else if (newFieldSelection.measures.includes(key)) {
+        context.fieldMap![key].location = 'measure';
+      }
+    });
+    
+    // 添加新字段（如升维产生的特殊字段）
+    newFieldSelection.dimensions.forEach(dim => {
+      if (!context.fieldMap![dim]) {
+        context.fieldMap![dim] = {
+          id: dim,
+          type: 'string',
+          alias: dim,
+          location: 'dimension'
+        };
+      }
+    });
+    
+    newFieldSelection.measures.forEach(measure => {
+      if (!context.fieldMap![measure]) {
+        context.fieldMap![measure] = {
+          id: measure,
+          type: 'number',
+          alias: measure,
+          location: 'measure'
+        };
+      }
+    });
+  }
+  if(context.fieldSelection){
+    context.fieldSelection = newFieldSelection;
+  }
+};
+
 /**
- * 升维操作：直接修改data.rows，将多指标转为单指标+指标名称维度
+ * 升维Pipeline子模块：将多指标转为单指标+指标名称维度
  */
-export const elevateDataRows = (
-  rows: any[],
-  fieldSelection: FieldSelection
-): DataReshapeResult => {
-  if (fieldSelection.measures.length <= 1) {
-    return {
-      rows,
-      currentFieldSelection: fieldSelection,
-      reshapeType: 'none'
-    };
+export const elevateStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
+  const sourceData = getDataSource(vizSeed,context);
+  const fieldSelection = getFieldSelection(context);
+  
+  // 检查是否需要升维
+  if (fieldSelection.measures.length <= vizSeed.analysisResult.targetStructure.idealDimensions) {
+    return vizSeed;
   }
 
   const reshapedRows: any[] = [];
   const { dimensions, measures } = fieldSelection;
 
   // 为每个数据行，将多个指标转换为多行数据
-  rows.forEach(row => {
+  sourceData.forEach(row => {
     measures.forEach(measure => {
       const newRow: any = {};
       
@@ -55,36 +110,36 @@ export const elevateDataRows = (
     });
   });
 
+  // 更新字段选择
+  const newFieldSelection = {
+    dimensions: [...dimensions, '__MeasureName__'],
+    measures: ['__MeasureValue__']
+  };
+  
+  // 更新fieldMap
+  updateFieldMapAndFieldSelection(context, newFieldSelection);
+  
+  // 更新dataMap
+  context.dataMap = reshapedRows;
+  
   return {
-    rows: reshapedRows,
-    currentFieldSelection: {
-      dimensions: [...dimensions, '__MeasureName__'],
-      measures: ['__MeasureValue__']
-    },
-    reshapeType: 'elevate',
-    reshapeInfo: {
-      originalFieldSelection: fieldSelection,
-      strategy: 'elevate',
-      steps: ['elevate'],
-      operations: [{ type: 'elevate', fields: measures }]
-    }
+    ...vizSeed,
+    dataMap: reshapedRows,
+    fieldSelection: newFieldSelection,
+    fieldMap: context.fieldMap,
   };
 };
 
 /**
- * 降维操作：直接修改data.rows，将某个维度的值变成指标
+ * 降维Pipeline子模块：将某个维度的值变成指标
  */
-export const reduceDataRows = (
-  rows: any[],
-  fieldSelection: FieldSelection,
-  targetDimension?: string
-): DataReshapeResult => {
+export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext, targetDimension?: string) => {
+  const sourceData = getDataSource(vizSeed, context);
+  const fieldSelection = getFieldSelection(context);
+  
+  // 检查是否需要降维
   if (fieldSelection.dimensions.length <= 1) {
-    return {
-      rows,
-      currentFieldSelection: fieldSelection,
-      reshapeType: 'none'
-    };
+    return vizSeed;
   }
 
   const { dimensions, measures } = fieldSelection;
@@ -92,13 +147,13 @@ export const reduceDataRows = (
   const remainingDimensions = dimensions.filter(dim => dim !== dimToReduce);
   
   // 获取该维度的所有可能值
-  const dimValues = [...new Set(rows.map(row => row[dimToReduce]))];
+  const dimValues = [...new Set(sourceData.map(row => row[dimToReduce]))];
   
   // 构建新的数据结构
   const reshapedRows: any[] = [];
   
   // 按剩余维度分组
-  const groupedData = rows.reduce((groups, row) => {
+  const groupedData = sourceData.reduce((groups, row) => {
     const groupKey = remainingDimensions.map(dim => row[dim]).join('|');
     if (!groups[groupKey]) {
       groups[groupKey] = [];
@@ -141,184 +196,132 @@ export const reduceDataRows = (
       newMeasures.push(`${dimValue}_${measure}`);
     });
   });
-
+  
+  // 更新字段选择
+  const newFieldSelection = {
+    dimensions: remainingDimensions,
+    measures: newMeasures
+  };
+  
+  // 更新fieldMap
+  updateFieldMapAndFieldSelection(context, newFieldSelection);
+  
+  // 更新dataMap
+  context.dataMap = reshapedRows;
+  
   return {
-    rows: reshapedRows,
-    currentFieldSelection: {
-      dimensions: remainingDimensions,
-      measures: newMeasures
-    },
-    reshapeType: 'reduce',
+    ...vizSeed,
+    dataMap: reshapedRows,
     reshapeInfo: {
       originalFieldSelection: fieldSelection,
       strategy: 'reduce',
       steps: ['reduce'],
-      operations: [{ type: 'reduce', dimension: dimToReduce, values: dimValues }]
+      operations: [{ type: 'reduce', dimension: dimToReduce, values: dimValues }],
+      reshapeType: 'reduce'
     }
   };
 };
 
 /**
- * 智能数据重塑：根据图表要求自动选择重塑策略
- */
-export const smartDataReshape = (
-  rows: any[],
-  fieldSelection: FieldSelection,
-  chartType: string
-): DataReshapeResult => {
-  const requirement = CHART_DATA_REQUIREMENTS[chartType as keyof typeof CHART_DATA_REQUIREMENTS];
-  
-  if (!requirement) {
-    return {
-      rows,
-      currentFieldSelection: fieldSelection,
-      reshapeType: 'none'
-    };
-  }
-
-  const currentDims = fieldSelection.dimensions.length;
-  const currentMeas = fieldSelection.measures.length;
-  const targetDims = requirement.idealDimensions;
-  const targetMeas = requirement.idealMeasures;
-
-  let result: DataReshapeResult;
-  const operations: any[] = [];
-
-  // 如果当前结构已经符合要求
-  if (currentDims === targetDims && currentMeas === targetMeas) {
-    return {
-      rows,
-      currentFieldSelection: fieldSelection,
-      reshapeType: 'none'
-    };
-  }
-
-  // 初始化结果
-  result = {
-    rows: [...rows],
-    currentFieldSelection: { ...fieldSelection },
-    reshapeType: 'composite'
-  };
-
-  // 步骤1: 如果维度过多，先降维
-  if (currentDims > targetDims) {
-    let currentRows = result.rows;
-    let currentSelection = result.currentFieldSelection;
-    
-    // 多次降维直到达到目标维度数
-    while (currentSelection.dimensions.length > targetDims) {
-      const reduceResult = reduceDataRows(
-        currentRows,
-        currentSelection,
-        currentSelection.dimensions[currentSelection.dimensions.length - 1]
-      );
-      
-      if (reduceResult.reshapeType !== 'none') {
-        currentRows = reduceResult.rows;
-        currentSelection = reduceResult.currentFieldSelection;
-        operations.push(...(reduceResult.reshapeInfo?.operations || []));
-      } else {
-        break;
-      }
-    }
-    
-    result.rows = currentRows;
-    result.currentFieldSelection = currentSelection;
-  }
-
-  // 步骤2: 如果指标过多，再升维
-  if (result.currentFieldSelection.measures.length > targetMeas) {
-    const elevateResult = elevateDataRows(result.rows, result.currentFieldSelection);
-    
-    if (elevateResult.reshapeType !== 'none') {
-      result.rows = elevateResult.rows;
-      result.currentFieldSelection = elevateResult.currentFieldSelection;
-      operations.push(...(elevateResult.reshapeInfo?.operations || []));
-    }
-  }
-
-  // 设置重塑信息
-  const finalReshapeType = operations.length === 1 ? 
-    (operations[0].type as 'elevate' | 'reduce') : 
-    (operations.length > 1 ? 'composite' : 'none');
-
-  result.reshapeType = finalReshapeType;
-  result.reshapeInfo = {
-    originalFieldSelection: fieldSelection,
-    strategy: `${currentDims}维度${currentMeas}指标 → ${targetDims}维度${targetMeas}指标`,
-    steps: operations.map(op => op.type),
-    operations
-  };
-
-  return result;
-};
-
-/**
- * 数据重塑Pipeline步骤
+ * 数据重塑Pipeline步骤 - 使用子模块实现智能重塑
  */
 export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
-  const { data, fieldSelection, chartConfig, reshapeConfig } = context;
+  const { data, chartConfig } = context;
   
   if (!data?.rows || !chartConfig?.type) {
     return vizSeed;
   }
 
-  // 如果fieldSelection为空或没有字段，跳过重塑，直接使用原始数据
-  if (!fieldSelection || 
-      (fieldSelection.dimensions.length === 0 && fieldSelection.measures.length === 0)) {
-    console.log(`⚠️ fieldSelection为空，跳过数据重塑，使用原始数据`);
-    
-    // 直接使用原始数据，不进行重塑
-    const updatedContext = {
-      ...context,
-      dataMap: data.rows, // 使用原始数据
-      fieldSelection: fieldSelection || { dimensions: [], measures: [] }
-    };
+  // 初始化dataMap（如果为空）
+  if (!context.dataMap || context.dataMap.length === 0) {
+    context.dataMap = [...data.rows];
+  }
 
+  const fieldSelection = getFieldSelection(context);
+  
+  // 获取图表要求
+  const requirement = CHART_DATA_REQUIREMENTS[chartConfig.type as keyof typeof CHART_DATA_REQUIREMENTS];
+  
+  if (!requirement) {
     return {
       ...vizSeed,
-      currentFieldSelection: fieldSelection || { dimensions: [], measures: [] },
+      dataMap: context.dataMap,
       reshapeInfo: {
         reshapeType: 'none',
-        reason: 'fieldSelection为空，使用原始数据'
+        reason: '未找到图表类型的数据要求'
       }
     };
   }
 
-  let reshapeResult: DataReshapeResult;
-
-  // 根据重塑配置选择策略
-  if (reshapeConfig?.strategy === 'elevate') {
-    // 手动升维
-    reshapeResult = elevateDataRows(data.rows, fieldSelection);
-  } else if (reshapeConfig?.strategy === 'reduce') {
-    // 手动降维
-    reshapeResult = reduceDataRows(data.rows, fieldSelection, reshapeConfig.targetDimension);
-  } else if (reshapeConfig?.enabled === false) {
-    // 禁用重塑
-    reshapeResult = {
-      rows: data.rows,
-      currentFieldSelection: fieldSelection,
-      reshapeType: 'none'
+  let currentDims = fieldSelection.dimensions.length;
+  let currentMeas = fieldSelection.measures.length;
+  const targetDims = requirement.idealDimensions;
+  const targetMeas = requirement.idealMeasures;
+  
+  // 如果当前结构已经符合要求
+  if (currentDims === targetDims && currentMeas === targetMeas) {
+    return {
+      ...vizSeed,
+      dataMap: context.dataMap,
+      reshapeInfo: {
+        reshapeType: 'none',
+        reason: '当前数据结构已符合图表要求'
+      }
     };
-  } else {
-    // 智能重塑（默认）
-    reshapeResult = smartDataReshape(data.rows, fieldSelection, chartConfig.type);
   }
 
-  // 更新context中的dataMap和fieldSelection
-  const updatedContext = {
-    ...context,
-    dataMap: reshapeResult.rows, // 将重塑后的数据放入dataMap
-    fieldSelection: reshapeResult.currentFieldSelection
-  };
+  const operations: string[] = [];
+
+  // 步骤0: 如果指标过多，使用升维子模块
+
+  vizSeed = elevateStep(vizSeed, context);
+  currentDims = getFieldSelection(context).dimensions.length;
+  currentMeas = getFieldSelection(context).measures.length;
+  operations.push('elevate');
+
+
+
+  // 步骤1: 如果维度过多，使用降维子模块
+  if (currentDims > targetDims) {
+    let currentFieldSelection = getFieldSelection(context);
+    
+    // 多次降维直到达到目标维度数
+    while (currentFieldSelection.dimensions.length > targetDims) {
+      const beforeLength = currentFieldSelection.dimensions.length;
+      vizSeed = reduceStep(vizSeed, context);
+      
+      // 检查是否实际进行了降维
+      const afterFieldSelection = getFieldSelection(context);
+      if (afterFieldSelection.dimensions.length >= beforeLength) {
+        break; // 防止无限循环
+      }
+      
+      currentFieldSelection = afterFieldSelection;
+      operations.push('reduce');
+    }
+  }
+
+  // 步骤2: 如果指标过多，使用升维子模块
+  const finalFieldSelection = getFieldSelection(context);
+  if (finalFieldSelection.measures.length > targetMeas) {
+    vizSeed = elevateStep(vizSeed, context);
+    operations.push('elevate');
+  }
+
+  // 设置重塑信息
+  const finalReshapeType = operations.length === 1 ? 
+    (operations[0] as 'elevate' | 'reduce') : 
+    (operations.length > 1 ? 'composite' : 'none');
 
   return {
     ...vizSeed,
-    currentFieldSelection: reshapeResult.currentFieldSelection,
+    dataMap: context.dataMap,
     reshapeInfo: {
-      ...reshapeResult.reshapeInfo,
-      reshapeType: reshapeResult.reshapeType
+      ...vizSeed.reshapeInfo,
+      strategy: `${currentDims}维度${currentMeas}指标 → ${targetDims}维度${targetMeas}指标`,
+      steps: operations,
+      reshapeType: finalReshapeType
     }
   };
 };
+
