@@ -175,17 +175,17 @@ export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: Pipe
   
   // 如果用户已经设置了完整的通道映射，跳过自动映射
   if (hasCompleteUserMapping(currentMapping, chartConfig.type)) {
-    console.log(`👤 用户已设置完整通道映射，跳过自动映射`);
+    console.log(`用户已设置完整通道映射，跳过自动映射`);
     return vizSeed;
   }
 
   // 检查fieldSelection是否为空
   if (fieldSelection.dimensions.length === 0 && fieldSelection.measures.length === 0) {
-    console.log(`⚠️ fieldSelection为空，跳过自动通道映射`);
+    console.log(`fieldSelection为空，跳过自动通道映射`);
     return vizSeed;
   }
 
-  console.log(`🤖 自动通道映射: 图表类型为 ${chartConfig.type}，字段选择:`, fieldSelection);
+  console.log(`自动通道映射: 图表类型为 ${chartConfig.type}，字段选择:`, fieldSelection);
   
   // 生成自动通道映射
   const autoMapping = generateAutoChannelMapping(chartConfig.type, fieldSelection);
@@ -201,14 +201,13 @@ export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: Pipe
     mapping: mergedMapping
   };
 
-  const updatedContext = {
+  context = {
     ...context,
     chartConfig: updatedChartConfig
   };
 
   return {
     ...vizSeed,
-    chartConfig: updatedChartConfig,
-    autoChannelMapping: autoMapping
+    chartConfig: updatedChartConfig
   };
 };

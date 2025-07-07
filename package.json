@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@visactor/vchart": "^2.0.0",
-    "@visactor/vtable": "^1.19.1"
+    "@visactor/vtable": "^1.19.1",
+    "zod": "^3.25.75"
   }
 }

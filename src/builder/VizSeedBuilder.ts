@@ -1,8 +1,8 @@
 import { VizSeedBuilder as IVizSeedBuilder, ChartSpec } from '../types';
 import { DataSet as IDataSet, FieldInferenceOptions } from '../types/data';
-import { ChartType, ChartConfig ,CHART_DATA_REQUIREMENTS} from '../types/charts';
+import { ChartType, ChartConfig, CHART_DATA_REQUIREMENTS, parseChartType } from '../types/charts';
 // VizSeedDSL类已不再使用，改为函数式pipeline构建
-import { DataSet } from '../core/DataSet';
+import { DataSet } from '../datasets/DataSet';
 import { PipelineContext, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
 import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
 
@@ -219,11 +219,28 @@ export class VizSeedBuilder implements IVizSeedBuilder {
 
 
 
-  public setChartType(type: ChartType): VizSeedBuilder {
-  if (!CHART_DATA_REQUIREMENTS[type]) {
-    throw new Error(`不支持的图表类型: ${type}`);
-  }
-    this.chartConfig.type = type;
+  // 重载：支持字符串和枚举两种输入方式
+  public setChartType(type: string): VizSeedBuilder;
+  public setChartType(type: ChartType): VizSeedBuilder;
+  public setChartType(type: string | ChartType): VizSeedBuilder {
+    let chartType: ChartType;
+    
+    if (typeof type === 'string') {
+      // 使用Zod转换字符串为枚举
+      try {
+        chartType = parseChartType(type);
+      } catch (error) {
+        throw new Error(`不支持的图表类型: '${type}'. 支持的类型: bar, column, line, area, scatter, pie, donut, table`);
+      }
+    } else {
+      chartType = type;
+    }
+    
+    if (!CHART_DATA_REQUIREMENTS[chartType]) {
+      throw new Error(`不支持的图表类型: ${chartType}`);
+    }
+    
+    this.chartConfig.type = chartType;
     return this;
   }
 
@@ -319,7 +336,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     this.validateFieldRequirements();
     
     // 根据图表类型自动选择图表库
-    const chartType = this.chartConfig.type || 'bar';
+    const chartType = this.chartConfig.type || ChartType.BAR;
     const library = this.selectLibrary(chartType);
     
     try {

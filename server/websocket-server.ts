@@ -6,6 +6,7 @@ import path from 'path';
 // 导入VizSeed
 import { VizSeedBuilder } from '../src/builder/VizSeedBuilder';
 import { DataSet } from '../src/types/data';
+import { ChartType } from '../src/types/charts';
 import { ChartLibrary } from '../src/types/specs';
 
 const app = express();
@@ -22,7 +23,7 @@ interface CodeExecutionRequest {
   type: 'execute_code';
   data: {
     dataSet: DataSet;
-    chartType: string;
+    chartType: ChartType;
     subType?: string;
     dimensions: string[];
     measures: string[];
@@ -110,23 +111,18 @@ async function executeVizSeedCode(params: CodeExecutionRequest['data']): Promise
     const builder = new VizSeedBuilder(params.dataSet);
     
     // 设置图表类型
-    if (params.subType) {
-      builder.setChartType(params.chartType as any, params.subType as any);
-    } else {
-      builder.setChartType(params.chartType as any);
+    builder.setChartType(params.chartType);
+    
+    // 设置维度和度量
+    if (params.dimensions.length > 0) {
+      builder.setDimensions(params.dimensions);
+      logs.push(`📐 设置维度: ${params.dimensions.join(', ')}`);
     }
     
-    // 添加维度
-    params.dimensions.forEach(dim => {
-      builder.addDimension(dim);
-      logs.push(`📐 添加维度: ${dim}`);
-    });
-    
-    // 添加度量
-    params.measures.forEach(measure => {
-      builder.addMeasure(measure);
-      logs.push(`📏 添加度量: ${measure}`);
-    });
+    if (params.measures.length > 0) {
+      builder.setMeasures(params.measures);
+      logs.push(`📏 设置度量: ${params.measures.join(', ')}`);
+    }
     
     // 设置标题
     if (params.title) {
@@ -136,7 +132,7 @@ async function executeVizSeedCode(params: CodeExecutionRequest['data']): Promise
     
     // 生成规范
     logs.push('⚙️ 生成图表规范...');
-    const spec = builder.buildSpec(params.library);
+    const spec = builder.buildSpec();
     
     logs.push('✅ VizSeed代码执行成功！');
     

@@ -10,7 +10,6 @@ import { initVChartBar, initVChartPie, initVTableList } from './modules/ChartMod
 import { chartAdapterStep } from './modules/ChartAdapterModule';
 import { vizSeedInitStep } from './modules/VizSeedInitModule';
 import { dataReshapeStep } from './modules/DataReshapeModule';
-import { vizSeedFieldMapStep } from './modules/VizSeedFieldMapModule';
 import { vizSeedCleanupStep } from './modules/VizSeedCleanupModule';
 import { autoChannelMappingStep } from './modules/AutoChannelMappingModule';
 
@@ -57,9 +56,6 @@ const createVizSeedBuildPipeline = () => {
     // 4. 自动通道映射（根据用户设置的字段）
     autoChannelMappingStep,
     
-    // 5. 更新字段映射（基于重塑结果）
-    vizSeedFieldMapStep,
-    
     // 6. 最终清理 - 只保留5个核心属性
     vizSeedCleanupStep
   ];
@@ -70,6 +66,8 @@ const createVizSeedBuildPipeline = () => {
 // Pipeline映射表 - 按照图中的抽象设计
 const pipelineMap: Record<string, PipelineFunction> = {
   // VChart图表类型
+  //分图表的pipeline
+  // 按需加载
   'vchart-bar': createVChartPipeline(),
   'vchart-column': createVChartPipeline(), 
   'vchart-line': createVChartPipeline(),
@@ -84,6 +82,7 @@ const pipelineMap: Record<string, PipelineFunction> = {
   'vtable-table': createVTablePipeline(),
   
   // VizSeed构建
+  //vizSeed 分图表
   'vizseed-build': createVizSeedBuildPipeline()
 };
 
@@ -93,7 +92,7 @@ export const buildSpec = (chartType: string, library: 'vchart' | 'vtable', conte
   const pipelineKey = library === 'vtable' && chartType === 'table' 
     ? 'vtable-table' 
     : `${library}-${chartType}`;
-  
+  //直接用chartType做key
   // 获取对应的pipeline
   const selectedPipeline = pipelineMap[pipelineKey];
   

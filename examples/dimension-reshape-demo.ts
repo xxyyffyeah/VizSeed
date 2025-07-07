@@ -1,4 +1,5 @@
 import { VizSeedBuilder } from '../src';
+import { ChartType } from '../src/types/charts';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -41,10 +42,9 @@ const pieBuilder = new VizSeedBuilder(complexSalesData);
 const pieVizSeed = pieBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
-  .setChartType('pie')
+  .setChartType(ChartType.PIE)
   .setCategoryField('store')
   .setValueField('sales')
-  .enableAutoReshape(true)
   .setTitle('店铺业绩分布')
   .build();
 
@@ -68,11 +68,9 @@ const barBuilder = new VizSeedBuilder(complexSalesData);
 const barVizSeed = barBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales'])
-  .setChartType('bar')
+  .setChartType(ChartType.BAR)
   .setXField('store')
   .setYField('sales')
-  .setReshapeStrategy('reduce')
-  .setTargetDimension('brand')  // 指定将brand维度降维
   .setTitle('各店铺品牌销售对比')
   .build();
 
@@ -95,7 +93,7 @@ const analysisBuilder = new VizSeedBuilder(complexSalesData);
 const analysisResult = analysisBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
-  .setChartType('pie')
+  .setChartType(ChartType.PIE)
   .setCategoryField('store')
   .setValueField('sales')
   .build();
@@ -130,10 +128,9 @@ const noReshapeBuilder = new VizSeedBuilder(complexSalesData);
 const noReshapeResult = noReshapeBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
-  .setChartType('pie')
+  .setChartType(ChartType.PIE)
   .setCategoryField('store')
   .setValueField('sales')
-  .enableAutoReshape(false)  // 关闭自动重塑
   .build();
 
 console.log('关闭重塑的结果:');

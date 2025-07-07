@@ -9,11 +9,8 @@ import { field } from '@visactor/vchart/esm/util';
 
 // 重塑结果接口
 export interface DataReshapeResult {
-  rows: any[];                    // 重塑后的数据行
-  currentFieldSelection: FieldSelection;      // 当前数据结构的字段选择
   reshapeType: 'elevate' | 'reduce' | 'composite' | 'none';
   reshapeInfo?: {
-    originalFieldSelection: FieldSelection;
     strategy: string;
     steps: string[];
     operations: any[];
@@ -124,9 +121,12 @@ export const elevateStep: PipelineStep = (vizSeed: any, context: PipelineContext
   
   return {
     ...vizSeed,
-    dataMap: reshapedRows,
-    fieldSelection: newFieldSelection,
+    dataMap: context.dataMap,
+    fieldSelection: context.fieldSelection,
     fieldMap: context.fieldMap,
+    reshapeInfo: {
+        reshapeType: 'elevate',
+      }
   };
 };
 
@@ -138,7 +138,7 @@ export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext,
   const fieldSelection = getFieldSelection(context);
   
   // 检查是否需要降维
-  if (fieldSelection.dimensions.length <= 1) {
+  if (fieldSelection.dimensions.length <= vizSeed.analysisResult.targetStructure.idealDimensions - 1) {
     return vizSeed;
   }
 
@@ -211,12 +211,10 @@ export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext,
   
   return {
     ...vizSeed,
-    dataMap: reshapedRows,
+    dataMap: context.dataMap,
+    fieldSelection: context.fieldSelection,
+    fieldMap: context.fieldMap,
     reshapeInfo: {
-      originalFieldSelection: fieldSelection,
-      strategy: 'reduce',
-      steps: ['reduce'],
-      operations: [{ type: 'reduce', dimension: dimToReduce, values: dimValues }],
       reshapeType: 'reduce'
     }
   };
@@ -264,8 +262,7 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
       ...vizSeed,
       dataMap: context.dataMap,
       reshapeInfo: {
-        reshapeType: 'none',
-        reason: '当前数据结构已符合图表要求'
+        reshapeType: 'none'
       }
     };
   }
@@ -274,10 +271,10 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
 
   // 步骤0: 如果指标过多，使用升维子模块
 
-  vizSeed = elevateStep(vizSeed, context);
-  currentDims = getFieldSelection(context).dimensions.length;
-  currentMeas = getFieldSelection(context).measures.length;
-  operations.push('elevate');
+  // vizSeed = elevateStep(vizSeed, context);
+  // currentDims = getFieldSelection(context).dimensions.length;
+  // currentMeas = getFieldSelection(context).measures.length;
+  // operations.push('elevate');
 
 
 
@@ -317,7 +314,6 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
     ...vizSeed,
     dataMap: context.dataMap,
     reshapeInfo: {
-      ...vizSeed.reshapeInfo,
       strategy: `${currentDims}维度${currentMeas}指标 → ${targetDims}维度${targetMeas}指标`,
       steps: operations,
       reshapeType: finalReshapeType

@@ -1,12 +1,43 @@
-export type ChartType = 
-  | 'bar'           // 柱状图
-  | 'column'        // 条形图  
-  | 'line'          // 折线图
-  | 'area'          // 面积图
-  | 'scatter'       // 散点图
-  | 'pie'           // 饼图
-  | 'donut'         // 环形图
-  | 'table';        // 表格
+import { z } from 'zod';
+
+export enum ChartType {
+  BAR = 'bar',           // 柱状图
+  COLUMN = 'column',     // 条形图  
+  LINE = 'line',         // 折线图
+  AREA = 'area',         // 面积图
+  SCATTER = 'scatter',   // 散点图
+  PIE = 'pie',           // 饼图
+  DONUT = 'donut',       // 环形图
+  TABLE = 'table'        // 表格
+}
+
+// Zod schema用于验证和转换字符串为ChartType枚举
+export const ChartTypeSchema = z.enum([
+  'bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'
+]).transform((value) => {
+  // 将字符串转换为对应的枚举值
+  const enumMap: Record<string, ChartType> = {
+    'bar': ChartType.BAR,
+    'column': ChartType.COLUMN,
+    'line': ChartType.LINE,
+    'area': ChartType.AREA,
+    'scatter': ChartType.SCATTER,
+    'pie': ChartType.PIE,
+    'donut': ChartType.DONUT,
+    'table': ChartType.TABLE
+  };
+  return enumMap[value];
+});
+
+// 便捷函数：将字符串转换为ChartType枚举
+export function parseChartType(input: string): ChartType {
+  return ChartTypeSchema.parse(input);
+}
+
+// 获取所有支持的图表类型字符串
+export function getSupportedChartTypes(): string[] {
+  return ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'];
+}
 
 // 通道映射接口
 export interface ChannelMapping {

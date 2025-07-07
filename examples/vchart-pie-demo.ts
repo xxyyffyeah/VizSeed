@@ -1,4 +1,5 @@
 import { VizSeedBuilder } from '../src';
+import { ChartType } from '../src/types/charts';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -32,7 +33,7 @@ console.log(JSON.stringify(salesData, null, 2));
 // 构建VizSeed和Spec
 const builder = new VizSeedBuilder(salesData);
 const vizSeedDSL = builder
-  .setChartType('pie')
+  .setChartType(ChartType.PIE)
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
   .build();
