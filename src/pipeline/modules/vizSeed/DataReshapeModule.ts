@@ -3,8 +3,8 @@
  * 基于fieldMap和图表要求，在pipeline中修改数据结构
  */
 
-import { PipelineStep, PipelineContext, FieldSelection } from '../PipelineCore';
-import { CHART_DATA_REQUIREMENTS } from '../../types/charts';
+import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
+import { CHART_DATA_REQUIREMENTS } from '../../../types/charts';
 import { field } from '@visactor/vchart/esm/util';
 
 // 重塑结果接口

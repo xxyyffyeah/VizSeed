@@ -3,7 +3,7 @@
  * 可重用的Pipeline步骤，用于初始化不同类型的图表配置
  */
 
-import { PipelineStep, PipelineContext } from '../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // VChart图表初始化（支持多种类型）
 export const initVChartBar: PipelineStep = (spec: any, context: PipelineContext) => {

@@ -3,8 +3,8 @@
  * 根据重塑后的fieldSelection自动创建chartConfig.mapping
  */
 
-import { PipelineStep, PipelineContext, FieldSelection } from '../PipelineCore';
-import { ChartType, ChannelMapping } from '../../types/charts';
+import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
+import { ChartType, ChannelMapping } from '../../../types/charts';
 
 // 通道映射策略接口
 interface ChannelMappingStrategy {

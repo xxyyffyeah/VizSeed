@@ -327,8 +327,9 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       visualStyle: this.visualStyle
     };
 
-    // 直接返回pipeline构建的VizSeed对象
-    return buildVizSeed(context);
+    // 使用图表类型选择对应的VizSeed pipeline
+    const chartType = this.chartConfig.type || ChartType.BAR;
+    return buildVizSeed(chartType, context);
   }
 
   public buildSpec(): ChartSpec {
@@ -337,7 +338,6 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     
     // 根据图表类型自动选择图表库
     const chartType = this.chartConfig.type || ChartType.BAR;
-    const library = this.selectLibrary(chartType);
     
     try {
       // 先构建VizSeed以获得自动通道映射
@@ -354,20 +354,12 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       };
 
       // 使用简化的pipeline构建规范
-      return buildSpec(chartType, library, specContext);
+      return buildSpec(chartType, specContext);
     } catch (error: any) {
       throw new Error(`构建图表规范失败: ${error.message}`);
     }
   }
 
-  private selectLibrary(chartType: ChartType): 'vchart' | 'vtable' {
-    // 表格类型使用VTable
-    if (chartType === 'table') {
-      return 'vtable';
-    }
-    // 其他类型使用VChart
-    return 'vchart';
-  }
 
   private validateFieldRequirements(): void {
     if (!this.chartConfig.type) {

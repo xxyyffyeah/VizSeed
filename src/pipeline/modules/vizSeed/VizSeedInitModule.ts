@@ -3,7 +3,7 @@
  * 负责创建基础的VizSeed对象结构
  */
 
-import { PipelineStep, PipelineContext } from '../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 /**
  * VizSeed基础初始化步骤

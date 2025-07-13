@@ -3,7 +3,7 @@
  * 负责最终清理，确保只保留5个核心属性
  */
 
-import { PipelineStep, PipelineContext } from '../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 /**
  * VizSeed最终清理步骤
