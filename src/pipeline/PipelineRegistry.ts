@@ -31,40 +31,40 @@ type PipelineFunction = (context: PipelineContext) => any;
 
 
 // 规范生成Pipeline映射表 - 每个图表类型使用专门的Pipeline
-const specPipelineMap: Record<string, PipelineFunction> = {
+const specPipelineMap: Record<string, () => PipelineFunction> = {
   // VChart基础图表类型
-  [ChartType.BAR]: createBarSpecPipeline(),
-  [ChartType.COLUMN]: createColumnSpecPipeline(), 
-  [ChartType.LINE]: createLineSpecPipeline(),
-  [ChartType.AREA]: createAreaSpecPipeline(),
-  [ChartType.SCATTER]: createScatterSpecPipeline(),
+  [ChartType.BAR]: createBarSpecPipeline,
+  [ChartType.COLUMN]: createColumnSpecPipeline, 
+  [ChartType.LINE]: createLineSpecPipeline,
+  [ChartType.AREA]: createAreaSpecPipeline,
+  [ChartType.SCATTER]: createScatterSpecPipeline,
   
   // VChart饼图类型
-  [ChartType.PIE]: createPieSpecPipeline(),
-  [ChartType.DONUT]: createDonutSpecPipeline(),
+  [ChartType.PIE]: createPieSpecPipeline,
+  [ChartType.DONUT]: createDonutSpecPipeline,
   
   // VTable表格类型
-  [ChartType.TABLE]: createTableSpecPipeline()
+  [ChartType.TABLE]: createTableSpecPipeline
 };
 
 // VizSeed构建Pipeline映射表 - 每个图表类型使用专门的Pipeline
-const vizSeedPipelineMap: Record<string, PipelineFunction> = {
+const vizSeedPipelineMap: Record<string, () => PipelineFunction> = {
   // VChart基础图表类型
-  [ChartType.BAR]: createBarVizSeedPipeline(),
-  [ChartType.COLUMN]: createColumnVizSeedPipeline(),
-  [ChartType.LINE]: createLineVizSeedPipeline(),
-  [ChartType.AREA]: createAreaVizSeedPipeline(),
-  [ChartType.SCATTER]: createScatterVizSeedPipeline(),
+  [ChartType.BAR]: createBarVizSeedPipeline,
+  [ChartType.COLUMN]: createColumnVizSeedPipeline,
+  [ChartType.LINE]: createLineVizSeedPipeline,
+  [ChartType.AREA]: createAreaVizSeedPipeline,
+  [ChartType.SCATTER]: createScatterVizSeedPipeline,
   
   // VChart饼图类型
-  [ChartType.PIE]: createPieVizSeedPipeline(),
-  [ChartType.DONUT]: createDonutVizSeedPipeline(),
+  [ChartType.PIE]: createPieVizSeedPipeline,
+  [ChartType.DONUT]: createDonutVizSeedPipeline,
   
   // VTable表格类型
-  [ChartType.TABLE]: createTableVizSeedPipeline()
+  [ChartType.TABLE]: createTableVizSeedPipeline
 };
 
-// 简化的构建规范函数
+// 简化的构建规范函数 - 按需加载Pipeline
 export const buildSpec = (chartType: string, context: PipelineContext): any => {
   // 直接使用chartType作为key
   const selectedPipeline = specPipelineMap[chartType];
@@ -74,10 +74,10 @@ export const buildSpec = (chartType: string, context: PipelineContext): any => {
   }
   
   // 执行pipeline并返回结果
-  return selectedPipeline(context);
+  return selectedPipeline()(context);
 };
 
-// 构建VizSeed对象的函数 - 按图表类型选择pipeline
+// 构建VizSeed对象的函数 - 按需加载Pipeline
 export const buildVizSeed = (chartType: string, context: PipelineContext): any => {
   const vizSeedPipeline = vizSeedPipelineMap[chartType];
   
@@ -85,7 +85,7 @@ export const buildVizSeed = (chartType: string, context: PipelineContext): any =
     throw new Error(`不支持的VizSeed图表类型: ${chartType}`);
   }
   
-  return vizSeedPipeline(context);
+  return vizSeedPipeline()(context);
 };
 
 // 获取所有支持的pipeline类型

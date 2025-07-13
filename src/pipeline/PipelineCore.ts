@@ -3,6 +3,8 @@
  * 简化的函数式管道处理系统
  */
 
+import { NestedMeasure } from "../types";
+
 // 字段定义接口
 export interface FieldDefinition {
   id: string;
@@ -22,6 +24,7 @@ export interface FieldMap {
 export interface FieldSelection {
   dimensions: string[];  // 用户选择的维度字段ID
   measures: string[];    // 用户选择的指标字段ID
+  groupMeasure?: NestedMeasure<string>[]; // 可选的分组指标字段ID
 }
 
 // Pipeline上下文接口

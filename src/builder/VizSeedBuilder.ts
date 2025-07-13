@@ -1,4 +1,4 @@
-import { VizSeedBuilder as IVizSeedBuilder, ChartSpec } from '../types';
+import { VizSeedBuilder as IVizSeedBuilder, ChartSpec, NestedMeasure } from '../types';
 import { DataSet as IDataSet, FieldInferenceOptions } from '../types/data';
 import { ChartType, ChartConfig, CHART_DATA_REQUIREMENTS, parseChartType } from '../types/charts';
 // VizSeedDSL类已不再使用，改为函数式pipeline构建
@@ -10,7 +10,9 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private data: IDataSet;
   private fieldSelection: FieldSelection = {
     dimensions: [],
-    measures: []
+    measures: [],
+    groupMeasure: []
+    // 新增groupMeasure字段，如需添加请确保类型定义中有 groupMeasure: string[] 或类似声明
   };
   private fieldMap: FieldMap = {};
   private dataMap: Record<string, any>[] = []; // 新增dataMap
@@ -137,10 +139,12 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this;
   }
 
-  public setMeasures(measures: string[]): VizSeedBuilder {
-    this.fieldSelection.measures = [...measures];
+  public setMeasures(measures: NestedMeasure<string>[]): VizSeedBuilder {
+    let flattenedMeasures = measures.flat(5) as string[];
+    this.fieldSelection.measures = flattenedMeasures; // 扁平化嵌套的指标数组
+    this.fieldSelection.groupMeasure = measures;
     // 将选中的指标字段添加到fieldMap
-    measures.forEach(measure => this.addFieldToMap(measure));
+    flattenedMeasures.forEach(flattenedMeasures => this.addFieldToMap(flattenedMeasures));
     return this;
   }
 

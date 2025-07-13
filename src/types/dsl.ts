@@ -2,18 +2,11 @@ import { DataSet } from './data';
 import { ChartConfig, ChartType } from './charts';
 import { ChartSpec } from './specs';
 
-export interface DimensionOperation {
-  type: 'elevate' | 'reduce' | 'group_elevate' | 'group_reduce';
-  field: string;
-  targetField?: string;
-  groupBy?: string[];
-  aggregation?: string;
-}
-
+export type NestedMeasure<T> = T | NestedMeasure<T>[]
 export interface VizSeedBuilder {
   // 字段选择API
   setDimensions(dimensions: string[]): VizSeedBuilder;
-  setMeasures(measures: string[]): VizSeedBuilder;
+  setMeasures(measures: NestedMeasure<string>): VizSeedBuilder;
   addDimensionToArray(dimension: string): VizSeedBuilder;
   addMeasureToArray(measure: string): VizSeedBuilder;
   getDimensions(): string[];
