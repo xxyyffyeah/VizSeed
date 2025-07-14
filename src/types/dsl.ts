@@ -6,7 +6,7 @@ export type NestedMeasure<T> = T | NestedMeasure<T>[]
 export interface VizSeedBuilder {
   // 字段选择API
   setDimensions(dimensions: string[]): VizSeedBuilder;
-  setMeasures(measures: NestedMeasure<string>): VizSeedBuilder;
+  setMeasures(measures: NestedMeasure<string>[]): VizSeedBuilder; // 修正类型
   addDimensionToArray(dimension: string): VizSeedBuilder;
   addMeasureToArray(measure: string): VizSeedBuilder;
   getDimensions(): string[];
@@ -14,15 +14,7 @@ export interface VizSeedBuilder {
   
   setChartType(type: ChartType): VizSeedBuilder;
   
-  // 通道映射方法
-  setXField(field: string): VizSeedBuilder;
-  setYField(field: string): VizSeedBuilder;
-  setColorField(field: string): VizSeedBuilder;
-  setCategoryField(field: string): VizSeedBuilder;
-  setValueField(field: string): VizSeedBuilder;
-  setRowDimension(field: string): VizSeedBuilder;
-  setColumnDimension(field: string): VizSeedBuilder;
-  setMeasureField(field: string): VizSeedBuilder;
+  // 通道映射方法已删除 - 使用自动通道映射
   
   // 返回函数式pipeline构建的对象
   build(): any;

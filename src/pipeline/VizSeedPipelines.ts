@@ -76,7 +76,7 @@ export const createPieVizSeedPipeline = () => {
   const buildPieVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep_1M1D1G,
+    dataReshapeStep,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
@@ -88,7 +88,7 @@ export const createDonutVizSeedPipeline = () => {
   const buildDonutVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep_1M1D1G,
+    dataReshapeStep,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];

@@ -16,9 +16,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   };
   private fieldMap: FieldMap = {};
   private dataMap: Record<string, any>[] = []; // 新增dataMap
-  private chartConfig: Partial<ChartConfig> = {
-    mapping: {}
-  };
+  private chartConfig: Partial<ChartConfig> = {};
   private visualStyle: {
     title?: string;
     description?: string;
@@ -271,49 +269,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this;
   }
 
-  // 通用通道设置方法
-  public setChannel(channel: string, field: string): VizSeedBuilder {
-    if (!this.chartConfig.mapping) {
-      this.chartConfig.mapping = {};
-    }
-    (this.chartConfig.mapping as any)[channel] = field;
-    return this;
-  }
-
-  // 便捷方法 - 通用通道
-  public setXField(field: string): VizSeedBuilder {
-    return this.setChannel('x', field);
-  }
-
-  public setYField(field: string): VizSeedBuilder {
-    return this.setChannel('y', field);
-  }
-
-  public setColorField(field: string): VizSeedBuilder {
-    return this.setChannel('color', field);
-  }
-
-  // 饼图专用方法
-  public setCategoryField(field: string): VizSeedBuilder {
-    return this.setChannel('category', field);
-  }
-
-  public setValueField(field: string): VizSeedBuilder {
-    return this.setChannel('value', field);
-  }
-
-  // 表格专用方法
-  public setRowDimension(field: string): VizSeedBuilder {
-    return this.setChannel('rowDimension', field);
-  }
-
-  public setColumnDimension(field: string): VizSeedBuilder {
-    return this.setChannel('columnDimension', field);
-  }
-
-  public setMeasureField(field: string): VizSeedBuilder {
-    return this.setChannel('measure', field);
-  }
+  // 所有视觉通道设置方法已删除 - 现在使用自动通道映射
 
 
   public setTitle(title: string): VizSeedBuilder {

@@ -43,8 +43,6 @@ const pieVizSeed = pieBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
   .setChartType(ChartType.PIE)
-  .setCategoryField('store')
-  .setValueField('sales')
   .setTitle('店铺业绩分布')
   .build();
 
@@ -69,8 +67,6 @@ const barVizSeed = barBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales'])
   .setChartType(ChartType.BAR)
-  .setXField('store')
-  .setYField('sales')
   .setTitle('各店铺品牌销售对比')
   .build();
 
@@ -94,8 +90,6 @@ const analysisResult = analysisBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
   .setChartType(ChartType.PIE)
-  .setCategoryField('store')
-  .setValueField('sales')
   .build();
 
 if (analysisResult.analysisResult) {
@@ -129,8 +123,6 @@ const noReshapeResult = noReshapeBuilder
   .setDimensions(['store', 'city', 'category', 'brand'])
   .setMeasures(['sales', 'profit'])
   .setChartType(ChartType.PIE)
-  .setCategoryField('store')
-  .setValueField('sales')
   .build();
 
 console.log('关闭重塑的结果:');

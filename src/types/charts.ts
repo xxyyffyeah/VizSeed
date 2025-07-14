@@ -39,12 +39,13 @@ export function getSupportedChartTypes(): string[] {
   return ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'];
 }
 
-// 通道映射接口
+// 通道映射接口 - 仅供内部自动映射使用
 export interface ChannelMapping {
   // 通用通道
   x?: string;           // X轴字段（通常是指标）
   y?: string;           // Y轴字段（可以是维度或指标）
   color?: string;       // 颜色字段（维度）
+  group?: string;       // 分组字段（维度）
   
   // 饼图专用
   category?: string;    // 分类字段（维度）
@@ -58,68 +59,8 @@ export interface ChannelMapping {
 
 export interface ChartConfig {
   type: ChartType;
-  mapping: ChannelMapping;
+  mapping?: ChannelMapping; // 改为可选，由自动映射模块填充
 }
-
-// // 图表类型约束配置
-// export interface ChartRequirement {
-//   required: string[];    // 必须的通道
-//   optional: string[];    // 可选的通道
-//   minFields: number;     // 最少字段数
-//   validation?: (mapping: ChannelMapping) => boolean; // 自定义验证
-// }
-
-// 图表类型约束配置
-// export const CHART_REQUIREMENTS: Record<ChartType, ChartRequirement> = {
-//   line: {
-//     required: ['x'],
-//     optional: ['y', 'color'],
-//     minFields: 1,
-//     validation: (mapping) => !!mapping.x
-//   },
-//   scatter: {
-//     required: ['x', 'y'],
-//     optional: ['color'],
-//     minFields: 2,
-//     validation: (mapping) => !!mapping.x && !!mapping.y
-//   },
-//   pie: {
-//     required: ['category', 'value'],
-//     optional: [],
-//     minFields: 2,
-//     validation: (mapping) => !!mapping.category && !!mapping.value
-//   },
-//   table: {
-//     required: [],
-//     optional: ['rowDimension', 'columnDimension', 'measure'],
-//     minFields: 0
-//   },
-//   // 保留其他类型以免编译错误
-//   bar: {
-//     required: ['y'],
-//     optional: ['x', 'color'],
-//     minFields: 1,
-//     validation: (mapping) => !!mapping.y || !!mapping.value
-//   },
-//   column: {
-//     required: ['y'],
-//     optional: ['x', 'color'],
-//     minFields: 1,
-//     validation: (mapping) => !!mapping.y || !!mapping.value
-//   },
-//   area: {
-//     required: ['x'],
-//     optional: ['y', 'color'],
-//     minFields: 1,
-//     validation: (mapping) => !!mapping.x
-//   },
-//   donut: {
-//     required: ['category', 'value'],
-//     optional: [],
-//     minFields: 2,
-//     validation: (mapping) => !!mapping.category && !!mapping.value
-//   }
-// } as const;
 
 // 通道定义接口
 export interface ChartChannels {

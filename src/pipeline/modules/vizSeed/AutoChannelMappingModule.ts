@@ -1,6 +1,7 @@
 /**
  * 自动通道映射模块
  * 根据重塑后的fieldSelection自动创建chartConfig.mapping
+ * 完全自动化 - 不再支持用户手动设置通道映射
  */
 
 import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
@@ -31,9 +32,9 @@ const mapBarChannels = (fieldSelection: FieldSelection): ChannelMapping => {
   const { dimensions, measures } = fieldSelection;
   
   return {
-    x: dimensions[0],     // X轴使用第一个维度
-    y: measures[0],       // Y轴使用第一个指标
-    color: dimensions[1]  // 颜色使用第二个维度（如果有）
+    x: measures[0],     // X轴使用第一个维度
+    y: dimensions[0],       // Y轴使用第一个指标
+    group: dimensions[1]  // 颜色使用第二个维度（如果有）
   };
 };
 
@@ -141,23 +142,7 @@ export const generateAutoChannelMapping = (
   return filteredMapping;
 };
 
-/**
- * 检查用户是否已设置完整的通道映射
- */
-const hasCompleteUserMapping = (mapping: ChannelMapping, chartType: ChartType): boolean => {
-  const strategy = CHANNEL_MAPPING_STRATEGIES[chartType];
-  if (!strategy) return false;
-  
-  // 生成预期的完整映射
-  const expectedMapping = strategy.mapChannels({ dimensions: [], measures: [] });
-  const expectedChannels = Object.keys(expectedMapping);
-  
-  // 检查是否所有必需通道都已设置
-  return expectedChannels.every(channel => 
-    mapping[channel as keyof ChannelMapping] !== undefined && 
-    mapping[channel as keyof ChannelMapping] !== null
-  );
-};
+// 删除了用户映射检查逻辑 - 现在完全使用自动映射
 
 /**
  * 自动通道映射Pipeline步骤
@@ -167,15 +152,6 @@ export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: Pipe
   
   // 必须有图表类型和字段选择
   if (!chartConfig?.type || !fieldSelection) {
-    return vizSeed;
-  }
-
-  // 获取当前的映射配置
-  const currentMapping = chartConfig.mapping || {};
-  
-  // 如果用户已经设置了完整的通道映射，跳过自动映射
-  if (hasCompleteUserMapping(currentMapping, chartConfig.type)) {
-    console.log(`用户已设置完整通道映射，跳过自动映射`);
     return vizSeed;
   }
 
@@ -190,15 +166,12 @@ export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: Pipe
   // 生成自动通道映射
   const autoMapping = generateAutoChannelMapping(chartConfig.type, fieldSelection);
   
-  // 合并用户设置的映射和自动生成的映射（用户设置优先）
-  const mergedMapping = { ...autoMapping, ...currentMapping };
-  
-  console.log(`🔗 合并后的通道映射:`, mergedMapping);
+  console.log(`🔗 自动通道映射结果:`, autoMapping);
   
   // 更新context中的chartConfig
   const updatedChartConfig = {
     ...chartConfig,
-    mapping: mergedMapping
+    mapping: autoMapping
   };
 
   context = {

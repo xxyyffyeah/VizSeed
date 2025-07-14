@@ -6,7 +6,12 @@
 import { pipeline } from './PipelineCore';
 import { initData } from './modules/spec/DataModule';
 import { configureLegend, configureLabel, configureTooltip, configureAxes } from './modules/spec/StyleModule';
-import { initVChartBar, initVChartPie, initVTableList } from './modules/spec/ChartModule';
+import { initVChartBar } from './modules/spec/init/initVChartBar';
+import { initVChartLine } from './modules/spec/init/initVChartLine';
+import { initVChartArea } from './modules/spec/init/initVChartArea';
+import { initVChartScatter } from './modules/spec/init/initVChartScatter';
+import { initVChartPie } from './modules/spec/init/initVChartPie';
+import { initVTableList } from './modules/spec/init/initVTable';
 
 // 创建BAR图表Pipeline
 export const createBarSpecPipeline = () => pipeline([
@@ -30,7 +35,7 @@ export const createColumnSpecPipeline = () => pipeline([
 
 // 创建LINE图表Pipeline
 export const createLineSpecPipeline = () => pipeline([
-  initVChartBar,
+  initVChartLine,
   initData,
   configureAxes,
   configureLegend,
@@ -40,7 +45,7 @@ export const createLineSpecPipeline = () => pipeline([
 
 // 创建AREA图表Pipeline
 export const createAreaSpecPipeline = () => pipeline([
-  initVChartBar,
+  initVChartArea,
   initData,
   configureAxes,
   configureLegend,
@@ -50,7 +55,7 @@ export const createAreaSpecPipeline = () => pipeline([
 
 // 创建SCATTER图表Pipeline
 export const createScatterSpecPipeline = () => pipeline([
-  initVChartBar,
+  initVChartScatter,
   initData,
   configureAxes,
   configureLegend,
