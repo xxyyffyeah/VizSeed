@@ -6,10 +6,6 @@ import { PipelineStep, PipelineContext, FieldSelection } from '../../../Pipeline
 
 // 获取数据源的辅助函数
 const getDataSource = (vizSeed: any, context: PipelineContext): any[] => {
-  // 优先使用dataMap，如果为空则使用data.rows
-  if(vizSeed.dataMap && vizSeed.dataMap.length > 0){
-    return vizSeed.dataMap;
-  }
   if (context.dataMap && context.dataMap.length > 0) {
     return context.dataMap;
   }
@@ -68,11 +64,9 @@ export const elevateStep: PipelineStep = (vizSeed: any, context: PipelineContext
   const sourceData = getDataSource(vizSeed,context);
   const fieldSelection = getFieldSelection(context);
   
-  // 检查是否需要升维
-  if (fieldSelection.measures.length <= vizSeed.analysisResult.targetStructure.idealDimensions) {
-    return vizSeed;
+  if(fieldSelection.measures.length <= 0) {
+    return vizSeed; // 如果没有指标，直接返回
   }
-
   const reshapedRows: any[] = [];
   const { dimensions, measures } = fieldSelection;
 
@@ -110,10 +104,7 @@ export const elevateStep: PipelineStep = (vizSeed: any, context: PipelineContext
     ...vizSeed,
     dataMap: context.dataMap,
     fieldSelection: context.fieldSelection,
-    fieldMap: context.fieldMap,
-    reshapeInfo: {
-        reshapeType: 'elevate',
-      }
+    fieldMap: context.fieldMap
   };
 };
 
@@ -125,7 +116,7 @@ export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext,
   const fieldSelection = getFieldSelection(context);
   
   // 检查是否需要降维
-  if (fieldSelection.dimensions.length <= vizSeed.analysisResult.targetStructure.idealDimensions - 1) {
+  if (fieldSelection.dimensions.length <= 0) {
     return vizSeed;
   }
 
@@ -200,9 +191,6 @@ export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext,
     ...vizSeed,
     dataMap: context.dataMap,
     fieldSelection: context.fieldSelection,
-    fieldMap: context.fieldMap,
-    reshapeInfo: {
-      reshapeType: 'reduce'
-    }
+    fieldMap: context.fieldMap
   };
 };

@@ -48,7 +48,6 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       this.data = dataOrRows;
     }
     
-
   }
   
   // 根据字段名从DataSet创建字段定义
@@ -131,11 +130,13 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return Object.keys(this.fieldMap);
   }
 
-  // 字段选择API - 选择同时自动添加到fieldMap
+  // 字段选择API - 选择同时自动添加到fieldMap和更新dataMap
   public setDimensions(dimensions: string[]): VizSeedBuilder {
     this.fieldSelection.dimensions = [...dimensions];
     // 将选中的维度字段添加到fieldMap
     dimensions.forEach(dim => this.addFieldToMap(dim));
+    // 更新dataMap以包含选定字段的数据
+    this.updateDataMap();
     return this;
   }
 
@@ -145,6 +146,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     this.fieldSelection.groupMeasure = measures;
     // 将选中的指标字段添加到fieldMap
     flattenedMeasures.forEach(flattenedMeasures => this.addFieldToMap(flattenedMeasures));
+    // 更新dataMap以包含选定字段的数据
+    this.updateDataMap();
     return this;
   }
 
@@ -153,6 +156,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       this.fieldSelection.dimensions.push(dimension);
       // 添加到fieldMap
       this.addFieldToMap(dimension);
+      // 更新dataMap
+      this.updateDataMap();
     }
     return this;
   }
@@ -162,6 +167,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       this.fieldSelection.measures.push(measure);
       // 添加到fieldMap
       this.addFieldToMap(measure);
+      // 更新dataMap
+      this.updateDataMap();
     }
     return this;
   }
@@ -219,6 +226,22 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   // 检查字段是否存在
   public hasField(fieldName: string): boolean {
     return this.data.fields.some(f => f.name === fieldName);
+  }
+
+  // 更新dataMap以包含选定字段的数据
+  private updateDataMap(): void {
+    const selectedFields = [...this.fieldSelection.dimensions, ...this.fieldSelection.measures];
+    
+    // 过滤数据只包含选中的字段
+    this.dataMap = this.data.rows.map(row => {
+      const filteredRow: Record<string, any> = {};
+      selectedFields.forEach(field => {
+        if (row.hasOwnProperty(field)) {
+          filteredRow[field] = row[field];
+        }
+      });
+      return filteredRow;
+    });
   }
 
 

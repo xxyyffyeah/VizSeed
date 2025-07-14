@@ -6,20 +6,13 @@
 import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
 import { CHART_DATA_REQUIREMENTS } from '../../../types/charts';
 import { elevateStep, reduceStep } from './utils/ElevateAndReduce';
+import { copyDimensionStep } from './utils/DimensionAndMeasureCopy';
 
-// 重塑结果接口
-export interface DataReshapeResult {
-  reshapeType: 'elevate' | 'reduce' | 'composite' | 'none';
-  reshapeInfo?: {
-    strategy: string;
-    steps: string[];
-    operations: any[];
-  };
-}
+
 
 // 获取字段选择的辅助函数（仅本模块使用）
 const getFieldSelection = (context: PipelineContext): FieldSelection => {
-  return context.fieldSelection || { dimensions: [], measures: [] };
+  return context.fieldSelection;
 };
 
 // elevateStep 和 reduceStep 已从 './utils/ElevateAndReduce' 导入
@@ -34,10 +27,6 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
     return vizSeed;
   }
 
-  // 初始化dataMap（如果为空）
-  if (!context.dataMap || context.dataMap.length === 0) {
-    context.dataMap = [...data.rows];
-  }
   
   // 获取图表要求
   const requirement = CHART_DATA_REQUIREMENTS[chartConfig.type as keyof typeof CHART_DATA_REQUIREMENTS];

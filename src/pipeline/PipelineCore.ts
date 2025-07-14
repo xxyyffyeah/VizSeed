@@ -38,7 +38,6 @@ export interface PipelineContext {
   
   // 维度重塑相关
   analysisResult?: any;       // 图表适配分析结果
-  reshapeDecision?: 'elevate' | 'reduce' | 'none';  // 重塑决策
   
   [key: string]: any;
 }

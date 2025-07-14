@@ -33,9 +33,11 @@ console.log(JSON.stringify(salesData, null, 2));
 // 构建VizSeed和Spec
 const builder = new VizSeedBuilder(salesData);
 const vizSeedDSL = builder
-  .setChartType(ChartType.PIE)
+  .setChartType('pie')
   .setDimensions(['store', 'city', 'category', 'brand'])
-  .setMeasures(['sales', 'profit', 'cost', 'quantity', 'rating'])
+  .setDimensions([])
+  // .setMeasures(['sales', 'profit', 'cost', 'quantity', 'rating'])
+  .setMeasures(['sales'])
   .build();
 
 const vchartSpec = builder.buildSpec();

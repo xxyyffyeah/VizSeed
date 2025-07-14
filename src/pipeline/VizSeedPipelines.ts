@@ -7,101 +7,102 @@ import { pipeline, PipelineStep } from './PipelineCore';
 import { chartAdapterStep } from './modules/vizSeed/ChartAdapterModule';
 import { vizSeedInitStep } from './modules/vizSeed/VizSeedInitModule';
 import { dataReshapeStep } from './modules/vizSeed/DataReshapeModule';
+import { dataReshapeStep_1M1D1G } from './modules/vizSeed/dataReshape/DataReshapeModule_1M1D1G';
 import { vizSeedCleanupStep } from './modules/vizSeed/VizSeedCleanupModule';
 import { autoChannelMappingStep } from './modules/vizSeed/AutoChannelMappingModule';
 
 // 创建BAR图表VizSeed Pipeline
 export const createBarVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildBarVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep,
+    dataReshapeStep_1M1D1G,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildBarVizSeedSteps, {});
 };
 
 // 创建COLUMN图表VizSeed Pipeline
 export const createColumnVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildColumnVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep,
+    dataReshapeStep_1M1D1G,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildColumnVizSeedSteps, {});
 };
 
 // 创建LINE图表VizSeed Pipeline
 export const createLineVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildLineVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep,
+    dataReshapeStep_1M1D1G,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildLineVizSeedSteps, {});
 };
 
 // 创建AREA图表VizSeed Pipeline
 export const createAreaVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildAreaVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep,
+    dataReshapeStep_1M1D1G,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildAreaVizSeedSteps, {});
 };
 
 // 创建SCATTER图表VizSeed Pipeline
 export const createScatterVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildScatterVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
     dataReshapeStep,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildScatterVizSeedSteps, {});
 };
 
 // 创建PIE图表VizSeed Pipeline
 export const createPieVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildPieVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep,
+    dataReshapeStep_1M1D1G,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildPieVizSeedSteps, {});
 };
 
 // 创建DONUT图表VizSeed Pipeline
 export const createDonutVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildDonutVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
-    dataReshapeStep,
+    dataReshapeStep_1M1D1G,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildDonutVizSeedSteps, {});
 };
 
 // 创建TABLE图表VizSeed Pipeline
 export const createTableVizSeedPipeline = () => {
-  const buildVizSeedSteps: PipelineStep[] = [
+  const buildTableVizSeedSteps: PipelineStep[] = [
     vizSeedInitStep,
     chartAdapterStep,
     dataReshapeStep,
     autoChannelMappingStep,
     vizSeedCleanupStep
   ];
-  return pipeline(buildVizSeedSteps, {});
+  return pipeline(buildTableVizSeedSteps, {});
 };
