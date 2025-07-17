@@ -26,7 +26,7 @@ export const dataReshapeStep_1M1D1G: PipelineStep = (vizSeed: any, context: Pipe
   if (context.fieldSelection.dimensions.length === targetDims && context.fieldSelection.measures.length === targetMeas) {
     return {
       ...vizSeed,
-      dataMap: context.dataMap,
+      data: context.data,
       reshapeInfo: {
         steps: []
       }
@@ -79,7 +79,7 @@ export const dataReshapeStep_1M1D1G: PipelineStep = (vizSeed: any, context: Pipe
 
   return {
     ...vizSeed,
-    dataMap: context.dataMap,
+    data: context.data,
     reshapeInfo: {
       steps: operations
     }

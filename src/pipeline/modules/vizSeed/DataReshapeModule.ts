@@ -23,7 +23,7 @@ const getFieldSelection = (context: PipelineContext): FieldSelection => {
 export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
   const { data, chartConfig ,fieldSelection} = context;
   
-  if (!data?.rows || !chartConfig?.type) {
+  if (!data || !chartConfig?.type) {
     return vizSeed;
   }
 
@@ -34,7 +34,7 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
   if (!requirement) {
     return {
       ...vizSeed,
-      dataMap: context.dataMap,
+      data: context.data,
       reshapeInfo: {
         reshapeType: 'none',
         reason: '未找到图表类型的数据要求'
@@ -51,7 +51,7 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
   if (currentDims === targetDims && currentMeas === targetMeas) {
     return {
       ...vizSeed,
-      dataMap: context.dataMap,
+      data: context.data,
       reshapeInfo: {
         reshapeType: 'none'
       }
@@ -94,7 +94,7 @@ export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineCon
 
   return {
     ...vizSeed,
-    dataMap: context.dataMap,
+    data: context.data,
     reshapeInfo: {
       strategy: `${currentDims}维度${currentMeas}指标 → ${targetDims}维度${targetMeas}指标`,
       steps: operations,

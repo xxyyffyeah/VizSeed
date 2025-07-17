@@ -7,11 +7,8 @@ import { PipelineStep, PipelineContext, FieldSelection, FieldDefinition } from '
 
 // 获取数据源的辅助函数
 const getDataSource = (vizSeed: any, context: PipelineContext): any[] => {
-  // 优先使用dataMap，如果为空则使用data.rows
-  if (context.dataMap && context.dataMap.length > 0) {
-    return context.dataMap;
-  }
-  return context.data?.rows || [];
+  // 优先使用data，如果为空则使用data.rows
+  return context.data;
 };
 
 // 获取字段选择的辅助函数
@@ -81,12 +78,12 @@ export const copyDimensionStep: PipelineStep = (vizSeed: any, context: PipelineC
   // 更新fieldMap和fieldSelection
   updateFieldMapAndFieldSelection(context, newFieldSelection, originalField, copiedFieldName);
   
-  // 更新dataMap
-  context.dataMap = updatedRows;
+  // 更新data
+  context.data = updatedRows;
   
   return {
     ...vizSeed,
-    dataMap: context.dataMap,
+    data: context.data,
     fieldSelection: context.fieldSelection,
     fieldMap: context.fieldMap,
     copyInfo: {
@@ -140,12 +137,12 @@ export const copyMeasureStep: PipelineStep = (vizSeed: any, context: PipelineCon
   // 更新fieldMap和fieldSelection
   updateFieldMapAndFieldSelection(context, newFieldSelection, originalField, copiedFieldName);
   
-  // 更新dataMap
-  context.dataMap = updatedRows;
+  // 更新data
+  context.data = updatedRows;
   
   return {
     ...vizSeed,
-    dataMap: context.dataMap,
+    data: context.data,
     fieldSelection: context.fieldSelection,
     fieldMap: context.fieldMap
   };

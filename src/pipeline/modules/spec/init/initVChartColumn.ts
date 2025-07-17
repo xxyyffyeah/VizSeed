@@ -5,7 +5,7 @@
 import { PipelineStep, PipelineContext } from '../../../PipelineCore';
 
 // VChart柱状图/条形图初始化（支持多种类型）
-export const initVChartBar: PipelineStep = (spec: any, context: PipelineContext) => {
+export const initVChartColumn: PipelineStep = (spec: any, context: PipelineContext) => {
   const { chartConfig } = context;
   const chartType = 'bar';
   const mapping = chartConfig?.mapping || {};
@@ -14,7 +14,6 @@ export const initVChartBar: PipelineStep = (spec: any, context: PipelineContext)
   const baseSpec = {
     ...spec,
     type: chartType,
-    direction: 'horizontal',
     xField: mapping.x || mapping.category || 'category',
     yField: mapping.y || mapping.value || 'value',
   };

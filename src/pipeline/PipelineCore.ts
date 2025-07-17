@@ -29,11 +29,10 @@ export interface FieldSelection {
 
 // Pipeline上下文接口
 export interface PipelineContext {
-  data: any;
   chartConfig: any;
   fieldMap: FieldMap;        // 完整字段映射定义
   fieldSelection: FieldSelection;  // 用户字段选择
-  dataMap: Record<string, any>[]; // 数据映射数组
+  data: Record<string, any>[]; // 数据映射数组
   visualStyle?: any;
   
   // 维度重塑相关
@@ -53,3 +52,4 @@ export const pipeline = <T>(steps: PipelineStep<T>[], initialValue: T) => {
     }, initialValue);
   };
 };
+

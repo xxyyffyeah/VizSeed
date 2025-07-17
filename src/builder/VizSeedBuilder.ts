@@ -7,7 +7,7 @@ import { PipelineContext, FieldMap, FieldSelection } from '../pipeline/PipelineC
 import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
-  private data: IDataSet;
+  private dataset: IDataSet;
   private fieldSelection: FieldSelection = {
     dimensions: [],
     measures: [],
@@ -15,7 +15,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     // 新增groupMeasure字段，如需添加请确保类型定义中有 groupMeasure: string[] 或类似声明
   };
   private fieldMap: FieldMap = {};
-  private dataMap: Record<string, any>[] = []; // 新增dataMap
+  private data: Record<string, any>[] = []; // 新增data
   private chartConfig: Partial<ChartConfig> = {};
   private visualStyle: {
     title?: string;
@@ -33,24 +33,24 @@ export class VizSeedBuilder implements IVizSeedBuilder {
 
   // 构造函数重载：支持直接传入rows或DataSet
   constructor(rows: Record<string, any>[], options?: FieldInferenceOptions);
-  constructor(data: IDataSet);
+  constructor(dataset: IDataSet);
   constructor(
     dataOrRows: IDataSet | Record<string, any>[], 
     options?: FieldInferenceOptions
   ) {
     if (Array.isArray(dataOrRows)) {
       // 直接传入rows数组的情况
-      this.data = new DataSet(dataOrRows, options);
+      this.dataset = new DataSet(dataOrRows, options);
     } else {
       // 传入DataSet对象的情况
-      this.data = dataOrRows;
+      this.dataset = dataOrRows;
     }
     
   }
   
   // 根据字段名从DataSet创建字段定义
   private createFieldDefinition(fieldName: string): any {
-    const field = this.data.fields.find(f => f.name === fieldName);
+    const field = this.dataset.fields.find(f => f.name === fieldName);
     if (!field) {
       throw new Error(`字段 ${fieldName} 不存在于数据集中`);
     }
@@ -67,7 +67,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   
   // 提取字段的域值
   private extractFieldDomain(fieldName: string): any[] {
-    const values = this.data.rows.map(row => row[fieldName]);
+    const values = this.dataset.rows.map(row => row[fieldName]);
     return [...new Set(values)].slice(0, 10); // 最多10个示例值
   }
   
@@ -105,22 +105,22 @@ export class VizSeedBuilder implements IVizSeedBuilder {
 
   // 获取数据集信息
   public getDataSet(): IDataSet {
-    return this.data;
+    return this.dataset;
   }
 
   // 获取所有可用字段（从 DataSet）
   public getAvailableFields(): string[] {
-    return this.data.fields.map(f => f.name);
+    return this.dataset.fields.map(f => f.name);
   }
 
   // 获取可用维度字段（从 DataSet）
   public getAvailableDimensions(): string[] {
-    return this.data.fields.filter(f => f.role === 'dimension').map(f => f.name);
+    return this.dataset.fields.filter(f => f.role === 'dimension').map(f => f.name);
   }
 
   // 获取可用指标字段（从 DataSet）
   public getAvailableMeasures(): string[] {
-    return this.data.fields.filter(f => f.role === 'measure').map(f => f.name);
+    return this.dataset.fields.filter(f => f.role === 'measure').map(f => f.name);
   }
   
   // 获取当前选中的字段（从 fieldMap）
@@ -128,12 +128,12 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return Object.keys(this.fieldMap);
   }
 
-  // 字段选择API - 选择同时自动添加到fieldMap和更新dataMap
+  // 字段选择API - 选择同时自动添加到fieldMap和更新data
   public setDimensions(dimensions: string[]): VizSeedBuilder {
     this.fieldSelection.dimensions = [...dimensions];
     // 将选中的维度字段添加到fieldMap
     dimensions.forEach(dim => this.addFieldToMap(dim));
-    // 更新dataMap以包含选定字段的数据
+    // 更新data以包含选定字段的数据
     this.updateDataMap();
     return this;
   }
@@ -144,7 +144,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     this.fieldSelection.groupMeasure = measures;
     // 将选中的指标字段添加到fieldMap
     flattenedMeasures.forEach(flattenedMeasures => this.addFieldToMap(flattenedMeasures));
-    // 更新dataMap以包含选定字段的数据
+    // 更新data以包含选定字段的数据
     this.updateDataMap();
     return this;
   }
@@ -154,7 +154,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       this.fieldSelection.dimensions.push(dimension);
       // 添加到fieldMap
       this.addFieldToMap(dimension);
-      // 更新dataMap
+      // 更新data
       this.updateDataMap();
     }
     return this;
@@ -165,7 +165,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       this.fieldSelection.measures.push(measure);
       // 添加到fieldMap
       this.addFieldToMap(measure);
-      // 更新dataMap
+      // 更新data
       this.updateDataMap();
     }
     return this;
@@ -218,20 +218,20 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   
   // 获取所有可用字段名称（从 DataSet）
   public getAvailableFieldNames(): string[] {
-    return this.data.fields.map(f => f.name);
+    return this.dataset.fields.map(f => f.name);
   }
   
   // 检查字段是否存在
   public hasField(fieldName: string): boolean {
-    return this.data.fields.some(f => f.name === fieldName);
+    return this.dataset.fields.some(f => f.name === fieldName);
   }
 
-  // 更新dataMap以包含选定字段的数据
+  // 更新data以包含选定字段的数据
   private updateDataMap(): void {
     const selectedFields = [...this.fieldSelection.dimensions, ...this.fieldSelection.measures];
     
     // 过滤数据只包含选中的字段
-    this.dataMap = this.data.rows.map(row => {
+    this.data = this.dataset.rows.map(row => {
       const filteredRow: Record<string, any> = {};
       selectedFields.forEach(field => {
         if (row.hasOwnProperty(field)) {
@@ -302,11 +302,10 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     
     // 使用简化的Pipeline构建VizSeed对象
     const context: PipelineContext = {
-      data: this.data,
       chartConfig: this.chartConfig,
       fieldMap: this.fieldMap,
       fieldSelection: this.fieldSelection,
-      dataMap: this.dataMap,
+      data: this.data,
       visualStyle: this.visualStyle
     };
 
@@ -328,11 +327,10 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       
       // 使用构建后的VizSeed数据构建规范上下文
       const specContext: PipelineContext = {
-        data: this.data,
         chartConfig: vizSeed.chartConfig, // 使用经过自动映射的配置
         fieldMap: vizSeed.fieldMap,
         fieldSelection: vizSeed.currentFieldSelection || this.fieldSelection,
-        dataMap: vizSeed.dataMap,
+        data: vizSeed.data,
         visualStyle: this.visualStyle
       };
 

@@ -62,3 +62,74 @@ export const configureAxes: PipelineStep = (spec: any, context: PipelineContext)
     ]
   };
 };
+
+
+// 基于功能设计， 而非图标类型。
+export const xBandAxis: PipelineStep = (spec: any, context: PipelineContext) => {
+  const result ={ ...spec }
+  if(!result.axes){
+    result.axes = [];
+  }
+
+  result.axes.push({
+    orient: 'bottom',
+    type: 'band'
+  });
+  return result
+}
+
+export const xLinearAxis: PipelineStep = (spec: any, context: PipelineContext) => {
+  const result ={ ...spec }
+  if(!result.axes){
+    result.axes = [];
+  } 
+  result.axes.push({
+    orient: 'bottom',
+    type: 'linear'
+  });
+  return result
+}
+
+export const yLinaerAxis: PipelineStep = (spec: any, context: PipelineContext) => {
+  const result ={ ...spec }
+  if(!result.axes){
+    result.axes = [];
+  }
+
+  result.axes.push({
+    orient: 'left',
+    type: 'linear'
+  });
+  return result
+}
+
+export const yBandAxis: PipelineStep = (spec: any, context: PipelineContext) => {
+  const result ={ ...spec }
+  if(!result.axes){
+    result.axes = [];
+  }
+
+  result.axes.push({
+    orient: 'left',
+    type: 'band'
+  });
+  return result
+}
+
+export const yyLinearAxis: PipelineStep = (spec: any, context: PipelineContext) => {
+  const result ={ ...spec }
+  if(!result.axes){
+    result.axes = [];
+  }
+
+   result.axes.push({
+    orient: 'left',
+    type: 'linear'
+  });
+
+  result.axes.push({
+    orient: 'right',
+    type: 'linear'
+  });
+  return result
+}

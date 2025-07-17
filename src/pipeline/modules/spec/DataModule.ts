@@ -7,11 +7,11 @@ import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // 数据初始化步骤
 export const initData: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { dataMap, data } = context;
+  const { data} = context;
 
   return {
     ...spec,
-    data: dataMap || data.rows
+    data: data
   };
 };
 

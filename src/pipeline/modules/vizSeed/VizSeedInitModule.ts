@@ -10,11 +10,11 @@ import { PipelineStep, PipelineContext } from '../../PipelineCore';
  * 创建包含5个核心属性的VizSeed对象
  */
 export const vizSeedInitStep: PipelineStep = (_vizSeed: any, context: PipelineContext) => {
-  const { chartConfig, fieldMap, dataMap, visualStyle} = context;
+  const { chartConfig, fieldMap, data, visualStyle} = context;
   
   return {
     chartType: chartConfig?.type || 'bar',
-    dataMap: dataMap || [], // 初始为空
+    data: data || [], // 初始为空
     fieldMap: fieldMap || {},
     chartConfig: chartConfig || {},
     visualStyle: visualStyle || {}

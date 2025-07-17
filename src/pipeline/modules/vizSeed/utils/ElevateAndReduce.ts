@@ -6,10 +6,7 @@ import { PipelineStep, PipelineContext, FieldSelection } from '../../../Pipeline
 
 // 获取数据源的辅助函数
 const getDataSource = (vizSeed: any, context: PipelineContext): any[] => {
-  if (context.dataMap && context.dataMap.length > 0) {
-    return context.dataMap;
-  }
-  return context.data?.rows || [];
+  return context.data || [];
 };
 
 // 获取字段选择的辅助函数
@@ -97,12 +94,12 @@ export const elevateStep: PipelineStep = (vizSeed: any, context: PipelineContext
   // 更新fieldMap
   updateFieldMapAndFieldSelection(context, newFieldSelection);
   
-  // 更新dataMap
-  context.dataMap = reshapedRows;
+  // 更新data
+  context.data = reshapedRows;
   
   return {
     ...vizSeed,
-    dataMap: context.dataMap,
+    data: context.data,
     fieldSelection: context.fieldSelection,
     fieldMap: context.fieldMap
   };
@@ -184,12 +181,12 @@ export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext,
   // 更新fieldMap
   updateFieldMapAndFieldSelection(context, newFieldSelection);
   
-  // 更新dataMap
-  context.dataMap = reshapedRows;
+  // 更新data
+  context.data = reshapedRows;
   
   return {
     ...vizSeed,
-    dataMap: context.dataMap,
+    data: context.data,
     fieldSelection: context.fieldSelection,
     fieldMap: context.fieldMap
   };

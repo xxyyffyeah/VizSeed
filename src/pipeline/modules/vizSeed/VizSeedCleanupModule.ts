@@ -7,14 +7,14 @@ import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 /**
  * VizSeed最终清理步骤
- * 只保留5个核心属性：chartType、dataMap、fieldMap、chartConfig、visualStyle
+ * 只保留5个核心属性：chartType、data、fieldMap、chartConfig、visualStyle
  */
 export const vizSeedCleanupStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
   const { visualStyle } = context;
   
   return {
     chartType: vizSeed.chartType,
-    dataMap: vizSeed.dataMap,
+    data: vizSeed.data,
     fieldMap: vizSeed.fieldMap,
     chartConfig: vizSeed.chartConfig,
     visualStyle: {
