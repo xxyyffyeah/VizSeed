@@ -7,7 +7,7 @@ import { chartAdapterStep } from '../ChartAdapterModule';
 import { vizSeedInitStep } from '../VizSeedInitModule';
 import { dataReshapeStep } from '../DataReshapeModule';
 import { vizSeedCleanupStep } from '../VizSeedCleanupModule';
-import { autoChannelMappingStep } from '../AutoChannelMappingModule';
+import { mapTwoMeasures } from '../channelMapping/TwoMeasureMapping';
 
 // 创建SCATTER图表VizSeed Pipeline
 export const createScatterVizSeedPipeline = () => {
@@ -15,7 +15,7 @@ export const createScatterVizSeedPipeline = () => {
     vizSeedInitStep,
     chartAdapterStep,
     dataReshapeStep,
-    autoChannelMappingStep,
+    mapTwoMeasures,
     vizSeedCleanupStep
   ];
   return pipeline(buildScatterVizSeedSteps, {});

@@ -7,7 +7,7 @@ import { chartAdapterStep } from '../ChartAdapterModule';
 import { vizSeedInitStep } from '../VizSeedInitModule';
 import { dataReshapeStep } from '../DataReshapeModule';
 import { vizSeedCleanupStep } from '../VizSeedCleanupModule';
-import { autoChannelMappingStep } from '../AutoChannelMappingModule';
+import { mapCategoryValue } from '../channelMapping/CategoryValueMapping';
 
 // 创建PIE图表VizSeed Pipeline
 export const createPieVizSeedPipeline = () => {
@@ -15,7 +15,7 @@ export const createPieVizSeedPipeline = () => {
     vizSeedInitStep,
     chartAdapterStep,
     dataReshapeStep,
-    autoChannelMappingStep,
+    mapCategoryValue,
     vizSeedCleanupStep
   ];
   return pipeline(buildPieVizSeedSteps, {});

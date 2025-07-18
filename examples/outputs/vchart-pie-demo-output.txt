@@ -93,7 +93,7 @@
 ]
 
 ⏳ 构建VizSeed DSL...
-自动通道映射: 图表类型为 bar，字段选择: {
+🎨 水平条形图自动通道映射，字段选择: {
   "dimensions": [
     "__MeasureName__",
     "__MeasureName___copy"
@@ -102,18 +102,13 @@
     "__MeasureValue__"
   ]
 }
-🎨 自动通道映射 (柱状图: x(维度) + y(指标) + color(可选维度)): {
-  "x": "__MeasureValue__",
-  "y": "__MeasureName__",
-  "group": "__MeasureName___copy"
-}
-🔗 自动通道映射结果: {
+🔗 水平条形图通道映射结果: {
   "x": "__MeasureValue__",
   "y": "__MeasureName__",
   "group": "__MeasureName___copy"
 }
 ⏳ 构建VChart规范...
-自动通道映射: 图表类型为 bar，字段选择: {
+🎨 水平条形图自动通道映射，字段选择: {
   "dimensions": [
     "__MeasureName__",
     "__MeasureName___copy"
@@ -122,12 +117,7 @@
     "__MeasureValue__"
   ]
 }
-🎨 自动通道映射 (柱状图: x(维度) + y(指标) + color(可选维度)): {
-  "x": "__MeasureValue__",
-  "y": "__MeasureName__",
-  "group": "__MeasureName___copy"
-}
-🔗 自动通道映射结果: {
+🔗 水平条形图通道映射结果: {
   "x": "__MeasureValue__",
   "y": "__MeasureName__",
   "group": "__MeasureName___copy"

@@ -7,7 +7,7 @@ import { chartAdapterStep } from '../ChartAdapterModule';
 import { vizSeedInitStep } from '../VizSeedInitModule';
 import { dataReshapeStep } from '../DataReshapeModule';
 import { vizSeedCleanupStep } from '../VizSeedCleanupModule';
-import { autoChannelMappingStep } from '../AutoChannelMappingModule';
+import { mapCategoryValue } from '../channelMapping/CategoryValueMapping';
 
 // 创建DONUT图表VizSeed Pipeline
 export const createDonutVizSeedPipeline = () => {
@@ -15,7 +15,7 @@ export const createDonutVizSeedPipeline = () => {
     vizSeedInitStep,
     chartAdapterStep,
     dataReshapeStep,
-    autoChannelMappingStep,
+    mapCategoryValue,
     vizSeedCleanupStep
   ];
   return pipeline(buildDonutVizSeedSteps, {});

@@ -102,7 +102,7 @@ VizSeedBuilder -> PipelineRegistry -> VizSeed Pipeline -> Spec Pipeline -> 图�
      |                 |                    └── VizSeedInitModule
      |                 |                         ChartAdapterModule
      |                 |                         DataReshapeModule
-     |                 |                         AutoChannelMappingModule
+     |                 |                         ChannelMappingSteps
      |                 |                         VizSeedCleanupModule
      |                 └── buildVizSeed()
      |                     buildSpec()
@@ -134,7 +134,12 @@ VizSeed核心库 (TypeScript)
    - `VizSeedInitModule.ts`: VizSeed初始化模块
    - `ChartAdapterModule.ts`: 图表适配模块
    - `DataReshapeModule.ts`: 数据重塑模块
-   - `AutoChannelMappingModule.ts`: 自动通道映射模块
+   - `channelMapping/`: 按功能分类的通道映射步骤
+     - `CategoryValueMapping.ts`: 类别-数值映射（饼图、环形图）
+     - `HorizontalBarMapping.ts`: 水平条形图映射（柱状图、条形图）
+     - `TimeSeriesMapping.ts`: 时间序列映射（折线图、面积图）
+     - `TwoMeasureMapping.ts`: 双指标映射（散点图）
+     - `TableRowColumnMapping.ts`: 表格行列映射（表格）
    - `VizSeedCleanupModule.ts`: VizSeed清理模块
    - `dataReshape/DataReshapeModule_1M1D1G.ts`: 1M1D1G数据重塑模块
    - `utils/`: 维度操作工具
