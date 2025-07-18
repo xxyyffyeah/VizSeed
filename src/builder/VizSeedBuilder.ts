@@ -18,17 +18,39 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private data: Record<string, any>[] = []; // 新增data
   private chartType: ChartType = ChartType.BAR;
   private encodes: ChannelMapping[] = [];
-  private visualStyle: {
-    title?: string;
-    description?: string;
-    legend?: boolean;
-    label?: boolean;
-    tooltip?: boolean;
-    vizSeedObject?: any;
-  } = {
-    legend: true,
-    label: true,
-    tooltip: true
+  private visualStyle = {
+    title: '',
+    color: {
+      colors: [] as Array<{id: string, name: string, value: string}>
+    },
+    legend: {
+      enable: true,
+      position: '',
+    },
+    label: {
+      enable: true,
+    },
+    tooltip: {
+      enable: true,
+    },
+    animation: {
+      enable: true,
+    },
+    responsive: {
+      widthMode: 'standard' as 'standard' | 'adaptive',
+      heightMode: 'adaptive' as 'standard' | 'adaptive',
+    },
+    yAxis: {},
+    xAxis: {},
+    columnStack: {
+      stackRadius: 5,
+    },
+    pie: {},
+    pivotPie: {},
+    doughnut: {},
+    line: {
+      lineStyle: {},
+    }
   };
   private theme: 'light' | 'dark' | 'custom' = 'light'; // 默认主题
   private version: string = '0.1.0'; // 默认版本信息
@@ -268,26 +290,36 @@ export class VizSeedBuilder implements IVizSeedBuilder {
 
 
   public setTitle(title: string): VizSeedBuilder {
-    if (!this.visualStyle) this.visualStyle = {};
     this.visualStyle.title = title;
     return this;
   }
 
   public setLegend(visible: boolean = true): VizSeedBuilder {
-    if (!this.visualStyle) this.visualStyle = {};
-    this.visualStyle.legend = visible;
+    this.visualStyle.legend.enable = visible;
     return this;
   }
 
   public setLabel(visible: boolean = true): VizSeedBuilder {
-    if (!this.visualStyle) this.visualStyle = {};
-    this.visualStyle.label = visible;
+    this.visualStyle.label.enable = visible;
     return this;
   }
 
   public setTooltip(visible: boolean = true): VizSeedBuilder {
-    if (!this.visualStyle) this.visualStyle = {};
-    this.visualStyle.tooltip = visible;
+    this.visualStyle.tooltip.enable = visible;
+    return this;
+  }
+
+  public setStyle(styleOptions: any): VizSeedBuilder {
+    // 简单的对象合并，支持嵌套属性更新
+    Object.keys(styleOptions).forEach(key => {
+      if (typeof styleOptions[key] === 'object' && styleOptions[key] !== null && !Array.isArray(styleOptions[key])) {
+        // 对象类型：合并嵌套属性
+        (this.visualStyle as any)[key] = { ...(this.visualStyle as any)[key], ...styleOptions[key] };
+      } else {
+        // 基础类型或数组：直接覆盖
+        (this.visualStyle as any)[key] = styleOptions[key];
+      }
+    });
     return this;
   }
 

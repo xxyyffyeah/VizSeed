@@ -11,19 +11,13 @@ import { PipelineStep, PipelineContext } from '../PipelineCore';
  * en
  */
 export const vizSeedCleanupStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
-  const { visualStyle } = context;
   
   return {
     chartType: context.chartType,
     data: context.data,
     fieldMap: context.fieldMap,
     encodes: context.encodes,
-    style: {
-      title: visualStyle?.title,
-      legend: visualStyle?.legend !== false,
-      label: visualStyle?.label !== false,
-      tooltip: visualStyle?.tooltip !== false
-    },
+    style: context.visualStyle,
     dimensions: context.fieldSelection?.dimensions || [],
     measures: context.fieldSelection?.measures || [],
     rowDimensions: [],
