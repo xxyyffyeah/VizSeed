@@ -5,8 +5,8 @@
  * 适用于：饼图、环形图等需要2维1指标的图表
  */
 
-import { PipelineStep, PipelineContext, FieldSelection } from '../../../PipelineCore';
-import { CHART_DATA_REQUIREMENTS } from '../../../../types/charts';
+import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
+import { CHART_DATA_REQUIREMENTS } from '../../../types/charts';
 import { elevateStep, reduceStep } from '../utils/ElevateAndReduce';
 import { copyDimensionStep } from '../utils/DimensionAndMeasureCopy';
 

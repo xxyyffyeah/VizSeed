@@ -4,8 +4,8 @@
  * 完全自动化 - 不再支持用户手动设置通道映射
  */
 
-import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
-import { ChartType, ChannelMapping } from '../../../types/charts';
+import { PipelineStep, PipelineContext, FieldSelection } from '../PipelineCore';
+import { ChartType, ChannelMapping } from '../../types/charts';
 
 // 通道映射策略接口
 interface ChannelMappingStrategy {

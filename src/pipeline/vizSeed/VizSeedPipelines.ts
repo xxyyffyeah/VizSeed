@@ -3,13 +3,13 @@
  * 使用共享步骤避免重复代码
  */
 
-import { pipeline, PipelineStep } from './PipelineCore';
-import { chartAdapterStep } from './modules/vizSeed/ChartAdapterModule';
-import { vizSeedInitStep } from './modules/vizSeed/VizSeedInitModule';
-import { dataReshapeStep } from './modules/vizSeed/DataReshapeModule';
-import { dataReshapeStep_1M1D1G } from './modules/vizSeed/dataReshape/DataReshapeModule_1M1D1G';
-import { vizSeedCleanupStep } from './modules/vizSeed/VizSeedCleanupModule';
-import { autoChannelMappingStep } from './modules/vizSeed/AutoChannelMappingModule';
+import { pipeline, PipelineStep } from '../PipelineCore';
+import { chartAdapterStep } from './ChartAdapterModule';
+import { vizSeedInitStep } from './VizSeedInitModule';
+import { dataReshapeStep } from './DataReshapeModule';
+import { dataReshapeStep_1M1D1G } from './dataReshape/DataReshapeModule_1M1D1G';
+import { vizSeedCleanupStep } from './VizSeedCleanupModule';
+import { autoChannelMappingStep } from './AutoChannelMappingModule';
 
 // 创建BAR图表VizSeed Pipeline
 export const createBarVizSeedPipeline = () => {

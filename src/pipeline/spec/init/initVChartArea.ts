@@ -2,7 +2,7 @@
  * VChart面积图初始化模块
  */
 
-import { PipelineStep, PipelineContext } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // VChart面积图初始化
 export const initVChartArea: PipelineStep = (spec: any, context: PipelineContext) => {

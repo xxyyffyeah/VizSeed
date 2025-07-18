@@ -14,7 +14,7 @@ import {
   createPieSpecPipeline,
   createDonutSpecPipeline,
   createTableSpecPipeline
-} from './SpecPipelines';
+} from './spec/SpecPipelines';
 import {
   createBarVizSeedPipeline,
   createColumnVizSeedPipeline,
@@ -24,7 +24,7 @@ import {
   createPieVizSeedPipeline,
   createDonutVizSeedPipeline,
   createTableVizSeedPipeline
-} from './VizSeedPipelines';
+} from './vizSeed/VizSeedPipelines';
 
 // Pipeline函数类型
 type PipelineFunction = (context: PipelineContext) => any;

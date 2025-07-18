@@ -2,7 +2,7 @@
  * 升维和降维Pipeline子模块工具函数
  */
 
-import { PipelineStep, PipelineContext, FieldSelection } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
 
 // 获取数据源的辅助函数
 const getDataSource = (vizSeed: any, context: PipelineContext): any[] => {

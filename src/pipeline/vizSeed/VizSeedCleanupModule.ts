@@ -4,7 +4,7 @@
  */
 
 import { theme } from '@visactor/vtable/es/register';
-import { PipelineStep, PipelineContext } from '../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../PipelineCore';
 
 /**
  * VizSeed最终清理步骤

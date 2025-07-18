@@ -3,15 +3,15 @@
  * 包含所有图表类型的Spec Pipeline创建函数
  */
 
-import { pipeline } from './PipelineCore';
-import { initData } from './modules/spec/DataModule';
-import { configureLegend, configureLabel, configureTooltip, configureAxes } from './modules/spec/StyleModule';
-import { initVChartBar } from './modules/spec/init/initVChartBar';
-import { initVChartLine } from './modules/spec/init/initVChartLine';
-import { initVChartArea } from './modules/spec/init/initVChartArea';
-import { initVChartScatter } from './modules/spec/init/initVChartScatter';
-import { initVChartPie } from './modules/spec/init/initVChartPie';
-import { initVTableList } from './modules/spec/init/initVTable';
+import { pipeline } from '../PipelineCore';
+import { initData } from './DataModule';
+import { configureLegend, configureLabel, configureTooltip, configureAxes } from './StyleModule';
+import { initVChartBar } from './init/initVChartBar';
+import { initVChartLine } from './init/initVChartLine';
+import { initVChartArea } from './init/initVChartArea';
+import { initVChartScatter } from './init/initVChartScatter';
+import { initVChartPie } from './init/initVChartPie';
+import { initVTableList } from './init/initVTable';
 
 // 创建BAR图表Pipeline
 export const createBarSpecPipeline = () => pipeline([

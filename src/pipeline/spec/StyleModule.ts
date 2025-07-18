@@ -3,7 +3,7 @@
  * 可重用的Pipeline步骤，用于处理图表样式配置
  */
 
-import { PipelineStep, PipelineContext } from '../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../PipelineCore';
 
 // 图例配置步骤
 export const configureLegend: PipelineStep = (spec: any, context: PipelineContext) => {

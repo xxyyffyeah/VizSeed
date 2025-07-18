@@ -3,8 +3,8 @@
  * 分析图表类型对维度和指标的要求，并提供重塑策略建议
  */
 
-import { PipelineStep, PipelineContext } from '../../PipelineCore';
-import { ChartType, ChartDataRequirement, CHART_DATA_REQUIREMENTS } from '../../../types/charts';
+import { PipelineStep, PipelineContext } from '../PipelineCore';
+import { ChartType, ChartDataRequirement, CHART_DATA_REQUIREMENTS } from '../../types/charts';
 
 // 分析结果
 export interface ChartAnalysisResult {

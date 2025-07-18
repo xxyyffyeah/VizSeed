@@ -2,7 +2,7 @@
  * VChart折线图初始化模块
  */
 
-import { PipelineStep, PipelineContext } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // VChart折线图初始化
 export const initVChartLine: PipelineStep = (spec: any, context: PipelineContext) => {

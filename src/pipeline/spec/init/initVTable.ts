@@ -2,7 +2,7 @@
  * VTable表格初始化模块
  */
 
-import { PipelineStep, PipelineContext } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // VTable表格初始化
 export const initVTableList: PipelineStep = (spec: any, context: PipelineContext) => {

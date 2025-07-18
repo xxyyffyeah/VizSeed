@@ -2,7 +2,7 @@
  * VChart散点图初始化模块
  */
 
-import { PipelineStep, PipelineContext } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // VChart散点图初始化
 export const initVChartScatter: PipelineStep = (spec: any, context: PipelineContext) => {

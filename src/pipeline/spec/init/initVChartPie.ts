@@ -2,7 +2,7 @@
  * VChart饼图初始化模块
  */
 
-import { PipelineStep, PipelineContext } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../../PipelineCore';
 
 // VChart饼图初始化
 export const initVChartPie: PipelineStep = (spec: any, context: PipelineContext) => {

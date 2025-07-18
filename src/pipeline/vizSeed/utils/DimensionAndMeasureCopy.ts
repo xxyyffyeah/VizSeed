@@ -3,7 +3,7 @@
  * 提供复制指定维度或指标字段的功能，新字段命名为原字段名_copy
  */
 
-import { PipelineStep, PipelineContext, FieldSelection, FieldDefinition } from '../../../PipelineCore';
+import { PipelineStep, PipelineContext, FieldSelection, FieldDefinition } from '../../PipelineCore';
 
 // 获取数据源的辅助函数
 const getDataSource = (vizSeed: any, context: PipelineContext): any[] => {

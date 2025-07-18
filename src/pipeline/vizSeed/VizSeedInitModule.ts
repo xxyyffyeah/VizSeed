@@ -4,7 +4,7 @@
  */
 
 import { encode } from 'punycode';
-import { PipelineStep, PipelineContext } from '../../PipelineCore';
+import { PipelineStep, PipelineContext } from '../PipelineCore';
 
 /**
  * VizSeed基础初始化步骤
