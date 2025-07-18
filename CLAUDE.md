@@ -87,9 +87,26 @@ npm test  # 会报错
 
 ### 核心架构
 ```
-用户数据 -> VizSeed DSL -> SpecGenerator -> VChart/ECharts/VTable Specs
-Raw Data -> Intermediate -> Strategy     -> Chart Library Specs
-           Representation  Pattern
+用户数据 -> VizSeedBuilder -> Pipeline系统 -> VChart/ECharts/VTable Specs
+Raw Data -> Builder模式    -> 函数式管道  -> Chart Library Specs
+```
+
+### Pipeline架构
+基于函数式管道的双阶段处理：
+```
+VizSeedBuilder -> PipelineRegistry -> VizSeed Pipeline -> Spec Pipeline -> 图表规范
+     |                 |                    |                |
+     |                 |                    |                └── DataModule
+     |                 |                    |                    StyleModule
+     |                 |                    |                    init/各图表类型
+     |                 |                    └── VizSeedInitModule
+     |                 |                         ChartAdapterModule
+     |                 |                         DataReshapeModule
+     |                 |                         AutoChannelMappingModule
+     |                 |                         VizSeedCleanupModule
+     |                 └── buildVizSeed()
+     |                     buildSpec()
+     └── 数据集管理、字段选择、图表配置
 ```
 
 ### Web界面架构
@@ -103,41 +120,37 @@ VizSeed核心库 (TypeScript)
 官方图表规范 (ECharts/VChart/VTable)
 ```
 
-### 多图表库架构
-使用策略模式实现多图表库支持：
-```
-VizSeedBuilder -> SpecGenerator -> SpecGenerationStrategy
-                      |              |
-                      |              ├── VChartStrategy
-                      |              ├── EChartsStrategy  
-                      |              └── VTableStrategy
-                      |
-                 图表库选择与规范生成
-```
-
 ### 关键组件
 
 #### 核心组件
-1. **VizSeedDSL** (`src/core/VizSeedDSL.ts`): 核心DSL类，包含数据验证和克隆逻辑
-2. **VizSeedBuilder** (`src/builder/VizSeedBuilder.ts`): 构造者模式实现，提供链式API和多库支持
-3. **DimensionOperator** (`src/operations/DimensionOperator.ts`): 维度重塑操作（升维、降维、分组操作）
+1. **VizSeedBuilder** (`src/builder/VizSeedBuilder.ts`): 构造者模式实现，提供链式API和多库支持
+2. **DataSet** (`src/datasets/DataSet.ts`): 数据集管理类，处理数据验证和推断
+3. **PipelineCore** (`src/pipeline/PipelineCore.ts`): 函数式管道处理系统核心
 
-#### 多图表库支持组件  
-4. **SpecGenerator** (`src/specs/SpecGenerator.ts`): 策略模式上下文类，管理图表库选择
-5. **SpecGenerationStrategy** (`src/specs/SpecGenerationStrategy.ts`): 策略接口定义
-6. **VChartStrategy** (`src/specs/VChartStrategy.ts`): VChart图表库策略实现
-7. **EChartsStrategy** (`src/specs/EChartsStrategy.ts`): ECharts图表库策略实现  
-8. **VTableStrategy** (`src/specs/VTableStrategy.ts`): VTable表格库策略实现
+#### Pipeline架构组件
+4. **PipelineRegistry** (`src/pipeline/PipelineRegistry.ts`): Pipeline注册表，管理VizSeed和Spec构建
+5. **VizSeed Pipeline** (`src/pipeline/vizSeed/`): VizSeed构建管道
+   - `VizSeedPipelines.ts`: 各图表类型的VizSeed构建管道
+   - `VizSeedInitModule.ts`: VizSeed初始化模块
+   - `ChartAdapterModule.ts`: 图表适配模块
+   - `DataReshapeModule.ts`: 数据重塑模块
+   - `AutoChannelMappingModule.ts`: 自动通道映射模块
+   - `VizSeedCleanupModule.ts`: VizSeed清理模块
+   - `dataReshape/DataReshapeModule_1M1D1G.ts`: 1M1D1G数据重塑模块
+   - `utils/`: 维度操作工具
+6. **Spec Pipeline** (`src/pipeline/spec/`): 图表规范生成管道
+   - `SpecPipelines.ts`: 各图表类型的Spec构建管道
+   - `DataModule.ts`: 数据初始化模块
+   - `StyleModule.ts`: 样式配置模块
+   - `init/`: 各图表类型初始化模块
 
 #### Web界面组件
-9. **WebSocket服务器** (`server/websocket-server.ts`): 实时双向通信服务
-10. **简单HTTP服务器** (`server/simple-server.js`): 静态资源和API服务
-11. **前端界面** (`web/src/`): Vite构建的交互式界面
+7. **WebSocket服务器** (`server/websocket-server.ts`): 实时双向通信服务
+8. **简单HTTP服务器** (`server/simple-server.js`): 静态资源和API服务
+9. **前端界面** (`web/src/`): Vite构建的交互式界面
 
 #### 辅助组件
-12. **ChartRegistry** (`src/charts/ChartRegistry.ts`): 图表类型注册表
-13. **DataProcessor** (`src/utils/DataProcessor.ts`): 数据处理工具
-14. **图表类型限制** (`src/config/chartLimits.ts`): 各图表库支持的类型配置
+10. **DataProcessor** (`src/utils/DataProcessor.ts`): 数据处理工具
 
 ### 类型系统
 - `src/types/data.ts`: 数据相关类型（Field, DataSet, Transformation）
@@ -148,11 +161,29 @@ VizSeedBuilder -> SpecGenerator -> SpecGenerationStrategy
 
 ## Core Concepts
 
+### Pipeline系统架构
+VizSeed使用函数式管道架构，包含两个主要阶段：
+1. **VizSeed Pipeline**: 数据处理和维度重塑阶段
+2. **Spec Pipeline**: 图表规范生成阶段
+
+### Pipeline开发模式
+- **模块化设计**: 每个功能模块都是独立的Pipeline Step
+- **函数式编程**: 纯函数处理，无副作用
+- **类型安全**: 完整的TypeScript类型约束
+- **可组合性**: 通过`pipeline()`函数组合多个步骤
+
 ### 维度重塑操作
 - **升维 (elevate)**: 将指标转换为维度+指标，增加维度数量
 - **降维 (reduce)**: 将维度转换为变量-数值对，减少维度数量  
 - **分组降维 (groupReduce)**: 将多个字段合并为变量-数值对
 - **分组升维 (groupElevate)**: 按组进行升维操作
+
+### Pipeline扩展指南
+当需要添加新的图表类型或数据处理逻辑时：
+1. 在`src/pipeline/vizSeed/`中添加新的处理模块
+2. 在`src/pipeline/spec/init/`中添加新的图表初始化模块
+3. 在对应的Pipeline文件中注册新的处理步骤
+4. 更新`PipelineRegistry`中的映射关系
 
 ### 支持的图表类型与图表库
 

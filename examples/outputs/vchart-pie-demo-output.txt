@@ -91,6 +91,8 @@
     "rating": 4.6
   }
 ]
+
+⏳ 构建VizSeed DSL...
 自动通道映射: 图表类型为 bar，字段选择: {
   "dimensions": [
     "__MeasureName__",
@@ -110,6 +112,7 @@
   "y": "__MeasureName__",
   "group": "__MeasureName___copy"
 }
+⏳ 构建VChart规范...
 自动通道映射: 图表类型为 bar，字段选择: {
   "dimensions": [
     "__MeasureName__",
@@ -133,7 +136,7 @@
 📋 VizSeed DSL:
 {
   "chartType": "bar",
-  "dataMap": [
+  "data": [
     {
       "__MeasureName__": "sales",
       "__MeasureValue__": 15000,
@@ -259,19 +262,28 @@
       "location": "dimension"
     }
   },
-  "chartConfig": {
-    "type": "bar",
-    "mapping": {
+  "encodes": [
+    {
       "x": "__MeasureValue__",
       "y": "__MeasureName__",
       "group": "__MeasureName___copy"
     }
-  },
-  "visualStyle": {
+  ],
+  "style": {
     "legend": true,
     "label": true,
     "tooltip": true
-  }
+  },
+  "dimensions": [
+    "__MeasureName__",
+    "__MeasureName___copy"
+  ],
+  "measures": [
+    "__MeasureValue__"
+  ],
+  "rowDimensions": [],
+  "columnDimensions": [],
+  "theme": "light"
 }
 
 🎨 VChart Spec:
@@ -332,16 +344,5 @@
       "orient": "left",
       "type": "linear"
     }
-  ],
-  "legends": {
-    "visible": true,
-    "orient": "right",
-    "position": "middle"
-  },
-  "label": {
-    "visible": true
-  },
-  "tooltip": {
-    "visible": true
-  }
+  ]
 }

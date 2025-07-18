@@ -1,5 +1,4 @@
 import { VizSeedBuilder } from '../src';
-import { ChartType } from '../src/types/charts';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -30,17 +29,27 @@ const salesData = [
 ];
 console.log(JSON.stringify(salesData, null, 2));
 
-// 构建VizSeed和Spec
-const builder = new VizSeedBuilder(salesData);
-const vizSeedDSL = builder
-  .setChartType('bar')
-  .setDimensions(['store', 'city', 'category', 'brand'])
-  .setDimensions([])
-  // .setMeasures(['sales', 'profit', 'cost', 'quantity', 'rating'])
-  .setMeasures(['sales'])
-  .build();
+// 构建VizSeed和Spec的异步函数
+async function buildChartExample() {
+  const builder = new VizSeedBuilder(salesData);
+  
+  console.log('\n⏳ 构建VizSeed DSL...');
+  const vizSeedDSL = await builder
+    .setChartType('bar')
+    .setDimensions(['store', 'city', 'category', 'brand'])
+    .setDimensions([])
+    // .setMeasures(['sales', 'profit', 'cost', 'quantity', 'rating'])
+    .setMeasures(['sales'])
+    .build();
 
-const vchartSpec = builder.buildSpec();
+  console.log('⏳ 构建VChart规范...');
+  const vchartSpec = await builder.buildSpec();
+
+  return { vizSeedDSL, vchartSpec };
+}
+
+// 执行异步函数
+buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
 
 // VizSeed DSL
 console.log('\n📋 VizSeed DSL:');
@@ -65,3 +74,7 @@ const outputText = outputCollector.join('\n');
 fs.writeFileSync(outputFile, outputText, 'utf8');
 
 console.log(`\n📁 输出已保存到: ${outputFile}`);
+}).catch(error => {
+  console.error('❌ 构建示例失败:', error);
+  process.exit(1);
+});

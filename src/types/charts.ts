@@ -34,11 +34,6 @@ export function parseChartType(input: string): ChartType {
   return ChartTypeSchema.parse(input);
 }
 
-// 获取所有支持的图表类型字符串
-export function getSupportedChartTypes(): string[] {
-  return ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'];
-}
-
 // 通道映射接口 - 仅供内部自动映射使用
 export interface ChannelMapping {
   // 通用通道

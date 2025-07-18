@@ -11,7 +11,7 @@ export interface FieldDefinition {
   id: string;
   type: 'string' | 'number' | 'float' | 'date' | 'boolean';
   alias: string;
-  location: 'dimension' | 'measure';
+  location: 'dimension' | 'measure' | 'tooltips';
   domain?: any[];
   format?: Record<string, any>;
 }

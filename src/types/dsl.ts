@@ -17,6 +17,6 @@ export interface VizSeedBuilder {
   // 通道映射方法已删除 - 使用自动通道映射
   
   // 返回函数式pipeline构建的对象
-  build(): any;
-  buildSpec(): ChartSpec;
+  build(): Promise<any>;
+  buildSpec(): Promise<ChartSpec>;
 }

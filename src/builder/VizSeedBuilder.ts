@@ -291,7 +291,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this;
   }
 
-  public build(): any {
+  public async build(): Promise<any> {
     // 强化前置验证 - 要求用户必须设置足够的字段
     this.validateFieldRequirements();
     
@@ -307,17 +307,17 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       version: this.version
     };
 
-    return buildVizSeed(context.chartType, context);
+    return await buildVizSeed(context.chartType, context);
   }
 
-  public buildSpec(): ChartSpec {
+  public async buildSpec(): Promise<ChartSpec> {
     // 先验证字段要求
     this.validateFieldRequirements();
     
     
     try {
       // 先构建VizSeed以获得自动通道映射
-      const vizSeed = this.build();
+      const vizSeed = await this.build();
       
       // 使用构建后的VizSeed数据构建规范上下文
       const specContext: PipelineContext = {
@@ -332,7 +332,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       };
 
       // 使用简化的pipeline构建规范
-      return buildSpec(specContext.chartType, specContext);
+      return await buildSpec(specContext.chartType, specContext);
     } catch (error: any) {
       throw new Error(`构建图表规范失败: ${error.message}`);
     }
