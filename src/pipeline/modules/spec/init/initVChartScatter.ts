@@ -6,14 +6,13 @@ import { PipelineStep, PipelineContext } from '../../../PipelineCore';
 
 // VChart散点图初始化
 export const initVChartScatter: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { chartConfig } = context;
-  const mapping = chartConfig?.mapping || {};
+  const encodes = context.encodes[0] || {};
   
   return {
     ...spec,
     type: 'scatter',
-    xField: mapping.x || 'x',
-    yField: mapping.y || 'y',
-    seriesField: mapping.color || mapping.group
+    xField: encodes.x || 'x',
+    yField: encodes.y || 'y',
+    seriesField: encodes.color || encodes.group
   };
 };

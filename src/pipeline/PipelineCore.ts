@@ -4,6 +4,7 @@
  */
 
 import { NestedMeasure } from "../types";
+import { ChartType, ChannelMapping } from "../types/charts";
 
 // 字段定义接口
 export interface FieldDefinition {
@@ -29,7 +30,8 @@ export interface FieldSelection {
 
 // Pipeline上下文接口
 export interface PipelineContext {
-  chartConfig: any;
+  chartType: ChartType; // 图表类型
+  encodes: ChannelMapping[]; // 映射通道配置
   fieldMap: FieldMap;        // 完整字段映射定义
   fieldSelection: FieldSelection;  // 用户字段选择
   data: Record<string, any>[]; // 数据映射数组
@@ -37,7 +39,8 @@ export interface PipelineContext {
   
   // 维度重塑相关
   analysisResult?: any;       // 图表适配分析结果
-  
+  theme: 'light' | 'dark' | 'custom'; // 主题配置
+  version: string; // 版本信息
   [key: string]: any;
 }
 

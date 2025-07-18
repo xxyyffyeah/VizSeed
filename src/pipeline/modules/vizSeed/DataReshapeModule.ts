@@ -21,15 +21,15 @@ const getFieldSelection = (context: PipelineContext): FieldSelection => {
  * 数据重塑Pipeline步骤 - 使用子模块实现智能重塑
  */
 export const dataReshapeStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
-  const { data, chartConfig ,fieldSelection} = context;
+  const { data, chartType, fieldSelection} = context;
   
-  if (!data || !chartConfig?.type) {
+  if (!data || !chartType) {
     return vizSeed;
   }
 
   
   // 获取图表要求
-  const requirement = CHART_DATA_REQUIREMENTS[chartConfig.type as keyof typeof CHART_DATA_REQUIREMENTS];
+  const requirement = CHART_DATA_REQUIREMENTS[chartType as keyof typeof CHART_DATA_REQUIREMENTS];
   
   if (!requirement) {
     return {

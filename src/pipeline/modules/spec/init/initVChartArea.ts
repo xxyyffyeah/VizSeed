@@ -6,8 +6,8 @@ import { PipelineStep, PipelineContext } from '../../../PipelineCore';
 
 // VChart面积图初始化
 export const initVChartArea: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { chartConfig } = context;
-  const mapping = chartConfig?.mapping || {};
+  const { encodes } = context;
+  const mapping = encodes[0] || {};
   
   return {
     ...spec,

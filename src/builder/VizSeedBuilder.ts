@@ -1,6 +1,6 @@
 import { VizSeedBuilder as IVizSeedBuilder, ChartSpec, NestedMeasure } from '../types';
 import { DataSet as IDataSet, FieldInferenceOptions } from '../types/data';
-import { ChartType, ChartConfig, CHART_DATA_REQUIREMENTS, parseChartType } from '../types/charts';
+import { ChartType, ChannelMapping, CHART_DATA_REQUIREMENTS, parseChartType } from '../types/charts';
 // VizSeedDSL类已不再使用，改为函数式pipeline构建
 import { DataSet } from '../datasets/DataSet';
 import { PipelineContext, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
@@ -16,7 +16,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   };
   private fieldMap: FieldMap = {};
   private data: Record<string, any>[] = []; // 新增data
-  private chartConfig: Partial<ChartConfig> = {};
+  private chartType: ChartType = ChartType.BAR;
+  private encodes: ChannelMapping[] = [];
   private visualStyle: {
     title?: string;
     description?: string;
@@ -29,6 +30,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     label: true,
     tooltip: true
   };
+  private theme: 'light' | 'dark' | 'custom' = 'light'; // 默认主题
+  private version: string = '0.1.0'; // 默认版本信息
   
 
   // 构造函数重载：支持直接传入rows或DataSet
@@ -78,28 +81,20 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     }
   }
 
-  // 保留静态方法作为替代方式（可选）
-  public static fromRows(rows: Record<string, any>[], options?: FieldInferenceOptions): VizSeedBuilder {
-    return new VizSeedBuilder(rows, options);
-  }
-
-
   // 静态方法：从VizSeed对象创建Builder
   public static from(vizSeed: any): VizSeedBuilder {
-    const builder = new VizSeedBuilder(vizSeed.data);
-    builder.chartConfig = { ...vizSeed.chartConfig };
+    // 深拷贝整个vizSeed对象
+    const clonedVizSeed = JSON.parse(JSON.stringify(vizSeed));
     
-    // 恢复 fieldMap
-    if (vizSeed.fieldMap) {
-      builder.fieldMap = { ...vizSeed.fieldMap };
-    }
+    const builder = new VizSeedBuilder(clonedVizSeed.data);
+    builder.chartType = clonedVizSeed.chartType;
+    builder.data = clonedVizSeed.data;
+    builder.fieldMap = clonedVizSeed.fieldMap;
+    builder.fieldSelection = clonedVizSeed.fieldSelection;
+    builder.visualStyle = clonedVizSeed.visualStyle;
+    builder.theme = clonedVizSeed.theme;
+    builder.version = clonedVizSeed.version;
     
-    // 恢复 fieldSelection
-    if (vizSeed.fieldSelection) {
-      builder.fieldSelection = { ...vizSeed.fieldSelection };
-    }
-    
-    builder.visualStyle = { ...vizSeed.visualStyle };
     return builder;
   }
 
@@ -265,7 +260,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       throw new Error(`不支持的图表类型: ${chartType}`);
     }
     
-    this.chartConfig.type = chartType;
+    this.chartType = chartType;
     return this;
   }
 
@@ -302,24 +297,23 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     
     // 使用简化的Pipeline构建VizSeed对象
     const context: PipelineContext = {
-      chartConfig: this.chartConfig,
+      chartType: this.chartType, // 图表类型
+      encodes: this.encodes, // 映射通道配置
       fieldMap: this.fieldMap,
       fieldSelection: this.fieldSelection,
       data: this.data,
-      visualStyle: this.visualStyle
+      visualStyle: this.visualStyle,
+      theme: this.theme,
+      version: this.version
     };
 
-    // 使用图表类型选择对应的VizSeed pipeline
-    const chartType = this.chartConfig.type || ChartType.BAR;
-    return buildVizSeed(chartType, context);
+    return buildVizSeed(context.chartType, context);
   }
 
   public buildSpec(): ChartSpec {
     // 先验证字段要求
     this.validateFieldRequirements();
     
-    // 根据图表类型自动选择图表库
-    const chartType = this.chartConfig.type || ChartType.BAR;
     
     try {
       // 先构建VizSeed以获得自动通道映射
@@ -327,15 +321,18 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       
       // 使用构建后的VizSeed数据构建规范上下文
       const specContext: PipelineContext = {
-        chartConfig: vizSeed.chartConfig, // 使用经过自动映射的配置
+        chartType: vizSeed.chartType, // 图表类型
+        encodes: vizSeed.encodes, // 映射通道配置
         fieldMap: vizSeed.fieldMap,
-        fieldSelection: vizSeed.currentFieldSelection || this.fieldSelection,
+        fieldSelection: this.fieldSelection,
         data: vizSeed.data,
-        visualStyle: this.visualStyle
+        visualStyle: vizSeed.visualStyle,
+        theme: vizSeed.theme,
+        version: vizSeed.version
       };
 
       // 使用简化的pipeline构建规范
-      return buildSpec(chartType, specContext);
+      return buildSpec(specContext.chartType, specContext);
     } catch (error: any) {
       throw new Error(`构建图表规范失败: ${error.message}`);
     }
@@ -343,11 +340,11 @@ export class VizSeedBuilder implements IVizSeedBuilder {
 
 
   private validateFieldRequirements(): void {
-    if (!this.chartConfig.type) {
+    if (!this.chartType) {
       throw new Error('图表类型未设置，请先调用 setChartType()');
     }
     
-    const chartType = this.chartConfig.type;
+    const chartType = this.chartType;
     const { dimensions, measures } = this.fieldSelection;
     const totalFields = dimensions.length + measures.length;
     

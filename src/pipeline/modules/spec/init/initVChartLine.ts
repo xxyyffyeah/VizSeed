@@ -6,14 +6,13 @@ import { PipelineStep, PipelineContext } from '../../../PipelineCore';
 
 // VChart折线图初始化
 export const initVChartLine: PipelineStep = (spec: any, context: PipelineContext) => {
-  const { chartConfig } = context;
-  const mapping = chartConfig?.mapping || {};
+  const encodes = context.encodes[0] || {};
   
   return {
     ...spec,
     type: 'line',
-    xField: mapping.x || 'category',
-    yField: mapping.y || 'value',
-    seriesField: mapping.color || mapping.group
+    xField: encodes.x || 'category',
+    yField: encodes.y || 'value',
+    seriesField: encodes.color || encodes.group
   };
 };

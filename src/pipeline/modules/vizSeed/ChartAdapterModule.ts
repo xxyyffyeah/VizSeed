@@ -42,12 +42,12 @@ export const analyzeChartRequirements = (
 
 // 图表适配分析步骤
 export const chartAdapterStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
-  const { chartConfig, fieldSelection } = context;
+  const { chartType, fieldSelection } = context;
   
 
   // 分析图表要求
   const analysisResult = analyzeChartRequirements(
-    chartConfig.type,
+    chartType,
     fieldSelection.dimensions,
     fieldSelection.measures
   );

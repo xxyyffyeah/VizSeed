@@ -57,11 +57,6 @@ export interface ChannelMapping {
   measure?: string;         // 指标字段
 }
 
-export interface ChartConfig {
-  type: ChartType;
-  mapping?: ChannelMapping; // 改为可选，由自动映射模块填充
-}
-
 // 通道定义接口
 export interface ChartChannels {
   dimensionChannels: string[];  // 维度通道

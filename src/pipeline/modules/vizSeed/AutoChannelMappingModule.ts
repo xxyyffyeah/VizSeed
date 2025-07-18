@@ -1,6 +1,6 @@
 /**
  * 自动通道映射模块
- * 根据重塑后的fieldSelection自动创建chartConfig.mapping
+ * 根据重塑后的fieldSelection自动创建enocdes
  * 完全自动化 - 不再支持用户手动设置通道映射
  */
 
@@ -148,10 +148,10 @@ export const generateAutoChannelMapping = (
  * 自动通道映射Pipeline步骤
  */
 export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: PipelineContext) => {
-  const { chartConfig, fieldSelection } = context;
+  const { chartType, fieldSelection } = context;
   
   // 必须有图表类型和字段选择
-  if (!chartConfig?.type || !fieldSelection) {
+  if (!chartType || !fieldSelection) {
     return vizSeed;
   }
 
@@ -161,26 +161,21 @@ export const autoChannelMappingStep: PipelineStep = (vizSeed: any, context: Pipe
     return vizSeed;
   }
 
-  console.log(`自动通道映射: 图表类型为 ${chartConfig.type}，字段选择:`, fieldSelection);
+  console.log(`自动通道映射: 图表类型为 ${chartType}，字段选择:`, fieldSelection);
   
   // 生成自动通道映射
-  const autoMapping = generateAutoChannelMapping(chartConfig.type, fieldSelection);
+  const autoMapping = generateAutoChannelMapping(chartType, fieldSelection);
   
   console.log(`🔗 自动通道映射结果:`, autoMapping);
   
-  // 更新context中的chartConfig
-  const updatedChartConfig = {
-    ...chartConfig,
-    mapping: autoMapping
-  };
-
-  context = {
-    ...context,
-    chartConfig: updatedChartConfig
-  };
-
+  // 更新context中的encodes（转换为数组格式）
+  const updatedEncodes = [autoMapping];
+  
+  // 更新context和vizSeed
+  context.encodes = updatedEncodes;
+  
   return {
     ...vizSeed,
-    chartConfig: updatedChartConfig
+    encodes: updatedEncodes
   };
 };

@@ -1,5 +1,5 @@
 import { DataSet } from './data';
-import { ChartConfig, ChartType } from './charts';
+import { ChartType } from './charts';
 import { ChartSpec } from './specs';
 
 export type NestedMeasure<T> = T | NestedMeasure<T>[]
