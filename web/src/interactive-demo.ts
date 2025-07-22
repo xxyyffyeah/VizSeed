@@ -1,12 +1,11 @@
 // 交互式VizSeed演示
-import * as echarts from 'echarts';
 import VChart from '@visactor/vchart';
 import { ListTable } from '@visactor/vtable';
 
 class VizSeedIDE {
   private ws: WebSocket | null = null;
   private connected = false;
-  private currentChart: echarts.ECharts | any | null = null; // 支持多种图表类型
+  private currentChart: any | null = null; // 支持VChart和VTable
 
   constructor() {
     this.initializeUI();
@@ -66,7 +65,6 @@ class VizSeedIDE {
                 <div class="config-item">
                   <label>图表库:</label>
                   <select id="library-select">
-                    <option value="echarts">ECharts</option>
                     <option value="vchart">VChart</option>
                     <option value="vtable">VTable</option>
                   </select>
@@ -447,17 +445,9 @@ class VizSeedIDE {
     
     const library = librarySelect.value;
     
-    // 定义每个图表库支持的图表类型（与后端 chartLimits.ts 保持一致）
+    // 定义每个图表库支持的图表类型
     const chartTypeOptions: Record<string, { value: string; label: string }[]> = {
       vchart: [
-        { value: 'bar', label: '柱状图' },
-        { value: 'column', label: '条形图' },
-        { value: 'area', label: '面积图' },
-        { value: 'line', label: '折线图' },
-        { value: 'scatter', label: '散点图' },
-        { value: 'pie', label: '饼图' }
-      ],
-      echarts: [
         { value: 'bar', label: '柱状图' },
         { value: 'column', label: '条形图' },
         { value: 'area', label: '面积图' },
@@ -619,12 +609,6 @@ class VizSeedIDE {
       container.style.height = '400px';
       
       switch (library) {
-        case 'echarts':
-          this.currentChart = echarts.init(container);
-          this.currentChart.setOption(spec);
-          this.log('🎉 ECharts图表渲染成功！', 'success');
-          break;
-          
         case 'vchart':
           // 获取容器尺寸并设置给VChart
           const containerRect = container.getBoundingClientRect();

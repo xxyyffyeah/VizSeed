@@ -7,7 +7,7 @@ import path from 'path';
 import { VizSeedBuilder } from '../src/builder/VizSeedBuilder';
 import { DataSet } from '../src/types/data';
 import { ChartType } from '../src/types/charts';
-import { ChartLibrary } from '../src/types/specs';
+// import { ChartLibrary } from '../src/types/specs';
 
 const app = express();
 const server = createServer(app);
@@ -28,7 +28,7 @@ interface CodeExecutionRequest {
     dimensions: string[];
     measures: string[];
     title?: string;
-    library: ChartLibrary;
+    library: 'vchart' | 'vtable' | 'echarts';
   };
 }
 
