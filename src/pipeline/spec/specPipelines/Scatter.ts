@@ -4,7 +4,10 @@
 
 import { pipeline } from '../../PipelineCore';
 import { initData } from '../DataModule';
-import { configureLegend, configureLabel, configureTooltip, configureAxes } from '../StyleModule';
+import { configureLegend } from '../style/Legend';
+import { configureLabel } from '../style/Label';
+import { configureTooltip } from '../style/Tooltip';
+import { configureAxes } from '../style/Axes';
 import { initVChartScatter } from '../init/initVChartScatter';
 
 // 创建SCATTER图表Pipeline

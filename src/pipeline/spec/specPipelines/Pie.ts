@@ -4,7 +4,9 @@
 
 import { pipeline } from '../../PipelineCore';
 import { initData } from '../DataModule';
-import { configureLegend, configureLabel, configureTooltip } from '../StyleModule';
+import { configureLegend } from '../style/Legend';
+import { configureLabel } from '../style/Label';
+import { configureTooltip } from '../style/Tooltip';
 import { initVChartPie } from '../init/initVChartPie';
 
 // 创建PIE图表Pipeline

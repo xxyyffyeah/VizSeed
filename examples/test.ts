@@ -1,3 +1,4 @@
+import { profile } from 'console';
 import { VizSeedBuilder } from '../src';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -35,15 +36,16 @@ async function buildChartExample() {
 
   console.log('\n⏳ 构建VizSeed DSL...');
   const vizSeedDSL = await builder
-    .setChartType('bar')
+    .setChartType('bar_percent')
     .setDimensions(['store', 'city'])
     // .setDimensions([])
     // .setMeasures(['sales', 'profit', 'cost', 'quantity', 'rating'])
-    .setMeasures(['sales'])
+    .setMeasures(['sales', 'profit'])
     .build();
 
   console.log('⏳ 构建VChart规范...');
-  const vchartSpec = await builder.buildSpec();
+
+  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }

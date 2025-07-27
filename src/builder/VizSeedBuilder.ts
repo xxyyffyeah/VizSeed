@@ -56,6 +56,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   };
   private theme: 'light' | 'dark' | 'custom' = 'light'; // 默认主题
   private version: string = '0.1.0'; // 默认版本信息
+  private vizSeedDSL: any | null = null; // 缓存构建结果
   
 
   // 构造函数重载：支持直接传入rows或DataSet
@@ -113,49 +114,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     // 从DSL数据创建Builder实例
     const builder = new VizSeedBuilder(clonedDSL.data || []);
     
-    // 设置图表类型
-    if (clonedDSL.chartType) {
-      builder.chartType = clonedDSL.chartType;
-    }
-    
-    // 设置数据
-    builder.data = clonedDSL.data || [];
-    
-    // 设置字段映射
-    if (clonedDSL.fieldMap) {
-      builder.fieldMap = clonedDSL.fieldMap;
-    }
-    
-    // 设置字段选择
-    if (clonedDSL.dimensions || clonedDSL.measures || clonedDSL.rowDimensions || clonedDSL.columnDimensions) {
-      builder.fieldSelection = {
-        dimensions: clonedDSL.dimensions || [],
-        measures: clonedDSL.measures || [],
-        groupMeasure: clonedDSL.groupMeasure || [],
-        rowDimensions: clonedDSL.rowDimensions || [],
-        columnDimensions: clonedDSL.columnDimensions || []
-      };
-    }
-    
-    // 设置编码映射
-    if (clonedDSL.encodes) {
-      builder.encodes = clonedDSL.encodes;
-    }
-    
-    // 设置视觉样式
-    if (clonedDSL.style) {
-      builder.visualStyle = assign(builder.visualStyle, clonedDSL.style);
-    }
-    
-    // 设置主题
-    if (clonedDSL.theme) {
-      builder.theme = clonedDSL.theme;
-    }
-    
-    // 设置版本信息（如果有）
-    if (clonedDSL.version) {
-      builder.version = clonedDSL.version;
-    }
+    // 直接设置缓存的vizSeedDSL
+    builder.vizSeedDSL = clonedDSL;
     
     return builder;
   }
@@ -356,6 +316,11 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   public async build(): Promise<any> {
+    // 如果已经缓存了结果，直接返回
+    if (this.vizSeedDSL) {
+      return this.vizSeedDSL;
+    }
+    
     // 强化前置验证 - 要求用户必须设置足够的字段
     this.validateFieldRequirements();
     
@@ -371,28 +336,35 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       version: this.version
     };
 
-    return await buildVizSeed(context.chartType, context);
+    // 构建并缓存结果
+    this.vizSeedDSL = await buildVizSeed(context.chartType, context);
+    return this.vizSeedDSL;
   }
 
   public async buildSpec(): Promise<ChartSpec> {
-    // 先验证字段要求
-    this.validateFieldRequirements();
-    
     
     try {
-      // 先构建VizSeed以获得自动通道映射
-      const vizSeed = await this.build();
+      // 确保已构建vizSeedDSL
+      if (!this.vizSeedDSL) {
+        await this.build();
+      }
       
-      // 使用构建后的VizSeed数据构建规范上下文
+      // 直接使用缓存的vizSeedDSL作为规范上下文
       const specContext: PipelineContext = {
-        chartType: vizSeed.chartType, // 图表类型
-        encodes: vizSeed.encodes, // 映射通道配置
-        fieldMap: vizSeed.fieldMap,
-        fieldSelection: this.fieldSelection,
-        data: vizSeed.data,
-        visualStyle: vizSeed.visualStyle,
-        theme: vizSeed.theme,
-        version: vizSeed.version
+        chartType: this.vizSeedDSL.chartType, // 图表类型
+        encodes: this.vizSeedDSL.encodes, // 映射通道配置
+        fieldMap: this.vizSeedDSL.fieldMap,
+        fieldSelection: {
+          dimensions: this.vizSeedDSL.dimensions,
+          measures: this.vizSeedDSL.measures,
+          groupMeasure: this.vizSeedDSL.groupMeasure,
+          rowDimensions: this.vizSeedDSL.rowDimensions ,
+          columnDimensions: this.vizSeedDSL.columnDimensions
+        },
+        data: this.vizSeedDSL.data,
+        visualStyle: this.vizSeedDSL.style,
+        theme: this.vizSeedDSL.theme,
+        version: this.vizSeedDSL.version
       };
 
       // 使用简化的pipeline构建规范

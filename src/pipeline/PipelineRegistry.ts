@@ -6,17 +6,14 @@
 import { PipelineContext } from './PipelineCore';
 import { ChartType } from '../types/charts';
 
-// Pipeline函数类型
-type PipelineFunction = (context: PipelineContext) => any;
-
 
 // 规范生成Pipeline映射表 - 每个图表类型使用专门的Pipeline
 const specPipelineMap: Record<string, () => Promise<any>> = {
   // VChart基础图表类型
   [ChartType.BAR]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
-  [ChartType.BAR_STACKED]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
-  [ChartType.BAR_GROUPED]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
-  [ChartType.BAR_PERCENT]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
+  [ChartType.BAR_STACKED]: () => import('./spec/specPipelines/Bar_stacked').then(m => m.createBarStackedSpecPipeline),
+  [ChartType.BAR_GROUPED]: () => import('./spec/specPipelines/Bar_grouped').then(m => m.createBarGroupedSpecPipeline),
+  [ChartType.BAR_PERCENT]: () => import('./spec/specPipelines/Bar_percent').then(m => m.createBarPercentSpecPipeline),
   [ChartType.COLUMN]: () => import('./spec/specPipelines/Column').then(m => m.createColumnSpecPipeline),
   [ChartType.LINE]: () => import('./spec/specPipelines/Line').then(m => m.createLineSpecPipeline),
   [ChartType.AREA]: () => import('./spec/specPipelines/Area').then(m => m.createAreaSpecPipeline),
