@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 export enum ChartType {
   BAR = 'bar',           // 柱状图
+  BAR_STACKED = 'bar_stacked',     // 堆叠柱状图
+  BAR_GROUPED = 'bar_grouped',     // 分组柱状图
+  BAR_PERCENT = 'bar_percent',     // 百分比柱状图
+  
   COLUMN = 'column',     // 条形图  
   LINE = 'line',         // 折线图
   AREA = 'area',         // 面积图
@@ -13,11 +17,14 @@ export enum ChartType {
 
 // Zod schema用于验证和转换字符串为ChartType枚举
 export const ChartTypeSchema = z.enum([
-  'bar', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'
+  'bar', 'bar_stacked', 'bar_grouped', 'bar_percent', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'
 ]).transform((value) => {
   // 将字符串转换为对应的枚举值
   const enumMap: Record<string, ChartType> = {
     'bar': ChartType.BAR,
+    'bar_stacked': ChartType.BAR_STACKED,
+    'bar_grouped': ChartType.BAR_GROUPED,
+    'bar_percent': ChartType.BAR_PERCENT,
     'column': ChartType.COLUMN,
     'line': ChartType.LINE,
     'area': ChartType.AREA,
@@ -79,6 +86,39 @@ export const CHART_DATA_REQUIREMENTS: Record<ChartType, ChartDataRequirement> = 
     minDimensions: 1,
     minMeasures: 1,
     chartType: 'bar'
+  },
+  bar_stacked: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'bar_stacked'
+  },
+  bar_grouped: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'bar_grouped'
+  },
+  bar_percent: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'bar_percent'
   },
   column: {
     channels: {

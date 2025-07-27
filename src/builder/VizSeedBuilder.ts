@@ -312,7 +312,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       try {
         chartType = parseChartType(type);
       } catch (error) {
-        throw new Error(`不支持的图表类型: '${type}'. 支持的类型: bar, column, line, area, scatter, pie, donut, table`);
+        throw new Error(`不支持的图表类型: '${type}'. 支持的类型: bar, bar_stacked, bar_grouped, bar_percent, column, line, area, scatter, pie, donut, table`);
       }
     } else {
       chartType = type;
