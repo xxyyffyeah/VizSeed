@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { VizSeedEditor } from './components/VizSeedEditor';
 import { ChartRenderer } from './components/ChartRenderer';
 import { SpecEditor } from './components/SpecEditor';
+import { vizSeedExecutor } from './services/VizSeedExecutor';
 import './App.css';
 
 function App() {
@@ -32,67 +33,44 @@ function App() {
         setDefaultFallback();
       }
     } catch (error) {
-      console.warn('无法加载latest-spec.json，使用默认示例');
       setDefaultFallback();
     }
   };
 
   const generateVizSeedCode = (vizSeedDSL: any): string => {
-    // 从vizSeedDSL生成VizSeed代码示例
-    const data = vizSeedDSL.data || [];
-    const chartType = vizSeedDSL.chartType || 'bar';
-    const dimensions = vizSeedDSL.dimensions || [];
-    const measures = vizSeedDSL.measures || [];
-    
-    // 提取原始数据结构示例
-    const sampleData = data.slice(0, 3).map((item: any) => {
-      const filtered: any = {};
-      Object.keys(item).forEach(key => {
-        if (!key.startsWith('__Measure')) {
-          filtered[key] = item[key];
-        }
-      });
-      return filtered;
-    });
-
-    return `// VizSeed DSL 示例 - 从latest-spec.json加载
-import { VizSeedBuilder } from 'vizseed';
-
-const data = ${JSON.stringify(sampleData, null, 2)};
-
-const builder = new VizSeedBuilder(data)
-  .setChartType('${chartType}')${dimensions.length > 0 ? `
-  .setDimensions(${JSON.stringify(dimensions)})` : ''}${measures.length > 0 ? `
-  .setMeasures(${JSON.stringify(measures)})` : ''};
-
-// 构建VizSeed DSL
-const vizSeedDSL = await builder.build();
-
-// 生成图表规范
-const spec = await builder.buildSpec('vchart');
-console.log(spec);`;
+    // 直接返回VizSeed DSL的JSON格式
+    return JSON.stringify(vizSeedDSL, null, 2);
   };
 
   const setDefaultFallback = () => {
-    const fallbackCode = `// VizSeed DSL 示例
-import { VizSeedBuilder } from 'vizseed';
+    const fallbackDSL = {
+      "chartType": "pie",
+      "data": [
+        { "category": "水果", "sales": 120 },
+        { "category": "蔬菜", "sales": 80 },
+        { "category": "肉类", "sales": 200 },
+        { "category": "乳制品", "sales": 150 }
+      ],
+      "fieldMap": {
+        "category": {
+          "id": "category",
+          "type": "string",
+          "alias": "category",
+          "location": "dimension"
+        },
+        "sales": {
+          "id": "sales",
+          "type": "number",
+          "alias": "sales",
+          "location": "measure"
+        }
+      },
+      "dimensions": ["category"],
+      "measures": ["sales"],
+      "theme": "light"
+    };
 
-const data = [
-  { category: '水果', sales: 120 },
-  { category: '蔬菜', sales: 80 },
-  { category: '肉类', sales: 200 },
-  { category: '乳制品', sales: 150 }
-];
-
-const builder = new VizSeedBuilder(data)
-  .setChartType('pie')
-  .addDimension('category')
-  .addMeasure('sales');
-
-const spec = builder.buildSpec('vchart');
-console.log(spec);`;
-
-    setVizSeedCode(fallbackCode);
+    setVizSeedCode(JSON.stringify(fallbackDSL, null, 2));
     
     const fallbackSpec = {
       type: 'pie',
@@ -114,15 +92,17 @@ console.log(spec);`;
     setError(null);
     
     try {
-      // 这里应该调用后端API来执行VizSeed代码
-      // 暂时使用模拟的执行结果
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await vizSeedExecutor.executeCode(code);
       
-      // TODO: 实际实现需要调用后端API
-      console.log('执行VizSeed代码:', code);
+      if (result.success && result.spec) {
+        setCurrentSpec(result.spec);
+      } else {
+        throw new Error(result.error || '代码执行失败');
+      }
       
     } catch (err) {
-      setError(err instanceof Error ? err.message : '执行失败');
+      const errorMessage = err instanceof Error ? err.message : '执行失败';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
