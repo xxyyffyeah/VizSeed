@@ -13,7 +13,7 @@
     "watch": "tsc --watch",
     "start": "node dist/index.js",
     "example": "ts-node examples/vchart-pie-demo.ts",
-    "web:dev": "vite",
+    "web": "vite",
     "web:build": "vite build",
     "web:preview": "vite preview",
     "server:dev": "npm run build && node server/simple-server.js",
@@ -37,9 +37,16 @@
     "ws": "^8.18.3"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "@visactor/vchart": "^2.0.0",
     "@visactor/vtable": "^1.19.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "monaco-editor": "^0.52.2",
     "radash": "^12.1.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "zod": "^3.25.75"
   }
 }
