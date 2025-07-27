@@ -1,0 +1,2 @@
+var o=Object.defineProperty,r=Object.defineProperties;var c=Object.getOwnPropertyDescriptors;var i=Object.getOwnPropertySymbols;var u=Object.prototype.hasOwnProperty,D=Object.prototype.propertyIsEnumerable;var d=(e,a,t)=>a in e?o(e,a,{enumerable:!0,configurable:!0,writable:!0,value:t}):e[a]=t,n=(e,a)=>{for(var t in a||(a={}))u.call(a,t)&&d(e,t,a[t]);if(i)for(var t of i(a))D.call(a,t)&&d(e,t,a[t]);return e},s=(e,a)=>r(e,c(a));const p=(e,a)=>{const{data:t}=a;return s(n({},e),{data:[{id:"VizSeedData",values:t}]})};export{p as i};
+//# sourceMappingURL=DataModule-D_N6WQ2a.js.map

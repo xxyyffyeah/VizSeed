@@ -13,24 +13,30 @@ type PipelineFunction = (context: PipelineContext) => any;
 // 规范生成Pipeline映射表 - 每个图表类型使用专门的Pipeline
 const specPipelineMap: Record<string, () => Promise<any>> = {
   // VChart基础图表类型
-  [ChartType.BAR]: () => import('./spec/SpecPipelines').then(m => m.createBarSpecPipeline),
-  [ChartType.COLUMN]: () => import('./spec/SpecPipelines').then(m => m.createColumnSpecPipeline),
-  [ChartType.LINE]: () => import('./spec/SpecPipelines').then(m => m.createLineSpecPipeline),
-  [ChartType.AREA]: () => import('./spec/SpecPipelines').then(m => m.createAreaSpecPipeline),
-  [ChartType.SCATTER]: () => import('./spec/SpecPipelines').then(m => m.createScatterSpecPipeline),
+  [ChartType.BAR]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
+  [ChartType.BAR_STACKED]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
+  [ChartType.BAR_GROUPED]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
+  [ChartType.BAR_PERCENT]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
+  [ChartType.COLUMN]: () => import('./spec/specPipelines/Column').then(m => m.createColumnSpecPipeline),
+  [ChartType.LINE]: () => import('./spec/specPipelines/Line').then(m => m.createLineSpecPipeline),
+  [ChartType.AREA]: () => import('./spec/specPipelines/Area').then(m => m.createAreaSpecPipeline),
+  [ChartType.SCATTER]: () => import('./spec/specPipelines/Scatter').then(m => m.createScatterSpecPipeline),
   
   // VChart饼图类型
-  [ChartType.PIE]: () => import('./spec/SpecPipelines').then(m => m.createPieSpecPipeline),
-  [ChartType.DONUT]: () => import('./spec/SpecPipelines').then(m => m.createDonutSpecPipeline),
+  [ChartType.PIE]: () => import('./spec/specPipelines/Pie').then(m => m.createPieSpecPipeline),
+  [ChartType.DONUT]: () => import('./spec/specPipelines/Donut').then(m => m.createDonutSpecPipeline),
   
   // VTable表格类型
-  [ChartType.TABLE]: () => import('./spec/SpecPipelines').then(m => m.createTableSpecPipeline)
+  [ChartType.TABLE]: () => import('./spec/specPipelines/Table').then(m => m.createTableSpecPipeline)
 };
 
 // VizSeed构建Pipeline映射表 - 每个图表类型使用专门的Pipeline
 const vizSeedPipelineMap: Record<string, () => Promise<any>> = {
   // VChart基础图表类型
   [ChartType.BAR]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
+  [ChartType.BAR_STACKED]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
+  [ChartType.BAR_GROUPED]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
+  [ChartType.BAR_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
   [ChartType.COLUMN]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
   [ChartType.LINE]: () => import('./vizSeed/vizSeedPipelines/Line').then(m => m.createLineVizSeedPipeline),
   [ChartType.AREA]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
