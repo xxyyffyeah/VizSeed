@@ -5,7 +5,7 @@
 
 import { pipeline } from '../PipelineCore';
 import { initData } from './DataModule';
-import { configureLegend, configureLabel, configureTooltip, configureAxes } from './StyleModule';
+import { configureLegend, configureLabel, configureTooltip, configureAxes, xLinearAxis, yBandAxis } from './StyleModule';
 import { initVChartBar } from './init/initVChartBar';
 import { initVChartLine } from './init/initVChartLine';
 import { initVChartArea } from './init/initVChartArea';
@@ -17,7 +17,8 @@ import { initVTableList } from './init/initVTable';
 export const createBarSpecPipeline = () => pipeline([
   initVChartBar,
   initData,
-  configureAxes,
+  xLinearAxis,
+  yBandAxis,
   configureLegend,
   configureLabel,
   configureTooltip

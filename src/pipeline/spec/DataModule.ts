@@ -11,7 +11,10 @@ export const initData: PipelineStep = (spec: any, context: PipelineContext) => {
 
   return {
     ...spec,
-    data: data
+    data: [{
+      id: 'VizSeedData',
+      values: data,
+    }]
   };
 };
 

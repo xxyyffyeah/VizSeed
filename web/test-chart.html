@@ -62,13 +62,48 @@
             margin-top: 30px;
         }
         
+        .spec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+        
         .spec-title {
             color: #3498db;
             font-size: 1.3em;
             font-weight: bold;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 8px;
+            margin: 0;
+        }
+        
+        .copy-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .copy-btn:hover {
+            background: #229954;
+            transform: translateY(-1px);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .copy-btn.copied {
+            background: #e74c3c;
         }
         
         pre {
@@ -156,7 +191,12 @@
         </div>
 
         <div class="spec-container">
-            <div class="spec-title">🔧 VChart 规范</div>
+            <div class="spec-header">
+                <div class="spec-title">🔧 VChart 规范</div>
+                <button id="copy-spec-btn" class="copy-btn" title="复制规范到剪贴板">
+                    📋 复制
+                </button>
+            </div>
             <pre id="spec-display"></pre>
         </div>
     </div>
@@ -261,12 +301,63 @@
             refreshBtn.disabled = false;
         }
 
+        // 复制规范到剪贴板
+        async function copySpecToClipboard() {
+            const copyBtn = document.getElementById('copy-spec-btn');
+            const specElement = document.getElementById('spec-display');
+            
+            if (!specElement.textContent) {
+                alert('暂无规范内容可复制');
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(specElement.textContent);
+                
+                // 更新按钮状态
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✅ 已复制';
+                copyBtn.classList.add('copied');
+                
+                // 2秒后恢复原状
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+                
+            } catch (error) {
+                console.error('复制失败:', error);
+                
+                // 降级处理：使用传统方法
+                try {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = specElement.textContent;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    copyBtn.textContent = '✅ 已复制';
+                    copyBtn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        copyBtn.textContent = '📋 复制';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                    
+                } catch (fallbackError) {
+                    alert('复制失败，请手动选择文本复制');
+                }
+            }
+        }
+
         // 页面加载时自动加载
         window.addEventListener('load', refreshChart);
         
-        // 绑定刷新按钮
+        // 绑定事件
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('refresh-btn').addEventListener('click', refreshChart);
+            document.getElementById('copy-spec-btn').addEventListener('click', copySpecToClipboard);
         });
     </script>
 </body>

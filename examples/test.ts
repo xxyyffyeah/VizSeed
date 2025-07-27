@@ -27,12 +27,94 @@ const salesData = [
   { store: '数码广场', city: '广州', category: '手机', brand: 'iPhone', sales: 10000, profit: 2000, cost: 8000, quantity: 20, rating: 4.7 },
   { store: '数码广场', city: '广州', category: '平板', brand: 'iPad', sales: 4000, profit: 800, cost: 3200, quantity: 8, rating: 4.6 }
 ];
+const debugData = [
+  {
+    name: 'Apple',
+    value: 214480
+  },
+  {
+    name: 'Google',
+    value: 155506
+  },
+  {
+    name: 'Amazon',
+    value: 100764
+  },
+  {
+    name: 'Microsoft',
+    value: 92715
+  },
+  {
+    name: 'Coca-Cola',
+    value: 66341
+  },
+  {
+    name: 'Samsung',
+    value: 59890
+  },
+  {
+    name: 'Toyota',
+    value: 53404
+  },
+  {
+    name: 'Mercedes-Benz',
+    value: 48601
+  },
+  {
+    name: 'Facebook',
+    value: 45168
+  },
+  {
+    name: "McDonald's",
+    value: 43417
+  },
+  {
+    name: 'Intel',
+    value: 43293
+  },
+  {
+    name: 'IBM',
+    value: 42972
+  },
+  {
+    name: 'BMW',
+    value: 41006
+  },
+  {
+    name: 'Disney',
+    value: 39874
+  },
+  {
+    name: 'Cisco',
+    value: 34575
+  },
+  {
+    name: 'GE',
+    value: 32757
+  },
+  {
+    name: 'Nike',
+    value: 30120
+  },
+  {
+    name: 'Louis Vuitton',
+    value: 28152
+  },
+  {
+    name: 'Oracle',
+    value: 26133
+  },
+  {
+    name: 'Honda',
+    value: 23682
+  }
+]
 console.log(JSON.stringify(salesData, null, 2));
 
 // 构建VizSeed和Spec的异步函数
 async function buildChartExample() {
   const builder = new VizSeedBuilder(salesData);
-  
+
   console.log('\n⏳ 构建VizSeed DSL...');
   const vizSeedDSL = await builder
     .setChartType('bar')
@@ -51,53 +133,53 @@ async function buildChartExample() {
 // 执行异步函数
 buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
 
-// VizSeed DSL
-console.log('\n📋 VizSeed DSL:');
-console.log(JSON.stringify(vizSeedDSL, null, 2));
+  // VizSeed DSL
+  console.log('\n📋 VizSeed DSL:');
+  console.log(JSON.stringify(vizSeedDSL, null, 2));
 
-// VChart Spec
-console.log('\n🎨 VChart Spec:');
-console.log(JSON.stringify(vchartSpec, null, 2));
+  // VChart Spec
+  console.log('\n🎨 VChart Spec:');
+  console.log(JSON.stringify(vchartSpec, null, 2));
 
-// 恢复原始console.log
-console.log = originalConsoleLog;
+  // 恢复原始console.log
+  console.log = originalConsoleLog;
 
-// 保存输出到文件
-const outputDir = path.join(__dirname, 'outputs');
-const outputFile = path.join(outputDir, 'vchart-pie-demo-output.txt');
-const specFile = path.join(outputDir, 'latest-spec.json');
-const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
+  // 保存输出到文件
+  const outputDir = path.join(__dirname, 'outputs');
+  const outputFile = path.join(outputDir, 'vchart-pie-demo-output.txt');
+  const specFile = path.join(outputDir, 'latest-spec.json');
+  const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
 
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
-}
-
-const outputText = outputCollector.join('\n');
-fs.writeFileSync(outputFile, outputText, 'utf8');
-
-// 保存spec到JSON文件（给网页使用）
-const specData = {
-  timestamp: new Date().toISOString(),
-  spec: vchartSpec,
-  vizSeedDSL: vizSeedDSL,
-  chartInfo: {
-    type: vchartSpec.type,
-    direction: vchartSpec.direction || 'vertical',
-    dataCount: vchartSpec.data.length,
-    fields: {
-      x: vchartSpec.xField,
-      y: vchartSpec.yField,
-      series: vchartSpec.seriesField
-    }
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
   }
-};
 
-fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
-fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
+  const outputText = outputCollector.join('\n');
+  fs.writeFileSync(outputFile, outputText, 'utf8');
 
-console.log(`\n📁 输出已保存到: ${outputFile}`);
-console.log(`📊 Spec已保存到: ${specFile}`);
-console.log(`🌐 Web Spec已保存到: ${webSpecFile}`);
+  // 保存spec到JSON文件（给网页使用）
+  const specData = {
+    timestamp: new Date().toISOString(),
+    spec: vchartSpec,
+    vizSeedDSL: vizSeedDSL,
+    chartInfo: {
+      type: vchartSpec.type,
+      direction: vchartSpec.direction || 'vertical',
+      dataCount: vchartSpec.data.length,
+      fields: {
+        x: vchartSpec.xField,
+        y: vchartSpec.yField,
+        series: vchartSpec.seriesField
+      }
+    }
+  };
+
+  fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
+  fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
+
+  console.log(`\n📁 输出已保存到: ${outputFile}`);
+  console.log(`📊 Spec已保存到: ${specFile}`);
+  console.log(`🌐 Web Spec已保存到: ${webSpecFile}`);
 }).catch(error => {
   console.error('❌ 构建示例失败:', error);
   process.exit(1);
