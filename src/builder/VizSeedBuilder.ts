@@ -5,6 +5,7 @@ import { ChartType, ChannelMapping, CHART_DATA_REQUIREMENTS, parseChartType } fr
 import { DataSet } from '../datasets/DataSet';
 import { PipelineContext, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
 import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
+import { assign } from 'radash';
 
 export class VizSeedBuilder implements IVizSeedBuilder {
   private dataset: IDataSet;
@@ -310,16 +311,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   public setStyle(styleOptions: any): VizSeedBuilder {
-    // 简单的对象合并，支持嵌套属性更新
-    Object.keys(styleOptions).forEach(key => {
-      if (typeof styleOptions[key] === 'object' && styleOptions[key] !== null && !Array.isArray(styleOptions[key])) {
-        // 对象类型：合并嵌套属性
-        (this.visualStyle as any)[key] = { ...(this.visualStyle as any)[key], ...styleOptions[key] };
-      } else {
-        // 基础类型或数组：直接覆盖
-        (this.visualStyle as any)[key] = styleOptions[key];
-      }
-    });
+    // 使用radash的assign进行深度合并，数组会被直接替换而不是合并
+    this.visualStyle = assign(this.visualStyle, styleOptions);
     return this;
   }
 
