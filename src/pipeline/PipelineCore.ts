@@ -26,6 +26,8 @@ export interface FieldSelection {
   dimensions: string[];  // 用户选择的维度字段ID
   measures: string[];    // 用户选择的指标字段ID
   groupMeasure?: NestedMeasure<string>[]; // 可选的分组指标字段ID
+  rowDimensions?: string[];  // 行维度字段（用于透视表等）
+  columnDimensions?: string[];  // 列维度字段（用于透视表等）
 }
 
 // Pipeline上下文接口

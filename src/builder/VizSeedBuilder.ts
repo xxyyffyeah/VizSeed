@@ -12,8 +12,9 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private fieldSelection: FieldSelection = {
     dimensions: [],
     measures: [],
-    groupMeasure: []
-    // 新增groupMeasure字段，如需添加请确保类型定义中有 groupMeasure: string[] 或类似声明
+    groupMeasure: [],
+    rowDimensions: [],
+    columnDimensions: []
   };
   private fieldMap: FieldMap = {};
   private data: Record<string, any>[] = []; // 新增data
@@ -104,19 +105,57 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     }
   }
 
-  // 静态方法：从VizSeed对象创建Builder
-  public static from(vizSeed: any): VizSeedBuilder {
-    // 深拷贝整个vizSeed对象
-    const clonedVizSeed = JSON.parse(JSON.stringify(vizSeed));
+  // 静态方法：从VizSeed DSL对象创建Builder
+  public static from(vizSeedDSL: any): VizSeedBuilder {
+    // 深拷贝整个vizSeedDSL对象
+    const clonedDSL = JSON.parse(JSON.stringify(vizSeedDSL));
     
-    const builder = new VizSeedBuilder(clonedVizSeed.data);
-    builder.chartType = clonedVizSeed.chartType;
-    builder.data = clonedVizSeed.data;
-    builder.fieldMap = clonedVizSeed.fieldMap;
-    builder.fieldSelection = clonedVizSeed.fieldSelection;
-    builder.visualStyle = clonedVizSeed.visualStyle;
-    builder.theme = clonedVizSeed.theme;
-    builder.version = clonedVizSeed.version;
+    // 从DSL数据创建Builder实例
+    const builder = new VizSeedBuilder(clonedDSL.data || []);
+    
+    // 设置图表类型
+    if (clonedDSL.chartType) {
+      builder.chartType = clonedDSL.chartType;
+    }
+    
+    // 设置数据
+    builder.data = clonedDSL.data || [];
+    
+    // 设置字段映射
+    if (clonedDSL.fieldMap) {
+      builder.fieldMap = clonedDSL.fieldMap;
+    }
+    
+    // 设置字段选择
+    if (clonedDSL.dimensions || clonedDSL.measures || clonedDSL.rowDimensions || clonedDSL.columnDimensions) {
+      builder.fieldSelection = {
+        dimensions: clonedDSL.dimensions || [],
+        measures: clonedDSL.measures || [],
+        groupMeasure: clonedDSL.groupMeasure || [],
+        rowDimensions: clonedDSL.rowDimensions || [],
+        columnDimensions: clonedDSL.columnDimensions || []
+      };
+    }
+    
+    // 设置编码映射
+    if (clonedDSL.encodes) {
+      builder.encodes = clonedDSL.encodes;
+    }
+    
+    // 设置视觉样式
+    if (clonedDSL.style) {
+      builder.visualStyle = assign(builder.visualStyle, clonedDSL.style);
+    }
+    
+    // 设置主题
+    if (clonedDSL.theme) {
+      builder.theme = clonedDSL.theme;
+    }
+    
+    // 设置版本信息（如果有）
+    if (clonedDSL.version) {
+      builder.version = clonedDSL.version;
+    }
     
     return builder;
   }
