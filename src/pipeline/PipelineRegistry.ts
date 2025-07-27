@@ -15,8 +15,13 @@ const specPipelineMap: Record<string, () => Promise<any>> = {
   [ChartType.BAR_GROUPED]: () => import('./spec/specPipelines/Bar_grouped').then(m => m.createBarGroupedSpecPipeline),
   [ChartType.BAR_PERCENT]: () => import('./spec/specPipelines/Bar_percent').then(m => m.createBarPercentSpecPipeline),
   [ChartType.COLUMN]: () => import('./spec/specPipelines/Column').then(m => m.createColumnSpecPipeline),
+  [ChartType.COLUMN_STACKED]: () => import('./spec/specPipelines/Column_stacked').then(m => m.createColumnStackedSpecPipeline),
+  [ChartType.COLUMN_GROUPED]: () => import('./spec/specPipelines/Column_grouped').then(m => m.createColumnGroupedSpecPipeline),
+  [ChartType.COLUMN_PERCENT]: () => import('./spec/specPipelines/Column_percent').then(m => m.createColumnPercentSpecPipeline),
   [ChartType.LINE]: () => import('./spec/specPipelines/Line').then(m => m.createLineSpecPipeline),
   [ChartType.AREA]: () => import('./spec/specPipelines/Area').then(m => m.createAreaSpecPipeline),
+  [ChartType.AREA_STACKED]: () => import('./spec/specPipelines/Area_stacked').then(m => m.createAreaStackedSpecPipeline),
+  [ChartType.AREA_PERCENT]: () => import('./spec/specPipelines/Area_percent').then(m => m.createAreaPercentSpecPipeline),
   [ChartType.SCATTER]: () => import('./spec/specPipelines/Scatter').then(m => m.createScatterSpecPipeline),
   
   // VChart饼图类型
@@ -35,8 +40,13 @@ const vizSeedPipelineMap: Record<string, () => Promise<any>> = {
   [ChartType.BAR_GROUPED]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
   [ChartType.BAR_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
   [ChartType.COLUMN]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
+  [ChartType.COLUMN_STACKED]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
+  [ChartType.COLUMN_GROUPED]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
+  [ChartType.COLUMN_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
   [ChartType.LINE]: () => import('./vizSeed/vizSeedPipelines/Line').then(m => m.createLineVizSeedPipeline),
   [ChartType.AREA]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
+  [ChartType.AREA_STACKED]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
+  [ChartType.AREA_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
   [ChartType.SCATTER]: () => import('./vizSeed/vizSeedPipelines/Scatter').then(m => m.createScatterVizSeedPipeline),
   
   // VChart饼图类型

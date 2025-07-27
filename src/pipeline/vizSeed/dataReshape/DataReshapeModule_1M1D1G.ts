@@ -6,7 +6,6 @@
  */
 
 import { PipelineStep, PipelineContext, FieldSelection } from '../../PipelineCore';
-import { CHART_DATA_REQUIREMENTS } from '../../../types/charts';
 import { elevateStep, reduceStep } from '../utils/ElevateAndReduce';
 import { copyDimensionStep } from '../utils/DimensionAndMeasureCopy';
 

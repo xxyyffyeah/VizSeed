@@ -6,9 +6,15 @@ export enum ChartType {
   BAR_GROUPED = 'bar_grouped',     // 分组柱状图
   BAR_PERCENT = 'bar_percent',     // 百分比柱状图
   
-  COLUMN = 'column',     // 条形图  
+  COLUMN = 'column',               // 条形图
+  COLUMN_STACKED = 'column_stacked', // 堆叠条形图
+  COLUMN_GROUPED = 'column_grouped', // 分组条形图
+  COLUMN_PERCENT = 'column_percent', // 百分比条形图
+  
   LINE = 'line',         // 折线图
   AREA = 'area',         // 面积图
+  AREA_STACKED = 'area_stacked', // 堆叠面积图
+  AREA_PERCENT = 'area_percent', // 百分比面积图
   SCATTER = 'scatter',   // 散点图
   PIE = 'pie',           // 饼图
   DONUT = 'donut',       // 环形图
@@ -17,7 +23,7 @@ export enum ChartType {
 
 // Zod schema用于验证和转换字符串为ChartType枚举
 export const ChartTypeSchema = z.enum([
-  'bar', 'bar_stacked', 'bar_grouped', 'bar_percent', 'column', 'line', 'area', 'scatter', 'pie', 'donut', 'table'
+  'bar', 'bar_stacked', 'bar_grouped', 'bar_percent', 'column', 'column_stacked', 'column_grouped', 'column_percent', 'line', 'area', 'area_stacked', 'area_percent', 'scatter', 'pie', 'donut', 'table'
 ]).transform((value) => {
   // 将字符串转换为对应的枚举值
   const enumMap: Record<string, ChartType> = {
@@ -26,8 +32,13 @@ export const ChartTypeSchema = z.enum([
     'bar_grouped': ChartType.BAR_GROUPED,
     'bar_percent': ChartType.BAR_PERCENT,
     'column': ChartType.COLUMN,
+    'column_stacked': ChartType.COLUMN_STACKED,
+    'column_grouped': ChartType.COLUMN_GROUPED,
+    'column_percent': ChartType.COLUMN_PERCENT,
     'line': ChartType.LINE,
     'area': ChartType.AREA,
+    'area_stacked': ChartType.AREA_STACKED,
+    'area_percent': ChartType.AREA_PERCENT,
     'scatter': ChartType.SCATTER,
     'pie': ChartType.PIE,
     'donut': ChartType.DONUT,
@@ -131,6 +142,39 @@ export const CHART_DATA_REQUIREMENTS: Record<ChartType, ChartDataRequirement> = 
     minMeasures: 1,
     chartType: 'column'
   },
+  column_stacked: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'column_stacked'
+  },
+  column_grouped: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'column_grouped'
+  },
+  column_percent: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'column_percent'
+  },
   line: {
     channels: {
       dimensionChannels: ['x', 'color'],
@@ -152,6 +196,28 @@ export const CHART_DATA_REQUIREMENTS: Record<ChartType, ChartDataRequirement> = 
     minDimensions: 1,
     minMeasures: 1,
     chartType: 'area'
+  },
+  area_stacked: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'area_stacked'
+  },
+  area_percent: {
+    channels: {
+      dimensionChannels: ['x', 'color'],
+      measureChannels: ['y']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 2,
+    minMeasures: 1,
+    chartType: 'area_percent'
   },
   scatter: {
     channels: {

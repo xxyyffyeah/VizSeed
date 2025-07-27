@@ -1,119 +1,147 @@
 {
-  "timestamp": "2025-07-27T11:54:21.048Z",
-  "chartType": "bar_stacked",
-  "description": "堆叠水平条形图 - 显示各店铺按城市分组的销售额和利润堆叠",
+  "timestamp": "2025-07-27T15:33:15.176Z",
+  "chartType": "line",
+  "description": "多线折线图 - 显示不同产品线的月度销售额趋势对比",
   "spec": {
-    "type": "bar",
-    "direction": "horizontal",
-    "xField": "__MeasureValue__",
-    "yField": "store",
-    "seriesField": "__MeasureName__",
+    "type": "line",
+    "xField": "month",
+    "yField": "sales",
+    "seriesField": "product",
     "data": [
       {
         "id": "VizSeedData",
         "values": [
           {
-            "store": "苹果专卖店",
-            "__MeasureName__": "北京_sales",
-            "__MeasureValue__": 15000
+            "month": "2024-01",
+            "product": "手机",
+            "sales": 15000
           },
           {
-            "store": "苹果专卖店",
-            "__MeasureName__": "北京_profit",
-            "__MeasureValue__": 3000
+            "month": "2024-01",
+            "product": "平板",
+            "sales": 8000
           },
           {
-            "store": "苹果专卖店",
-            "__MeasureName__": "上海_sales",
-            "__MeasureValue__": 0
+            "month": "2024-02",
+            "product": "手机",
+            "sales": 18000
           },
           {
-            "store": "苹果专卖店",
-            "__MeasureName__": "上海_profit",
-            "__MeasureValue__": 0
+            "month": "2024-02",
+            "product": "平板",
+            "sales": 9500
           },
           {
-            "store": "苹果专卖店",
-            "__MeasureName__": "广州_sales",
-            "__MeasureValue__": 0
+            "month": "2024-03",
+            "product": "手机",
+            "sales": 22000
           },
           {
-            "store": "苹果专卖店",
-            "__MeasureName__": "广州_profit",
-            "__MeasureValue__": 0
+            "month": "2024-03",
+            "product": "平板",
+            "sales": 11000
           },
           {
-            "store": "电子城",
-            "__MeasureName__": "北京_sales",
-            "__MeasureValue__": 0
+            "month": "2024-04",
+            "product": "手机",
+            "sales": 20000
           },
           {
-            "store": "电子城",
-            "__MeasureName__": "北京_profit",
-            "__MeasureValue__": 0
+            "month": "2024-04",
+            "product": "平板",
+            "sales": 10500
           },
           {
-            "store": "电子城",
-            "__MeasureName__": "上海_sales",
-            "__MeasureValue__": 12000
+            "month": "2024-05",
+            "product": "手机",
+            "sales": 25000
           },
           {
-            "store": "电子城",
-            "__MeasureName__": "上海_profit",
-            "__MeasureValue__": 2400
+            "month": "2024-05",
+            "product": "平板",
+            "sales": 12500
           },
           {
-            "store": "电子城",
-            "__MeasureName__": "广州_sales",
-            "__MeasureValue__": 0
+            "month": "2024-06",
+            "product": "手机",
+            "sales": 28000
           },
           {
-            "store": "电子城",
-            "__MeasureName__": "广州_profit",
-            "__MeasureValue__": 0
+            "month": "2024-06",
+            "product": "平板",
+            "sales": 14000
           },
           {
-            "store": "数码广场",
-            "__MeasureName__": "北京_sales",
-            "__MeasureValue__": 0
+            "month": "2024-07",
+            "product": "手机",
+            "sales": 32000
           },
           {
-            "store": "数码广场",
-            "__MeasureName__": "北京_profit",
-            "__MeasureValue__": 0
+            "month": "2024-07",
+            "product": "平板",
+            "sales": 16000
           },
           {
-            "store": "数码广场",
-            "__MeasureName__": "上海_sales",
-            "__MeasureValue__": 0
+            "month": "2024-08",
+            "product": "手机",
+            "sales": 30000
           },
           {
-            "store": "数码广场",
-            "__MeasureName__": "上海_profit",
-            "__MeasureValue__": 0
+            "month": "2024-08",
+            "product": "平板",
+            "sales": 15000
           },
           {
-            "store": "数码广场",
-            "__MeasureName__": "广州_sales",
-            "__MeasureValue__": 10000
+            "month": "2024-09",
+            "product": "手机",
+            "sales": 35000
           },
           {
-            "store": "数码广场",
-            "__MeasureName__": "广州_profit",
-            "__MeasureValue__": 2000
+            "month": "2024-09",
+            "product": "平板",
+            "sales": 17500
+          },
+          {
+            "month": "2024-10",
+            "product": "手机",
+            "sales": 38000
+          },
+          {
+            "month": "2024-10",
+            "product": "平板",
+            "sales": 19000
+          },
+          {
+            "month": "2024-11",
+            "product": "手机",
+            "sales": 42000
+          },
+          {
+            "month": "2024-11",
+            "product": "平板",
+            "sales": 21000
+          },
+          {
+            "month": "2024-12",
+            "product": "手机",
+            "sales": 45000
+          },
+          {
+            "month": "2024-12",
+            "product": "平板",
+            "sales": 22500
           }
         ]
       }
     ],
-    "stack": true,
     "axes": [
       {
         "orient": "bottom",
-        "type": "linear"
+        "type": "band"
       },
       {
         "orient": "left",
-        "type": "band"
+        "type": "linear"
       }
     ],
     "legends": {
@@ -129,121 +157,157 @@
     }
   },
   "vizSeedDSL": {
-    "chartType": "bar_stacked",
+    "chartType": "line",
     "data": [
       {
-        "store": "苹果专卖店",
-        "__MeasureName__": "北京_sales",
-        "__MeasureValue__": 15000
+        "month": "2024-01",
+        "product": "手机",
+        "sales": 15000
       },
       {
-        "store": "苹果专卖店",
-        "__MeasureName__": "北京_profit",
-        "__MeasureValue__": 3000
+        "month": "2024-01",
+        "product": "平板",
+        "sales": 8000
       },
       {
-        "store": "苹果专卖店",
-        "__MeasureName__": "上海_sales",
-        "__MeasureValue__": 0
+        "month": "2024-02",
+        "product": "手机",
+        "sales": 18000
       },
       {
-        "store": "苹果专卖店",
-        "__MeasureName__": "上海_profit",
-        "__MeasureValue__": 0
+        "month": "2024-02",
+        "product": "平板",
+        "sales": 9500
       },
       {
-        "store": "苹果专卖店",
-        "__MeasureName__": "广州_sales",
-        "__MeasureValue__": 0
+        "month": "2024-03",
+        "product": "手机",
+        "sales": 22000
       },
       {
-        "store": "苹果专卖店",
-        "__MeasureName__": "广州_profit",
-        "__MeasureValue__": 0
+        "month": "2024-03",
+        "product": "平板",
+        "sales": 11000
       },
       {
-        "store": "电子城",
-        "__MeasureName__": "北京_sales",
-        "__MeasureValue__": 0
+        "month": "2024-04",
+        "product": "手机",
+        "sales": 20000
       },
       {
-        "store": "电子城",
-        "__MeasureName__": "北京_profit",
-        "__MeasureValue__": 0
+        "month": "2024-04",
+        "product": "平板",
+        "sales": 10500
       },
       {
-        "store": "电子城",
-        "__MeasureName__": "上海_sales",
-        "__MeasureValue__": 12000
+        "month": "2024-05",
+        "product": "手机",
+        "sales": 25000
       },
       {
-        "store": "电子城",
-        "__MeasureName__": "上海_profit",
-        "__MeasureValue__": 2400
+        "month": "2024-05",
+        "product": "平板",
+        "sales": 12500
       },
       {
-        "store": "电子城",
-        "__MeasureName__": "广州_sales",
-        "__MeasureValue__": 0
+        "month": "2024-06",
+        "product": "手机",
+        "sales": 28000
       },
       {
-        "store": "电子城",
-        "__MeasureName__": "广州_profit",
-        "__MeasureValue__": 0
+        "month": "2024-06",
+        "product": "平板",
+        "sales": 14000
       },
       {
-        "store": "数码广场",
-        "__MeasureName__": "北京_sales",
-        "__MeasureValue__": 0
+        "month": "2024-07",
+        "product": "手机",
+        "sales": 32000
       },
       {
-        "store": "数码广场",
-        "__MeasureName__": "北京_profit",
-        "__MeasureValue__": 0
+        "month": "2024-07",
+        "product": "平板",
+        "sales": 16000
       },
       {
-        "store": "数码广场",
-        "__MeasureName__": "上海_sales",
-        "__MeasureValue__": 0
+        "month": "2024-08",
+        "product": "手机",
+        "sales": 30000
       },
       {
-        "store": "数码广场",
-        "__MeasureName__": "上海_profit",
-        "__MeasureValue__": 0
+        "month": "2024-08",
+        "product": "平板",
+        "sales": 15000
       },
       {
-        "store": "数码广场",
-        "__MeasureName__": "广州_sales",
-        "__MeasureValue__": 10000
+        "month": "2024-09",
+        "product": "手机",
+        "sales": 35000
       },
       {
-        "store": "数码广场",
-        "__MeasureName__": "广州_profit",
-        "__MeasureValue__": 2000
+        "month": "2024-09",
+        "product": "平板",
+        "sales": 17500
+      },
+      {
+        "month": "2024-10",
+        "product": "手机",
+        "sales": 38000
+      },
+      {
+        "month": "2024-10",
+        "product": "平板",
+        "sales": 19000
+      },
+      {
+        "month": "2024-11",
+        "product": "手机",
+        "sales": 42000
+      },
+      {
+        "month": "2024-11",
+        "product": "平板",
+        "sales": 21000
+      },
+      {
+        "month": "2024-12",
+        "product": "手机",
+        "sales": 45000
+      },
+      {
+        "month": "2024-12",
+        "product": "平板",
+        "sales": 22500
       }
     ],
     "fieldMap": {
-      "store": {
-        "id": "store",
-        "type": "string",
-        "alias": "store",
+      "month": {
+        "id": "month",
+        "type": "date",
+        "alias": "month",
         "location": "dimension",
         "domain": [
-          "苹果专卖店",
-          "电子城",
-          "数码广场"
+          "2024-01",
+          "2024-02",
+          "2024-03",
+          "2024-04",
+          "2024-05",
+          "2024-06",
+          "2024-07",
+          "2024-08",
+          "2024-09",
+          "2024-10"
         ],
         "format": {}
       },
-      "city": {
-        "id": "city",
+      "product": {
+        "id": "product",
         "type": "string",
-        "alias": "city",
+        "alias": "product",
         "location": "dimension",
         "domain": [
-          "北京",
-          "上海",
-          "广州"
+          "手机",
+          "平板"
         ],
         "format": {}
       },
@@ -255,86 +319,23 @@
         "domain": [
           15000,
           8000,
-          6000,
-          12000,
-          9000,
-          5000,
-          10000,
-          4000
+          18000,
+          9500,
+          22000,
+          11000,
+          20000,
+          10500,
+          25000,
+          12500
         ],
         "format": {}
-      },
-      "profit": {
-        "id": "profit",
-        "type": "number",
-        "alias": "profit",
-        "location": "measure",
-        "domain": [
-          3000,
-          1600,
-          1200,
-          2400,
-          1800,
-          1000,
-          2000,
-          800
-        ],
-        "format": {}
-      },
-      "北京_sales": {
-        "id": "北京_sales",
-        "type": "number",
-        "alias": "北京_sales",
-        "location": "measure"
-      },
-      "北京_profit": {
-        "id": "北京_profit",
-        "type": "number",
-        "alias": "北京_profit",
-        "location": "measure"
-      },
-      "上海_sales": {
-        "id": "上海_sales",
-        "type": "number",
-        "alias": "上海_sales",
-        "location": "measure"
-      },
-      "上海_profit": {
-        "id": "上海_profit",
-        "type": "number",
-        "alias": "上海_profit",
-        "location": "measure"
-      },
-      "广州_sales": {
-        "id": "广州_sales",
-        "type": "number",
-        "alias": "广州_sales",
-        "location": "measure"
-      },
-      "广州_profit": {
-        "id": "广州_profit",
-        "type": "number",
-        "alias": "广州_profit",
-        "location": "measure"
-      },
-      "__MeasureName__": {
-        "id": "__MeasureName__",
-        "type": "string",
-        "alias": "__MeasureName__",
-        "location": "dimension"
-      },
-      "__MeasureValue__": {
-        "id": "__MeasureValue__",
-        "type": "number",
-        "alias": "__MeasureValue__",
-        "location": "measure"
       }
     },
     "encodes": [
       {
-        "x": "__MeasureValue__",
-        "y": "store",
-        "group": "__MeasureName__"
+        "x": "month",
+        "y": "sales",
+        "color": "product"
       }
     ],
     "style": {
@@ -372,23 +373,24 @@
       }
     },
     "dimensions": [
-      "store",
-      "__MeasureName__"
+      "month",
+      "product"
     ],
     "measures": [
-      "__MeasureValue__"
+      "sales"
     ],
+    "rowDimensions": [],
+    "columnDimensions": [],
     "theme": "light",
     "version": "0.1.0"
   },
   "chartInfo": {
-    "type": "bar",
-    "direction": "horizontal",
+    "type": "line",
     "dataCount": 1,
     "fields": {
-      "x": "__MeasureValue__",
-      "y": "store",
-      "series": "__MeasureName__"
+      "x": "month",
+      "y": "sales",
+      "series": "product"
     }
   }
 }

@@ -7,7 +7,7 @@ import { chartAdapterStep } from '../ChartAdapterModule';
 import { vizSeedInitStep } from '../VizSeedInitModule';
 import { dataReshapeStep_1M1D1G } from '../dataReshape/DataReshapeModule_1M1D1G';
 import { vizSeedCleanupStep } from '../VizSeedCleanupModule';
-import { mapHorizontalBar } from '../channelMapping/HorizontalBarMapping';
+import { mapVerticalColumn } from '../channelMapping/VerticalColumnMapping';
 
 // 创建COLUMN图表VizSeed Pipeline
 export const createColumnVizSeedPipeline = () => {
@@ -15,7 +15,7 @@ export const createColumnVizSeedPipeline = () => {
     vizSeedInitStep,
     chartAdapterStep,
     dataReshapeStep_1M1D1G,
-    mapHorizontalBar,
+    mapVerticalColumn,
     vizSeedCleanupStep
   ];
   return pipeline(buildColumnVizSeedSteps, {});

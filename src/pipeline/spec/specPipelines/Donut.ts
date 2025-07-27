@@ -7,11 +7,11 @@ import { initData } from '../DataModule';
 import { configureLegend } from '../style/Legend';
 import { configureLabel } from '../style/Label';
 import { configureTooltip } from '../style/Tooltip';
-import { initVChartPie } from '../init/initVChartPie';
+import { initVChartDonut } from '../init/initVChartDonut';
 
 // 创建DONUT图表Pipeline
 export const createDonutSpecPipeline = () => pipeline([
-  initVChartPie,
+  initVChartDonut,
   initData,
   configureLegend,
   configureLabel,

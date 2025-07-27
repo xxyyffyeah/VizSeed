@@ -1,7 +1,4 @@
-1. 优化fieldSelection整体的结构
-    fieldMap是扁平化的，每一个对应相应的字段
-    fieldGroup做成[Record<string, string[]>]的形式，key是groupName，value是groupName对应的所有字段
-    field是单纯的用户选的字段
+
 2. 优化dataReshape相关
     分为三类图标分别reshape，固定目标的维度和指标数量
     

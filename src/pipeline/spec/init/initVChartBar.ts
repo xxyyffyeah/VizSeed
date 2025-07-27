@@ -16,12 +16,8 @@ export const initVChartBar: PipelineStep = (spec: any, context: PipelineContext)
     direction: 'horizontal',
     xField: encodes.x || encodes.category || 'category',
     yField: encodes.y || encodes.value || 'value',
+    seriesField: encodes.group || 'group',
   };
-
-  // 为支持分组/颜色的图表类型添加seriesField
-  if (['bar', 'column', 'line', 'area'].includes(chartType)) {
-    baseSpec.seriesField = encodes.color || encodes.group;
-  }
 
   return baseSpec;
 };

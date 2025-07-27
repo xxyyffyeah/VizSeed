@@ -2,12 +2,16 @@ import { VizSeedBuilder } from '../src';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// 销售数据 - 适合饼图的汇总数据
+// 销售数据 - 适合饼图的汇总数据，增加地区维度
 const salesData = [
-  { category: '手机', sales: 54000, profit: 10800 },
-  { category: '平板', sales: 15000, profit: 3000 },
-  { category: '笔记本', sales: 32000, profit: 6400 },
-  { category: '配件', sales: 8000, profit: 2400 }
+  { category: '手机', region: '北京', sales: 54000, profit: 10800 },
+  { category: '平板', region: '北京', sales: 15000, profit: 3000 },
+  { category: '笔记本', region: '北京', sales: 32000, profit: 6400 },
+  { category: '配件', region: '北京', sales: 8000, profit: 2400 },
+  { category: '手机', region: '上海', sales: 45000, profit: 9000 },
+  { category: '平板', region: '上海', sales: 12000, profit: 2400 },
+  { category: '笔记本', region: '上海', sales: 28000, profit: 5600 },
+  { category: '配件', region: '上海', sales: 6000, profit: 1800 }
 ];
 
 // 构建饼图
@@ -16,7 +20,7 @@ async function buildPieChart() {
 
   const vizSeedDSL = await builder
     .setChartType('pie')
-    .setDimensions(['category'])
+    .setDimensions(['category', 'region'])
     .setMeasures(['sales'])
     .build();
 

@@ -44,12 +44,7 @@ export const ChartRenderer: React.FC<ChartRendererProps> = ({ spec, error, isLoa
       const vchartSpec = {
         ...spec,
         width: 800,
-        height: 400,
-        title: {
-          text: "VizSeed 实时生成图表",
-          fontSize: 16,
-          fontWeight: "bold"
-        }
+        height: 400
       };
 
       // 使用VChart渲染
