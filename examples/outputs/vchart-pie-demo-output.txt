@@ -96,31 +96,41 @@
 🎨 水平条形图自动通道映射，字段选择: {
   "dimensions": [
     "store",
-    "__MeasureName__"
+    "city"
   ],
   "measures": [
-    "__MeasureValue__"
-  ]
+    "sales"
+  ],
+  "groupMeasure": [
+    "sales"
+  ],
+  "rowDimensions": [],
+  "columnDimensions": []
 }
 🔗 水平条形图通道映射结果: {
-  "x": "__MeasureValue__",
+  "x": "sales",
   "y": "store",
-  "group": "__MeasureName__"
+  "group": "city"
 }
 ⏳ 构建VChart规范...
 🎨 水平条形图自动通道映射，字段选择: {
   "dimensions": [
     "store",
-    "__MeasureName__"
+    "city"
   ],
   "measures": [
-    "__MeasureValue__"
-  ]
+    "sales"
+  ],
+  "groupMeasure": [
+    "sales"
+  ],
+  "rowDimensions": [],
+  "columnDimensions": []
 }
 🔗 水平条形图通道映射结果: {
-  "x": "__MeasureValue__",
+  "x": "sales",
   "y": "store",
-  "group": "__MeasureName__"
+  "group": "city"
 }
 
 📋 VizSeed DSL:
@@ -129,273 +139,43 @@
   "data": [
     {
       "store": "苹果专卖店",
-      "__MeasureName__": "北京_手机_iPhone_sales",
-      "__MeasureValue__": 15000
+      "city": "北京",
+      "sales": 15000
     },
     {
       "store": "苹果专卖店",
-      "__MeasureName__": "北京_手机_Samsung_sales",
-      "__MeasureValue__": 8000
+      "city": "北京",
+      "sales": 8000
     },
     {
       "store": "苹果专卖店",
-      "__MeasureName__": "北京_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "北京_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "北京_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "北京_平板_iPad_sales",
-      "__MeasureValue__": 6000
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "上海_手机_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "上海_手机_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "上海_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "上海_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "上海_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "上海_平板_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "广州_手机_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "广州_手机_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "广州_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "广州_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "广州_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "苹果专卖店",
-      "__MeasureName__": "广州_平板_iPad_sales",
-      "__MeasureValue__": 0
+      "city": "北京",
+      "sales": 6000
     },
     {
       "store": "电子城",
-      "__MeasureName__": "北京_手机_iPhone_sales",
-      "__MeasureValue__": 0
+      "city": "上海",
+      "sales": 12000
     },
     {
       "store": "电子城",
-      "__MeasureName__": "北京_手机_Samsung_sales",
-      "__MeasureValue__": 0
+      "city": "上海",
+      "sales": 9000
     },
     {
       "store": "电子城",
-      "__MeasureName__": "北京_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "北京_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "北京_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "北京_平板_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "上海_手机_iPhone_sales",
-      "__MeasureValue__": 12000
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "上海_手机_Samsung_sales",
-      "__MeasureValue__": 9000
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "上海_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "上海_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "上海_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "上海_平板_iPad_sales",
-      "__MeasureValue__": 5000
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "广州_手机_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "广州_手机_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "广州_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "广州_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "广州_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "电子城",
-      "__MeasureName__": "广州_平板_iPad_sales",
-      "__MeasureValue__": 0
+      "city": "上海",
+      "sales": 5000
     },
     {
       "store": "数码广场",
-      "__MeasureName__": "北京_手机_iPhone_sales",
-      "__MeasureValue__": 0
+      "city": "广州",
+      "sales": 10000
     },
     {
       "store": "数码广场",
-      "__MeasureName__": "北京_手机_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "北京_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "北京_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "北京_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "北京_平板_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "上海_手机_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "上海_手机_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "上海_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "上海_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "上海_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "上海_平板_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "广州_手机_iPhone_sales",
-      "__MeasureValue__": 10000
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "广州_手机_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "广州_手机_iPad_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "广州_平板_iPhone_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "广州_平板_Samsung_sales",
-      "__MeasureValue__": 0
-    },
-    {
-      "store": "数码广场",
-      "__MeasureName__": "广州_平板_iPad_sales",
-      "__MeasureValue__": 4000
+      "city": "广州",
+      "sales": 4000
     }
   ],
   "fieldMap": {
@@ -423,29 +203,6 @@
       ],
       "format": {}
     },
-    "category": {
-      "id": "category",
-      "type": "string",
-      "alias": "category",
-      "location": "dimension",
-      "domain": [
-        "手机",
-        "平板"
-      ],
-      "format": {}
-    },
-    "brand": {
-      "id": "brand",
-      "type": "string",
-      "alias": "brand",
-      "location": "dimension",
-      "domain": [
-        "iPhone",
-        "Samsung",
-        "iPad"
-      ],
-      "format": {}
-    },
     "sales": {
       "id": "sales",
       "type": "number",
@@ -462,187 +219,13 @@
         4000
       ],
       "format": {}
-    },
-    "iPhone_sales": {
-      "id": "iPhone_sales",
-      "type": "number",
-      "alias": "iPhone_sales",
-      "location": "measure"
-    },
-    "Samsung_sales": {
-      "id": "Samsung_sales",
-      "type": "number",
-      "alias": "Samsung_sales",
-      "location": "measure"
-    },
-    "iPad_sales": {
-      "id": "iPad_sales",
-      "type": "number",
-      "alias": "iPad_sales",
-      "location": "measure"
-    },
-    "手机_iPhone_sales": {
-      "id": "手机_iPhone_sales",
-      "type": "number",
-      "alias": "手机_iPhone_sales",
-      "location": "measure"
-    },
-    "手机_Samsung_sales": {
-      "id": "手机_Samsung_sales",
-      "type": "number",
-      "alias": "手机_Samsung_sales",
-      "location": "measure"
-    },
-    "手机_iPad_sales": {
-      "id": "手机_iPad_sales",
-      "type": "number",
-      "alias": "手机_iPad_sales",
-      "location": "measure"
-    },
-    "平板_iPhone_sales": {
-      "id": "平板_iPhone_sales",
-      "type": "number",
-      "alias": "平板_iPhone_sales",
-      "location": "measure"
-    },
-    "平板_Samsung_sales": {
-      "id": "平板_Samsung_sales",
-      "type": "number",
-      "alias": "平板_Samsung_sales",
-      "location": "measure"
-    },
-    "平板_iPad_sales": {
-      "id": "平板_iPad_sales",
-      "type": "number",
-      "alias": "平板_iPad_sales",
-      "location": "measure"
-    },
-    "北京_手机_iPhone_sales": {
-      "id": "北京_手机_iPhone_sales",
-      "type": "number",
-      "alias": "北京_手机_iPhone_sales",
-      "location": "measure"
-    },
-    "北京_手机_Samsung_sales": {
-      "id": "北京_手机_Samsung_sales",
-      "type": "number",
-      "alias": "北京_手机_Samsung_sales",
-      "location": "measure"
-    },
-    "北京_手机_iPad_sales": {
-      "id": "北京_手机_iPad_sales",
-      "type": "number",
-      "alias": "北京_手机_iPad_sales",
-      "location": "measure"
-    },
-    "北京_平板_iPhone_sales": {
-      "id": "北京_平板_iPhone_sales",
-      "type": "number",
-      "alias": "北京_平板_iPhone_sales",
-      "location": "measure"
-    },
-    "北京_平板_Samsung_sales": {
-      "id": "北京_平板_Samsung_sales",
-      "type": "number",
-      "alias": "北京_平板_Samsung_sales",
-      "location": "measure"
-    },
-    "北京_平板_iPad_sales": {
-      "id": "北京_平板_iPad_sales",
-      "type": "number",
-      "alias": "北京_平板_iPad_sales",
-      "location": "measure"
-    },
-    "上海_手机_iPhone_sales": {
-      "id": "上海_手机_iPhone_sales",
-      "type": "number",
-      "alias": "上海_手机_iPhone_sales",
-      "location": "measure"
-    },
-    "上海_手机_Samsung_sales": {
-      "id": "上海_手机_Samsung_sales",
-      "type": "number",
-      "alias": "上海_手机_Samsung_sales",
-      "location": "measure"
-    },
-    "上海_手机_iPad_sales": {
-      "id": "上海_手机_iPad_sales",
-      "type": "number",
-      "alias": "上海_手机_iPad_sales",
-      "location": "measure"
-    },
-    "上海_平板_iPhone_sales": {
-      "id": "上海_平板_iPhone_sales",
-      "type": "number",
-      "alias": "上海_平板_iPhone_sales",
-      "location": "measure"
-    },
-    "上海_平板_Samsung_sales": {
-      "id": "上海_平板_Samsung_sales",
-      "type": "number",
-      "alias": "上海_平板_Samsung_sales",
-      "location": "measure"
-    },
-    "上海_平板_iPad_sales": {
-      "id": "上海_平板_iPad_sales",
-      "type": "number",
-      "alias": "上海_平板_iPad_sales",
-      "location": "measure"
-    },
-    "广州_手机_iPhone_sales": {
-      "id": "广州_手机_iPhone_sales",
-      "type": "number",
-      "alias": "广州_手机_iPhone_sales",
-      "location": "measure"
-    },
-    "广州_手机_Samsung_sales": {
-      "id": "广州_手机_Samsung_sales",
-      "type": "number",
-      "alias": "广州_手机_Samsung_sales",
-      "location": "measure"
-    },
-    "广州_手机_iPad_sales": {
-      "id": "广州_手机_iPad_sales",
-      "type": "number",
-      "alias": "广州_手机_iPad_sales",
-      "location": "measure"
-    },
-    "广州_平板_iPhone_sales": {
-      "id": "广州_平板_iPhone_sales",
-      "type": "number",
-      "alias": "广州_平板_iPhone_sales",
-      "location": "measure"
-    },
-    "广州_平板_Samsung_sales": {
-      "id": "广州_平板_Samsung_sales",
-      "type": "number",
-      "alias": "广州_平板_Samsung_sales",
-      "location": "measure"
-    },
-    "广州_平板_iPad_sales": {
-      "id": "广州_平板_iPad_sales",
-      "type": "number",
-      "alias": "广州_平板_iPad_sales",
-      "location": "measure"
-    },
-    "__MeasureName__": {
-      "id": "__MeasureName__",
-      "type": "string",
-      "alias": "__MeasureName__",
-      "location": "dimension"
-    },
-    "__MeasureValue__": {
-      "id": "__MeasureValue__",
-      "type": "number",
-      "alias": "__MeasureValue__",
-      "location": "measure"
     }
   },
   "encodes": [
     {
-      "x": "__MeasureValue__",
+      "x": "sales",
       "y": "store",
-      "group": "__MeasureName__"
+      "group": "city"
     }
   ],
   "style": {
@@ -681,10 +264,10 @@
   },
   "dimensions": [
     "store",
-    "__MeasureName__"
+    "city"
   ],
   "measures": [
-    "__MeasureValue__"
+    "sales"
   ],
   "rowDimensions": [],
   "columnDimensions": [],
@@ -695,282 +278,52 @@
 {
   "type": "bar",
   "direction": "horizontal",
-  "xField": "__MeasureValue__",
+  "xField": "sales",
   "yField": "store",
-  "seriesField": "__MeasureName__",
+  "seriesField": "city",
   "data": [
     {
       "id": "VizSeedData",
       "values": [
         {
           "store": "苹果专卖店",
-          "__MeasureName__": "北京_手机_iPhone_sales",
-          "__MeasureValue__": 15000
+          "city": "北京",
+          "sales": 15000
         },
         {
           "store": "苹果专卖店",
-          "__MeasureName__": "北京_手机_Samsung_sales",
-          "__MeasureValue__": 8000
+          "city": "北京",
+          "sales": 8000
         },
         {
           "store": "苹果专卖店",
-          "__MeasureName__": "北京_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "北京_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "北京_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "北京_平板_iPad_sales",
-          "__MeasureValue__": 6000
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "上海_手机_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "上海_手机_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "上海_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "上海_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "上海_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "上海_平板_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "广州_手机_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "广州_手机_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "广州_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "广州_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "广州_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "苹果专卖店",
-          "__MeasureName__": "广州_平板_iPad_sales",
-          "__MeasureValue__": 0
+          "city": "北京",
+          "sales": 6000
         },
         {
           "store": "电子城",
-          "__MeasureName__": "北京_手机_iPhone_sales",
-          "__MeasureValue__": 0
+          "city": "上海",
+          "sales": 12000
         },
         {
           "store": "电子城",
-          "__MeasureName__": "北京_手机_Samsung_sales",
-          "__MeasureValue__": 0
+          "city": "上海",
+          "sales": 9000
         },
         {
           "store": "电子城",
-          "__MeasureName__": "北京_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "北京_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "北京_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "北京_平板_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "上海_手机_iPhone_sales",
-          "__MeasureValue__": 12000
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "上海_手机_Samsung_sales",
-          "__MeasureValue__": 9000
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "上海_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "上海_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "上海_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "上海_平板_iPad_sales",
-          "__MeasureValue__": 5000
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "广州_手机_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "广州_手机_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "广州_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "广州_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "广州_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "电子城",
-          "__MeasureName__": "广州_平板_iPad_sales",
-          "__MeasureValue__": 0
+          "city": "上海",
+          "sales": 5000
         },
         {
           "store": "数码广场",
-          "__MeasureName__": "北京_手机_iPhone_sales",
-          "__MeasureValue__": 0
+          "city": "广州",
+          "sales": 10000
         },
         {
           "store": "数码广场",
-          "__MeasureName__": "北京_手机_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "北京_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "北京_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "北京_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "北京_平板_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "上海_手机_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "上海_手机_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "上海_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "上海_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "上海_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "上海_平板_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "广州_手机_iPhone_sales",
-          "__MeasureValue__": 10000
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "广州_手机_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "广州_手机_iPad_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "广州_平板_iPhone_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "广州_平板_Samsung_sales",
-          "__MeasureValue__": 0
-        },
-        {
-          "store": "数码广场",
-          "__MeasureName__": "广州_平板_iPad_sales",
-          "__MeasureValue__": 4000
+          "city": "广州",
+          "sales": 4000
         }
       ]
     }
