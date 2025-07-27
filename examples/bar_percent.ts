@@ -2,7 +2,7 @@ import { VizSeedBuilder } from '../src';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// 原始输入数据
+// 销售数据
 const salesData = [
   { store: '苹果专卖店', city: '北京', category: '手机', brand: 'iPhone', sales: 15000, profit: 3000, cost: 12000, quantity: 30, rating: 4.8 },
   { store: '苹果专卖店', city: '北京', category: '手机', brand: 'Samsung', sales: 8000, profit: 1600, cost: 6400, quantity: 20, rating: 4.5 },
@@ -14,8 +14,8 @@ const salesData = [
   { store: '数码广场', city: '广州', category: '平板', brand: 'iPad', sales: 4000, profit: 800, cost: 3200, quantity: 8, rating: 4.6 }
 ];
 
-// 构建VizSeed和Spec的异步函数
-async function buildChartExample() {
+// 构建百分比BAR图表
+async function buildBarPercentChart() {
   const builder = new VizSeedBuilder(salesData);
 
   const vizSeedDSL = await builder
@@ -29,9 +29,8 @@ async function buildChartExample() {
   return { vizSeedDSL, vchartSpec };
 }
 
-// 执行异步函数
-buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
-  // 保存输出到文件
+// 执行并保存
+buildBarPercentChart().then(({ vizSeedDSL, vchartSpec }) => {
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
   const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
@@ -40,9 +39,10 @@ buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  // 保存spec到JSON文件（给网页使用）
   const specData = {
     timestamp: new Date().toISOString(),
+    chartType: 'bar_percent',
+    description: '百分比水平条形图 - 显示各店铺按城市分组的销售额和利润百分比堆叠',
     spec: vchartSpec,
     vizSeedDSL: vizSeedDSL,
     chartInfo: {
@@ -59,6 +59,6 @@ buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(error => {
+}).catch(() => {
   process.exit(1);
 });

@@ -9,11 +9,13 @@ import { configureLabel } from '../style/Label';
 import { configureTooltip } from '../style/Tooltip';
 import { xLinearAxis, yBandAxis } from '../style/Axes';
 import { initVChartBar } from '../init/initVChartBar';
+import { percent } from '../aggregation/percent';
 
 // 创建BAR图表Pipeline
 export const createBarPercentSpecPipeline = () => pipeline([
   initVChartBar,
   initData,
+  percent,
   xLinearAxis,
   yBandAxis,
   configureLegend,

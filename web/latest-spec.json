@@ -1,5 +1,7 @@
 {
-  "timestamp": "2025-07-27T11:37:48.310Z",
+  "timestamp": "2025-07-27T11:54:21.048Z",
+  "chartType": "bar_stacked",
+  "description": "堆叠水平条形图 - 显示各店铺按城市分组的销售额和利润堆叠",
   "spec": {
     "type": "bar",
     "direction": "horizontal",
@@ -103,6 +105,7 @@
         ]
       }
     ],
+    "stack": true,
     "axes": [
       {
         "orient": "bottom",
@@ -126,7 +129,7 @@
     }
   },
   "vizSeedDSL": {
-    "chartType": "bar_percent",
+    "chartType": "bar_stacked",
     "data": [
       {
         "store": "苹果专卖店",
