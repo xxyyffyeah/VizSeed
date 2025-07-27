@@ -30,18 +30,18 @@ const specPipelineMap: Record<string, () => Promise<any>> = {
 // VizSeed构建Pipeline映射表 - 每个图表类型使用专门的Pipeline
 const vizSeedPipelineMap: Record<string, () => Promise<any>> = {
   // VChart基础图表类型
-  [ChartType.BAR]: () => import('./vizSeed/vizSeedPipelines/BarVizSeedPipeline').then(m => m.createBarVizSeedPipeline),
-  [ChartType.COLUMN]: () => import('./vizSeed/vizSeedPipelines/ColumnVizSeedPipeline').then(m => m.createColumnVizSeedPipeline),
-  [ChartType.LINE]: () => import('./vizSeed/vizSeedPipelines/LineVizSeedPipeline').then(m => m.createLineVizSeedPipeline),
-  [ChartType.AREA]: () => import('./vizSeed/vizSeedPipelines/AreaVizSeedPipeline').then(m => m.createAreaVizSeedPipeline),
-  [ChartType.SCATTER]: () => import('./vizSeed/vizSeedPipelines/ScatterVizSeedPipeline').then(m => m.createScatterVizSeedPipeline),
+  [ChartType.BAR]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
+  [ChartType.COLUMN]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
+  [ChartType.LINE]: () => import('./vizSeed/vizSeedPipelines/Line').then(m => m.createLineVizSeedPipeline),
+  [ChartType.AREA]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
+  [ChartType.SCATTER]: () => import('./vizSeed/vizSeedPipelines/Scatter').then(m => m.createScatterVizSeedPipeline),
   
   // VChart饼图类型
-  [ChartType.PIE]: () => import('./vizSeed/vizSeedPipelines/PieVizSeedPipeline').then(m => m.createPieVizSeedPipeline),
-  [ChartType.DONUT]: () => import('./vizSeed/vizSeedPipelines/DonutVizSeedPipeline').then(m => m.createDonutVizSeedPipeline),
+  [ChartType.PIE]: () => import('./vizSeed/vizSeedPipelines/Pie').then(m => m.createPieVizSeedPipeline),
+  [ChartType.DONUT]: () => import('./vizSeed/vizSeedPipelines/Donut').then(m => m.createDonutVizSeedPipeline),
   
   // VTable表格类型
-  [ChartType.TABLE]: () => import('./vizSeed/vizSeedPipelines/TableVizSeedPipeline').then(m => m.createTableVizSeedPipeline)
+  [ChartType.TABLE]: () => import('./vizSeed/vizSeedPipelines/Table').then(m => m.createTableVizSeedPipeline)
 };
 
 // 简化的构建规范函数 - 按需加载Pipeline
