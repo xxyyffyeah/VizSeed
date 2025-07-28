@@ -55,7 +55,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     }
   };
   private theme: 'light' | 'dark' | 'custom' = 'light'; // 默认主题
-  private version: string = '0.1.0'; // 默认版本信息
+  private version: string = '1.0.0'; // 默认版本信息
   private vizSeedDSL: any | null = null; // 缓存构建结果
   
 
