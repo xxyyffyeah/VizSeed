@@ -4,6 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   root: './web',
+  base: process.env.NODE_ENV === 'production' ? '/VizSeed/' : '/',
   plugins: [react()],
   build: {
     outDir: '../dist-web',
