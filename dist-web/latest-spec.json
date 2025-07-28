@@ -1,0 +1,268 @@
+{
+  "timestamp": "2025-07-28T09:49:20.320Z",
+  "chartType": "pie",
+  "description": "饼图 - 显示各产品类别的销售额占比",
+  "spec": {
+    "type": "pie",
+    "categoryField": "__MeasureName__",
+    "valueField": "__MeasureValue__",
+    "data": [
+      {
+        "id": "VizSeedData",
+        "values": [
+          {
+            "__MeasureName__": "手机_北京_sales",
+            "__MeasureValue__": 54000
+          },
+          {
+            "__MeasureName__": "手机_上海_sales",
+            "__MeasureValue__": 45000
+          },
+          {
+            "__MeasureName__": "平板_北京_sales",
+            "__MeasureValue__": 15000
+          },
+          {
+            "__MeasureName__": "平板_上海_sales",
+            "__MeasureValue__": 12000
+          },
+          {
+            "__MeasureName__": "笔记本_北京_sales",
+            "__MeasureValue__": 32000
+          },
+          {
+            "__MeasureName__": "笔记本_上海_sales",
+            "__MeasureValue__": 28000
+          },
+          {
+            "__MeasureName__": "配件_北京_sales",
+            "__MeasureValue__": 8000
+          },
+          {
+            "__MeasureName__": "配件_上海_sales",
+            "__MeasureValue__": 6000
+          }
+        ]
+      }
+    ],
+    "legends": {
+      "visible": true,
+      "orient": "right",
+      "position": "middle"
+    },
+    "label": {
+      "visible": true
+    },
+    "tooltip": {
+      "visible": true
+    }
+  },
+  "vizSeedDSL": {
+    "chartType": "pie",
+    "data": [
+      {
+        "__MeasureName__": "手机_北京_sales",
+        "__MeasureValue__": 54000
+      },
+      {
+        "__MeasureName__": "手机_上海_sales",
+        "__MeasureValue__": 45000
+      },
+      {
+        "__MeasureName__": "平板_北京_sales",
+        "__MeasureValue__": 15000
+      },
+      {
+        "__MeasureName__": "平板_上海_sales",
+        "__MeasureValue__": 12000
+      },
+      {
+        "__MeasureName__": "笔记本_北京_sales",
+        "__MeasureValue__": 32000
+      },
+      {
+        "__MeasureName__": "笔记本_上海_sales",
+        "__MeasureValue__": 28000
+      },
+      {
+        "__MeasureName__": "配件_北京_sales",
+        "__MeasureValue__": 8000
+      },
+      {
+        "__MeasureName__": "配件_上海_sales",
+        "__MeasureValue__": 6000
+      }
+    ],
+    "fieldMap": {
+      "category": {
+        "id": "category",
+        "type": "string",
+        "alias": "category",
+        "location": "dimension",
+        "domain": [
+          "手机",
+          "平板",
+          "笔记本",
+          "配件"
+        ],
+        "format": {}
+      },
+      "region": {
+        "id": "region",
+        "type": "string",
+        "alias": "region",
+        "location": "dimension",
+        "domain": [
+          "北京",
+          "上海"
+        ],
+        "format": {}
+      },
+      "sales": {
+        "id": "sales",
+        "type": "number",
+        "alias": "sales",
+        "location": "measure",
+        "domain": [
+          54000,
+          15000,
+          32000,
+          8000,
+          45000,
+          12000,
+          28000,
+          6000
+        ],
+        "format": {}
+      },
+      "北京_sales": {
+        "id": "北京_sales",
+        "type": "number",
+        "alias": "北京_sales",
+        "location": "measure"
+      },
+      "上海_sales": {
+        "id": "上海_sales",
+        "type": "number",
+        "alias": "上海_sales",
+        "location": "measure"
+      },
+      "手机_北京_sales": {
+        "id": "手机_北京_sales",
+        "type": "number",
+        "alias": "手机_北京_sales",
+        "location": "measure"
+      },
+      "手机_上海_sales": {
+        "id": "手机_上海_sales",
+        "type": "number",
+        "alias": "手机_上海_sales",
+        "location": "measure"
+      },
+      "平板_北京_sales": {
+        "id": "平板_北京_sales",
+        "type": "number",
+        "alias": "平板_北京_sales",
+        "location": "measure"
+      },
+      "平板_上海_sales": {
+        "id": "平板_上海_sales",
+        "type": "number",
+        "alias": "平板_上海_sales",
+        "location": "measure"
+      },
+      "笔记本_北京_sales": {
+        "id": "笔记本_北京_sales",
+        "type": "number",
+        "alias": "笔记本_北京_sales",
+        "location": "measure"
+      },
+      "笔记本_上海_sales": {
+        "id": "笔记本_上海_sales",
+        "type": "number",
+        "alias": "笔记本_上海_sales",
+        "location": "measure"
+      },
+      "配件_北京_sales": {
+        "id": "配件_北京_sales",
+        "type": "number",
+        "alias": "配件_北京_sales",
+        "location": "measure"
+      },
+      "配件_上海_sales": {
+        "id": "配件_上海_sales",
+        "type": "number",
+        "alias": "配件_上海_sales",
+        "location": "measure"
+      },
+      "__MeasureName__": {
+        "id": "__MeasureName__",
+        "type": "string",
+        "alias": "__MeasureName__",
+        "location": "dimension"
+      },
+      "__MeasureValue__": {
+        "id": "__MeasureValue__",
+        "type": "number",
+        "alias": "__MeasureValue__",
+        "location": "measure"
+      }
+    },
+    "encodes": [
+      {
+        "category": "__MeasureName__",
+        "value": "__MeasureValue__"
+      }
+    ],
+    "style": {
+      "title": "",
+      "color": {
+        "colors": []
+      },
+      "legend": {
+        "enable": true,
+        "position": ""
+      },
+      "label": {
+        "enable": true
+      },
+      "tooltip": {
+        "enable": true
+      },
+      "animation": {
+        "enable": true
+      },
+      "responsive": {
+        "widthMode": "standard",
+        "heightMode": "adaptive"
+      },
+      "yAxis": {},
+      "xAxis": {},
+      "columnStack": {
+        "stackRadius": 5
+      },
+      "pie": {},
+      "pivotPie": {},
+      "doughnut": {},
+      "line": {
+        "lineStyle": {}
+      }
+    },
+    "dimensions": [
+      "__MeasureName__"
+    ],
+    "measures": [
+      "__MeasureValue__"
+    ],
+    "theme": "light",
+    "version": "1.0.0"
+  },
+  "chartInfo": {
+    "type": "pie",
+    "dataCount": 1,
+    "fields": {
+      "angle": "__MeasureValue__",
+      "category": "__MeasureName__"
+    }
+  }
+}
