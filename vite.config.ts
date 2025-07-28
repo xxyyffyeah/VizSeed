@@ -11,6 +11,7 @@ export default defineConfig({
     target: 'es2015',
     sourcemap: true
   },
+  publicDir: false, // 禁用默认的public目录
   server: {
     port: 3000,
     open: true

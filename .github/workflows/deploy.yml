@@ -41,6 +41,9 @@ jobs:
       - name: Build web project
         run: npm run web:build
         
+      - name: Copy latest-spec.json to dist-web
+        run: cp web/latest-spec.json dist-web/latest-spec.json
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
         

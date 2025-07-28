@@ -42,7 +42,7 @@ export class VizSeedExecutor {
       
       // 4. 从DSL创建Builder并构建图表规范
       const builder = module.VizSeedBuilder.from(vizSeedDSL);
-      const spec = await builder.buildSpec();
+      const spec = builder.buildSpec();
       
       return {
         success: true,
