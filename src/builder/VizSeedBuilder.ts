@@ -315,7 +315,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this;
   }
 
-  public async build(): Promise<any> {
+  public build(): any {
     // 如果已经缓存了结果，直接返回
     if (this.vizSeedDSL) {
       return this.vizSeedDSL;
@@ -337,16 +337,16 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     };
 
     // 构建并缓存结果
-    this.vizSeedDSL = await buildVizSeed(context.chartType, context);
+    this.vizSeedDSL = buildVizSeed(context.chartType, context);
     return this.vizSeedDSL;
   }
 
-  public async buildSpec(): Promise<ChartSpec> {
+  public buildSpec(): ChartSpec {
     
     try {
       // 确保已构建vizSeedDSL
       if (!this.vizSeedDSL) {
-        await this.build();
+        this.build();
       }
       
       // 直接使用缓存的vizSeedDSL作为规范上下文
@@ -368,7 +368,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
       };
 
       // 使用简化的pipeline构建规范
-      return await buildSpec(specContext.chartType, specContext);
+      return buildSpec(specContext.chartType, specContext);
     } catch (error: any) {
       throw new Error(`构建图表规范失败: ${error.message}`);
     }

@@ -15,22 +15,23 @@ const salesData = [
 ];
 
 // 构建分组BAR图表
-async function buildBarGroupedChart() {
+function buildBarGroupedChart() {
   const builder = new VizSeedBuilder(salesData);
 
-  const vizSeedDSL = await builder
+  const vizSeedDSL = builder
     .setChartType('bar_grouped')
     .setDimensions(['store', 'city'])
     .setMeasures(['sales', 'profit'])
     .build();
 
-  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
+  const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }
 
 // 执行并保存
-buildBarGroupedChart().then(({ vizSeedDSL, vchartSpec }) => {
+try {
+  const { vizSeedDSL, vchartSpec } = buildBarGroupedChart();
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
   const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
@@ -59,6 +60,9 @@ buildBarGroupedChart().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(() => {
+  
+  console.log('BAR_GROUPED图规范生成成功！');
+} catch (error) {
+  console.error('生成BAR_GROUPED图规范失败:', error);
   process.exit(1);
-});
+}

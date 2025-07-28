@@ -1,147 +1,48 @@
 {
-  "timestamp": "2025-07-27T15:33:15.176Z",
-  "chartType": "line",
-  "description": "多线折线图 - 显示不同产品线的月度销售额趋势对比",
+  "timestamp": "2025-07-28T09:49:20.320Z",
+  "chartType": "pie",
+  "description": "饼图 - 显示各产品类别的销售额占比",
   "spec": {
-    "type": "line",
-    "xField": "month",
-    "yField": "sales",
-    "seriesField": "product",
+    "type": "pie",
+    "categoryField": "__MeasureName__",
+    "valueField": "__MeasureValue__",
     "data": [
       {
         "id": "VizSeedData",
         "values": [
           {
-            "month": "2024-01",
-            "product": "手机",
-            "sales": 15000
+            "__MeasureName__": "手机_北京_sales",
+            "__MeasureValue__": 54000
           },
           {
-            "month": "2024-01",
-            "product": "平板",
-            "sales": 8000
+            "__MeasureName__": "手机_上海_sales",
+            "__MeasureValue__": 45000
           },
           {
-            "month": "2024-02",
-            "product": "手机",
-            "sales": 18000
+            "__MeasureName__": "平板_北京_sales",
+            "__MeasureValue__": 15000
           },
           {
-            "month": "2024-02",
-            "product": "平板",
-            "sales": 9500
+            "__MeasureName__": "平板_上海_sales",
+            "__MeasureValue__": 12000
           },
           {
-            "month": "2024-03",
-            "product": "手机",
-            "sales": 22000
+            "__MeasureName__": "笔记本_北京_sales",
+            "__MeasureValue__": 32000
           },
           {
-            "month": "2024-03",
-            "product": "平板",
-            "sales": 11000
+            "__MeasureName__": "笔记本_上海_sales",
+            "__MeasureValue__": 28000
           },
           {
-            "month": "2024-04",
-            "product": "手机",
-            "sales": 20000
+            "__MeasureName__": "配件_北京_sales",
+            "__MeasureValue__": 8000
           },
           {
-            "month": "2024-04",
-            "product": "平板",
-            "sales": 10500
-          },
-          {
-            "month": "2024-05",
-            "product": "手机",
-            "sales": 25000
-          },
-          {
-            "month": "2024-05",
-            "product": "平板",
-            "sales": 12500
-          },
-          {
-            "month": "2024-06",
-            "product": "手机",
-            "sales": 28000
-          },
-          {
-            "month": "2024-06",
-            "product": "平板",
-            "sales": 14000
-          },
-          {
-            "month": "2024-07",
-            "product": "手机",
-            "sales": 32000
-          },
-          {
-            "month": "2024-07",
-            "product": "平板",
-            "sales": 16000
-          },
-          {
-            "month": "2024-08",
-            "product": "手机",
-            "sales": 30000
-          },
-          {
-            "month": "2024-08",
-            "product": "平板",
-            "sales": 15000
-          },
-          {
-            "month": "2024-09",
-            "product": "手机",
-            "sales": 35000
-          },
-          {
-            "month": "2024-09",
-            "product": "平板",
-            "sales": 17500
-          },
-          {
-            "month": "2024-10",
-            "product": "手机",
-            "sales": 38000
-          },
-          {
-            "month": "2024-10",
-            "product": "平板",
-            "sales": 19000
-          },
-          {
-            "month": "2024-11",
-            "product": "手机",
-            "sales": 42000
-          },
-          {
-            "month": "2024-11",
-            "product": "平板",
-            "sales": 21000
-          },
-          {
-            "month": "2024-12",
-            "product": "手机",
-            "sales": 45000
-          },
-          {
-            "month": "2024-12",
-            "product": "平板",
-            "sales": 22500
+            "__MeasureName__": "配件_上海_sales",
+            "__MeasureValue__": 6000
           }
         ]
-      }
-    ],
-    "axes": [
-      {
-        "orient": "bottom",
-        "type": "band"
-      },
-      {
-        "orient": "left",
-        "type": "linear"
       }
     ],
     "legends": {
@@ -157,157 +58,63 @@
     }
   },
   "vizSeedDSL": {
-    "chartType": "line",
+    "chartType": "pie",
     "data": [
       {
-        "month": "2024-01",
-        "product": "手机",
-        "sales": 15000
+        "__MeasureName__": "手机_北京_sales",
+        "__MeasureValue__": 54000
       },
       {
-        "month": "2024-01",
-        "product": "平板",
-        "sales": 8000
+        "__MeasureName__": "手机_上海_sales",
+        "__MeasureValue__": 45000
       },
       {
-        "month": "2024-02",
-        "product": "手机",
-        "sales": 18000
+        "__MeasureName__": "平板_北京_sales",
+        "__MeasureValue__": 15000
       },
       {
-        "month": "2024-02",
-        "product": "平板",
-        "sales": 9500
+        "__MeasureName__": "平板_上海_sales",
+        "__MeasureValue__": 12000
       },
       {
-        "month": "2024-03",
-        "product": "手机",
-        "sales": 22000
+        "__MeasureName__": "笔记本_北京_sales",
+        "__MeasureValue__": 32000
       },
       {
-        "month": "2024-03",
-        "product": "平板",
-        "sales": 11000
+        "__MeasureName__": "笔记本_上海_sales",
+        "__MeasureValue__": 28000
       },
       {
-        "month": "2024-04",
-        "product": "手机",
-        "sales": 20000
+        "__MeasureName__": "配件_北京_sales",
+        "__MeasureValue__": 8000
       },
       {
-        "month": "2024-04",
-        "product": "平板",
-        "sales": 10500
-      },
-      {
-        "month": "2024-05",
-        "product": "手机",
-        "sales": 25000
-      },
-      {
-        "month": "2024-05",
-        "product": "平板",
-        "sales": 12500
-      },
-      {
-        "month": "2024-06",
-        "product": "手机",
-        "sales": 28000
-      },
-      {
-        "month": "2024-06",
-        "product": "平板",
-        "sales": 14000
-      },
-      {
-        "month": "2024-07",
-        "product": "手机",
-        "sales": 32000
-      },
-      {
-        "month": "2024-07",
-        "product": "平板",
-        "sales": 16000
-      },
-      {
-        "month": "2024-08",
-        "product": "手机",
-        "sales": 30000
-      },
-      {
-        "month": "2024-08",
-        "product": "平板",
-        "sales": 15000
-      },
-      {
-        "month": "2024-09",
-        "product": "手机",
-        "sales": 35000
-      },
-      {
-        "month": "2024-09",
-        "product": "平板",
-        "sales": 17500
-      },
-      {
-        "month": "2024-10",
-        "product": "手机",
-        "sales": 38000
-      },
-      {
-        "month": "2024-10",
-        "product": "平板",
-        "sales": 19000
-      },
-      {
-        "month": "2024-11",
-        "product": "手机",
-        "sales": 42000
-      },
-      {
-        "month": "2024-11",
-        "product": "平板",
-        "sales": 21000
-      },
-      {
-        "month": "2024-12",
-        "product": "手机",
-        "sales": 45000
-      },
-      {
-        "month": "2024-12",
-        "product": "平板",
-        "sales": 22500
+        "__MeasureName__": "配件_上海_sales",
+        "__MeasureValue__": 6000
       }
     ],
     "fieldMap": {
-      "month": {
-        "id": "month",
-        "type": "date",
-        "alias": "month",
-        "location": "dimension",
-        "domain": [
-          "2024-01",
-          "2024-02",
-          "2024-03",
-          "2024-04",
-          "2024-05",
-          "2024-06",
-          "2024-07",
-          "2024-08",
-          "2024-09",
-          "2024-10"
-        ],
-        "format": {}
-      },
-      "product": {
-        "id": "product",
+      "category": {
+        "id": "category",
         "type": "string",
-        "alias": "product",
+        "alias": "category",
         "location": "dimension",
         "domain": [
           "手机",
-          "平板"
+          "平板",
+          "笔记本",
+          "配件"
+        ],
+        "format": {}
+      },
+      "region": {
+        "id": "region",
+        "type": "string",
+        "alias": "region",
+        "location": "dimension",
+        "domain": [
+          "北京",
+          "上海"
         ],
         "format": {}
       },
@@ -317,25 +124,94 @@
         "alias": "sales",
         "location": "measure",
         "domain": [
+          54000,
           15000,
+          32000,
           8000,
-          18000,
-          9500,
-          22000,
-          11000,
-          20000,
-          10500,
-          25000,
-          12500
+          45000,
+          12000,
+          28000,
+          6000
         ],
         "format": {}
+      },
+      "北京_sales": {
+        "id": "北京_sales",
+        "type": "number",
+        "alias": "北京_sales",
+        "location": "measure"
+      },
+      "上海_sales": {
+        "id": "上海_sales",
+        "type": "number",
+        "alias": "上海_sales",
+        "location": "measure"
+      },
+      "手机_北京_sales": {
+        "id": "手机_北京_sales",
+        "type": "number",
+        "alias": "手机_北京_sales",
+        "location": "measure"
+      },
+      "手机_上海_sales": {
+        "id": "手机_上海_sales",
+        "type": "number",
+        "alias": "手机_上海_sales",
+        "location": "measure"
+      },
+      "平板_北京_sales": {
+        "id": "平板_北京_sales",
+        "type": "number",
+        "alias": "平板_北京_sales",
+        "location": "measure"
+      },
+      "平板_上海_sales": {
+        "id": "平板_上海_sales",
+        "type": "number",
+        "alias": "平板_上海_sales",
+        "location": "measure"
+      },
+      "笔记本_北京_sales": {
+        "id": "笔记本_北京_sales",
+        "type": "number",
+        "alias": "笔记本_北京_sales",
+        "location": "measure"
+      },
+      "笔记本_上海_sales": {
+        "id": "笔记本_上海_sales",
+        "type": "number",
+        "alias": "笔记本_上海_sales",
+        "location": "measure"
+      },
+      "配件_北京_sales": {
+        "id": "配件_北京_sales",
+        "type": "number",
+        "alias": "配件_北京_sales",
+        "location": "measure"
+      },
+      "配件_上海_sales": {
+        "id": "配件_上海_sales",
+        "type": "number",
+        "alias": "配件_上海_sales",
+        "location": "measure"
+      },
+      "__MeasureName__": {
+        "id": "__MeasureName__",
+        "type": "string",
+        "alias": "__MeasureName__",
+        "location": "dimension"
+      },
+      "__MeasureValue__": {
+        "id": "__MeasureValue__",
+        "type": "number",
+        "alias": "__MeasureValue__",
+        "location": "measure"
       }
     },
     "encodes": [
       {
-        "x": "month",
-        "y": "sales",
-        "color": "product"
+        "category": "__MeasureName__",
+        "value": "__MeasureValue__"
       }
     ],
     "style": {
@@ -373,24 +249,20 @@
       }
     },
     "dimensions": [
-      "month",
-      "product"
+      "__MeasureName__"
     ],
     "measures": [
-      "sales"
+      "__MeasureValue__"
     ],
-    "rowDimensions": [],
-    "columnDimensions": [],
     "theme": "light",
-    "version": "0.1.0"
+    "version": "1.0.0"
   },
   "chartInfo": {
-    "type": "line",
+    "type": "pie",
     "dataCount": 1,
     "fields": {
-      "x": "month",
-      "y": "sales",
-      "series": "product"
+      "angle": "__MeasureValue__",
+      "category": "__MeasureName__"
     }
   }
 }

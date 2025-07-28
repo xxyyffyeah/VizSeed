@@ -15,22 +15,23 @@ const salesData = [
 ];
 
 // 构建基础BAR图表
-async function buildBarChart() {
+function buildBarChart() {
   const builder = new VizSeedBuilder(salesData);
 
-  const vizSeedDSL = await builder
+  const vizSeedDSL = builder
     .setChartType('bar')
     .setDimensions(['store'])
     .setMeasures(['sales'])
     .build();
 
-  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
+  const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }
 
 // 执行并保存
-buildBarChart().then(({ vizSeedDSL, vchartSpec }) => {
+try {
+  const { vizSeedDSL, vchartSpec } = buildBarChart();
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
   const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
@@ -59,6 +60,9 @@ buildBarChart().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(error => {
+  
+  console.log('BAR图规范生成成功！');
+} catch (error) {
+  console.error('生成BAR图规范失败:', error);
   process.exit(1);
-});
+}

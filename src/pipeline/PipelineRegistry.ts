@@ -6,59 +6,65 @@
 import { PipelineContext } from './PipelineCore';
 import { ChartType } from '../types/charts';
 
+// 静态导入所有spec pipelines
+import * as SpecPipelines from './spec/specPipelines';
+
+// 静态导入所有vizSeed pipelines  
+import * as VizSeedPipelines from './vizSeed/vizSeedPipelines';
+
 
 // 规范生成Pipeline映射表 - 每个图表类型使用专门的Pipeline
-const specPipelineMap: Record<string, () => Promise<any>> = {
+const specPipelineMap: Record<string, () => any> = {
   // VChart基础图表类型
-  [ChartType.BAR]: () => import('./spec/specPipelines/Bar').then(m => m.createBarSpecPipeline),
-  [ChartType.BAR_STACKED]: () => import('./spec/specPipelines/Bar_stacked').then(m => m.createBarStackedSpecPipeline),
-  [ChartType.BAR_GROUPED]: () => import('./spec/specPipelines/Bar_grouped').then(m => m.createBarGroupedSpecPipeline),
-  [ChartType.BAR_PERCENT]: () => import('./spec/specPipelines/Bar_percent').then(m => m.createBarPercentSpecPipeline),
-  [ChartType.COLUMN]: () => import('./spec/specPipelines/Column').then(m => m.createColumnSpecPipeline),
-  [ChartType.COLUMN_STACKED]: () => import('./spec/specPipelines/Column_stacked').then(m => m.createColumnStackedSpecPipeline),
-  [ChartType.COLUMN_GROUPED]: () => import('./spec/specPipelines/Column_grouped').then(m => m.createColumnGroupedSpecPipeline),
-  [ChartType.COLUMN_PERCENT]: () => import('./spec/specPipelines/Column_percent').then(m => m.createColumnPercentSpecPipeline),
-  [ChartType.LINE]: () => import('./spec/specPipelines/Line').then(m => m.createLineSpecPipeline),
-  [ChartType.AREA]: () => import('./spec/specPipelines/Area').then(m => m.createAreaSpecPipeline),
-  [ChartType.AREA_STACKED]: () => import('./spec/specPipelines/Area_stacked').then(m => m.createAreaStackedSpecPipeline),
-  [ChartType.AREA_PERCENT]: () => import('./spec/specPipelines/Area_percent').then(m => m.createAreaPercentSpecPipeline),
-  [ChartType.SCATTER]: () => import('./spec/specPipelines/Scatter').then(m => m.createScatterSpecPipeline),
+  [ChartType.BAR]: SpecPipelines.createBarSpecPipeline,
+  [ChartType.BAR_STACKED]: SpecPipelines.createBarStackedSpecPipeline,
+  [ChartType.BAR_GROUPED]: SpecPipelines.createBarGroupedSpecPipeline,
+  [ChartType.BAR_PERCENT]: SpecPipelines.createBarPercentSpecPipeline,
+  [ChartType.COLUMN]: SpecPipelines.createColumnSpecPipeline,
+  [ChartType.COLUMN_STACKED]: SpecPipelines.createColumnStackedSpecPipeline,
+  [ChartType.COLUMN_GROUPED]: SpecPipelines.createColumnGroupedSpecPipeline,
+  [ChartType.COLUMN_PERCENT]: SpecPipelines.createColumnPercentSpecPipeline,
+  [ChartType.LINE]: SpecPipelines.createLineSpecPipeline,
+  [ChartType.AREA]: SpecPipelines.createAreaSpecPipeline,
+  [ChartType.AREA_STACKED]: SpecPipelines.createAreaStackedSpecPipeline,
+  [ChartType.AREA_PERCENT]: SpecPipelines.createAreaPercentSpecPipeline,
+  [ChartType.SCATTER]: SpecPipelines.createScatterSpecPipeline,
   
   // VChart饼图类型
-  [ChartType.PIE]: () => import('./spec/specPipelines/Pie').then(m => m.createPieSpecPipeline),
-  [ChartType.DONUT]: () => import('./spec/specPipelines/Donut').then(m => m.createDonutSpecPipeline),
+  [ChartType.PIE]: SpecPipelines.createPieSpecPipeline,
+  [ChartType.DONUT]: SpecPipelines.createDonutSpecPipeline,
   
   // VTable表格类型
-  [ChartType.TABLE]: () => import('./spec/specPipelines/Table').then(m => m.createTableSpecPipeline)
+  [ChartType.TABLE]: SpecPipelines.createTableSpecPipeline
 };
 
 // VizSeed构建Pipeline映射表 - 每个图表类型使用专门的Pipeline
-const vizSeedPipelineMap: Record<string, () => Promise<any>> = {
+const vizSeedPipelineMap: Record<string, () => any> = {
   // VChart基础图表类型
-  [ChartType.BAR]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
-  [ChartType.BAR_STACKED]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
-  [ChartType.BAR_GROUPED]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
-  [ChartType.BAR_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Bar').then(m => m.createBarVizSeedPipeline),
-  [ChartType.COLUMN]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
-  [ChartType.COLUMN_STACKED]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
-  [ChartType.COLUMN_GROUPED]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
-  [ChartType.COLUMN_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Column').then(m => m.createColumnVizSeedPipeline),
-  [ChartType.LINE]: () => import('./vizSeed/vizSeedPipelines/Line').then(m => m.createLineVizSeedPipeline),
-  [ChartType.AREA]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
-  [ChartType.AREA_STACKED]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
-  [ChartType.AREA_PERCENT]: () => import('./vizSeed/vizSeedPipelines/Area').then(m => m.createAreaVizSeedPipeline),
-  [ChartType.SCATTER]: () => import('./vizSeed/vizSeedPipelines/Scatter').then(m => m.createScatterVizSeedPipeline),
+  [ChartType.BAR]: VizSeedPipelines.createBarVizSeedPipeline,
+  [ChartType.BAR_STACKED]: VizSeedPipelines.createBarVizSeedPipeline,
+  [ChartType.BAR_GROUPED]: VizSeedPipelines.createBarVizSeedPipeline,
+  [ChartType.BAR_PERCENT]: VizSeedPipelines.createBarVizSeedPipeline,
+  [ChartType.COLUMN]: VizSeedPipelines.createColumnVizSeedPipeline,
+  [ChartType.COLUMN_STACKED]: VizSeedPipelines.createColumnVizSeedPipeline,
+  [ChartType.COLUMN_GROUPED]: VizSeedPipelines.createColumnVizSeedPipeline,
+  [ChartType.COLUMN_PERCENT]: VizSeedPipelines.createColumnVizSeedPipeline,
+  [ChartType.LINE]: VizSeedPipelines.createLineVizSeedPipeline,
+  [ChartType.AREA]: VizSeedPipelines.createAreaVizSeedPipeline,
+  [ChartType.AREA_STACKED]: VizSeedPipelines.createAreaVizSeedPipeline,
+  [ChartType.AREA_PERCENT]: VizSeedPipelines.createAreaVizSeedPipeline,
+  [ChartType.SCATTER]: VizSeedPipelines.createScatterVizSeedPipeline,
   
   // VChart饼图类型
-  [ChartType.PIE]: () => import('./vizSeed/vizSeedPipelines/Pie').then(m => m.createPieVizSeedPipeline),
-  [ChartType.DONUT]: () => import('./vizSeed/vizSeedPipelines/Donut').then(m => m.createDonutVizSeedPipeline),
+  [ChartType.PIE]: VizSeedPipelines.createPieVizSeedPipeline,
+  [ChartType.DONUT]: VizSeedPipelines.createDonutVizSeedPipeline,
   
   // VTable表格类型
-  [ChartType.TABLE]: () => import('./vizSeed/vizSeedPipelines/Table').then(m => m.createTableVizSeedPipeline)
+  [ChartType.TABLE]: VizSeedPipelines.createTableVizSeedPipeline
 };
 
-// 简化的构建规范函数 - 按需加载Pipeline
-export const buildSpec = async (chartType: string, context: PipelineContext): Promise<any> => {
+// 简化的构建规范函数 - 同步版本
+export const buildSpec = (chartType: string, context: PipelineContext): any => {
   const selectedPipeline = specPipelineMap[chartType];
   
   if (!selectedPipeline) {
@@ -66,15 +72,14 @@ export const buildSpec = async (chartType: string, context: PipelineContext): Pr
   }
   
   try {
-    const pipelineFactory = await selectedPipeline();
-    return pipelineFactory()(context);
+    return selectedPipeline()(context);
   } catch (error) {
     throw new Error(`加载图表类型 ${chartType} 失败: ${error}`);
   }
 };
 
-// 构建VizSeed对象的函数 - 按需加载Pipeline
-export const buildVizSeed = async (chartType: string, context: PipelineContext): Promise<any> => {
+// 构建VizSeed对象的函数 - 同步版本
+export const buildVizSeed = (chartType: string, context: PipelineContext): any => {
   const vizSeedPipeline = vizSeedPipelineMap[chartType];
   
   if (!vizSeedPipeline) {
@@ -82,8 +87,7 @@ export const buildVizSeed = async (chartType: string, context: PipelineContext):
   }
   
   try {
-    const pipelineFactory = await vizSeedPipeline();
-    return pipelineFactory()(context);
+    return vizSeedPipeline()(context);
   } catch (error) {
     throw new Error(`加载VizSeed图表类型 ${chartType} 失败: ${error}`);
   }

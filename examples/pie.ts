@@ -14,23 +14,24 @@ const salesData = [
   { category: '配件', region: '上海', sales: 6000, profit: 1800 }
 ];
 
-// 构建饼图
-async function buildPieChart() {
+// 构建饼图 - 同步版本
+function buildPieChart() {
   const builder = new VizSeedBuilder(salesData);
 
-  const vizSeedDSL = await builder
+  const vizSeedDSL = builder
     .setChartType('pie')
     .setDimensions(['category', 'region'])
     .setMeasures(['sales'])
     .build();
 
-  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
+  const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }
 
 // 执行并保存
-buildPieChart().then(({ vizSeedDSL, vchartSpec }) => {
+try {
+  const { vizSeedDSL, vchartSpec } = buildPieChart();
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
   const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
@@ -57,6 +58,9 @@ buildPieChart().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(() => {
+  
+  console.log('饼图规范生成成功！');
+} catch (error) {
+  console.error('生成饼图规范失败:', error);
   process.exit(1);
-});
+}

@@ -31,22 +31,23 @@ const salesData = [
 ];
 
 // 构建基础折线图
-async function buildLineChart() {
+function buildLineChart() {
   const builder = new VizSeedBuilder(salesData);
 
-  const vizSeedDSL = await builder
+  const vizSeedDSL = builder
     .setChartType('line')
     .setDimensions(['month', 'product'])
     .setMeasures(['sales'])
     .build();
 
-  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
+  const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }
 
 // 执行并保存
-buildLineChart().then(({ vizSeedDSL, vchartSpec }) => {
+try {
+  const { vizSeedDSL, vchartSpec } = buildLineChart();
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
   const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
@@ -74,6 +75,9 @@ buildLineChart().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(() => {
+  
+  console.log('LINE图规范生成成功！');
+} catch (error) {
+  console.error('生成LINE图规范失败:', error);
   process.exit(1);
-});
+}

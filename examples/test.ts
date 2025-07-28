@@ -14,23 +14,24 @@ const salesData = [
   { store: '数码广场', city: '广州', category: '平板', brand: 'iPad', sales: 4000, profit: 800, cost: 3200, quantity: 8, rating: 4.6 }
 ];
 
-// 构建VizSeed和Spec的异步函数
-async function buildChartExample() {
+// 构建VizSeed和Spec的同步函数
+function buildChartExample() {
   const builder = new VizSeedBuilder(salesData);
 
-  const vizSeedDSL = await builder
+  const vizSeedDSL = builder
     .setChartType('bar_percent')
     .setDimensions(['store', 'city'])
     .setMeasures(['sales', 'profit'])
     .build();
 
-  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
+  const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }
 
-// 执行异步函数
-buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
+// 执行同步函数
+try {
+  const { vizSeedDSL, vchartSpec } = buildChartExample();
   // 保存输出到文件
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
@@ -59,6 +60,9 @@ buildChartExample().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(error => {
+  
+  console.log('TEST图规范生成成功！');
+} catch (error) {
+  console.error('生成TEST图规范失败:', error);
   process.exit(1);
-});
+}

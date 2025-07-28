@@ -15,22 +15,23 @@ const salesData = [
 ];
 
 // 构建百分比条形图
-async function buildColumnPercentChart() {
+function buildColumnPercentChart() {
   const builder = new VizSeedBuilder(salesData);
 
-  const vizSeedDSL = await builder
+  const vizSeedDSL = builder
     .setChartType('column_percent')
     .setDimensions(['store', 'city'])
     .setMeasures(['sales', 'profit'])
     .build();
 
-  const vchartSpec = await VizSeedBuilder.from(vizSeedDSL).buildSpec();
+  const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
 
   return { vizSeedDSL, vchartSpec };
 }
 
 // 执行并保存
-buildColumnPercentChart().then(({ vizSeedDSL, vchartSpec }) => {
+try {
+  const { vizSeedDSL, vchartSpec } = buildColumnPercentChart();
   const outputDir = path.join(__dirname, 'outputs');
   const specFile = path.join(outputDir, 'latest-spec.json');
   const webSpecFile = path.join(__dirname, '..', 'web', 'latest-spec.json');
@@ -59,6 +60,9 @@ buildColumnPercentChart().then(({ vizSeedDSL, vchartSpec }) => {
 
   fs.writeFileSync(specFile, JSON.stringify(specData, null, 2), 'utf8');
   fs.writeFileSync(webSpecFile, JSON.stringify(specData, null, 2), 'utf8');
-}).catch(() => {
+  
+  console.log('COLUMN_PERCENT图规范生成成功！');
+} catch (error) {
+  console.error('生成COLUMN_PERCENT图规范失败:', error);
   process.exit(1);
-});
+}
