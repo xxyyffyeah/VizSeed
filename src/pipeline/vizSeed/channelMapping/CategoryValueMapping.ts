@@ -28,8 +28,6 @@ export const mapCategoryValue: PipelineStep = (vizSeed: any, context: any) => {
   if (!fieldSelection || (fieldSelection.dimensions.length === 0 && fieldSelection.measures.length === 0)) {
     return vizSeed;
   }
-
-  console.log(`🎨 类别-数值自动通道映射，字段选择:`, fieldSelection);
   
   // 使用类别-数值映射策略
   const autoMapping = mapCategoryValueChannels(fieldSelection);
@@ -41,8 +39,6 @@ export const mapCategoryValue: PipelineStep = (vizSeed: any, context: any) => {
       (filteredMapping as any)[key] = value;
     }
   });
-  
-  console.log(`🔗 类别-数值通道映射结果:`, filteredMapping);
   
   // 更新context和vizSeed
   const updatedEncodes = [filteredMapping];

@@ -1,48 +1,120 @@
 {
-  "timestamp": "2025-07-28T09:49:20.320Z",
-  "chartType": "pie",
-  "description": "饼图 - 显示各产品类别的销售额占比",
+  "timestamp": "2025-07-29T10:21:40.411Z",
+  "chartType": "bar_percent",
+  "description": "百分比水平条形图 - 显示各店铺按城市分组的销售额和利润百分比堆叠",
   "spec": {
-    "type": "pie",
-    "categoryField": "__MeasureName__",
-    "valueField": "__MeasureValue__",
+    "type": "bar",
+    "direction": "horizontal",
+    "xField": "__MeasureValue__",
+    "yField": "store",
+    "seriesField": "__MeasureName__",
     "data": [
       {
         "id": "VizSeedData",
         "values": [
           {
-            "__MeasureName__": "手机_北京_sales",
-            "__MeasureValue__": 54000
-          },
-          {
-            "__MeasureName__": "手机_上海_sales",
-            "__MeasureValue__": 45000
-          },
-          {
-            "__MeasureName__": "平板_北京_sales",
+            "store": "苹果专卖店",
+            "__MeasureName__": "北京_sales",
             "__MeasureValue__": 15000
           },
           {
-            "__MeasureName__": "平板_上海_sales",
+            "store": "苹果专卖店",
+            "__MeasureName__": "北京_profit",
+            "__MeasureValue__": 3000
+          },
+          {
+            "store": "苹果专卖店",
+            "__MeasureName__": "上海_sales",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "苹果专卖店",
+            "__MeasureName__": "上海_profit",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "苹果专卖店",
+            "__MeasureName__": "广州_sales",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "苹果专卖店",
+            "__MeasureName__": "广州_profit",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "电子城",
+            "__MeasureName__": "北京_sales",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "电子城",
+            "__MeasureName__": "北京_profit",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "电子城",
+            "__MeasureName__": "上海_sales",
             "__MeasureValue__": 12000
           },
           {
-            "__MeasureName__": "笔记本_北京_sales",
-            "__MeasureValue__": 32000
+            "store": "电子城",
+            "__MeasureName__": "上海_profit",
+            "__MeasureValue__": 2400
           },
           {
-            "__MeasureName__": "笔记本_上海_sales",
-            "__MeasureValue__": 28000
+            "store": "电子城",
+            "__MeasureName__": "广州_sales",
+            "__MeasureValue__": 0
           },
           {
-            "__MeasureName__": "配件_北京_sales",
-            "__MeasureValue__": 8000
+            "store": "电子城",
+            "__MeasureName__": "广州_profit",
+            "__MeasureValue__": 0
           },
           {
-            "__MeasureName__": "配件_上海_sales",
-            "__MeasureValue__": 6000
+            "store": "数码广场",
+            "__MeasureName__": "北京_sales",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "数码广场",
+            "__MeasureName__": "北京_profit",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "数码广场",
+            "__MeasureName__": "上海_sales",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "数码广场",
+            "__MeasureName__": "上海_profit",
+            "__MeasureValue__": 0
+          },
+          {
+            "store": "数码广场",
+            "__MeasureName__": "广州_sales",
+            "__MeasureValue__": 10000
+          },
+          {
+            "store": "数码广场",
+            "__MeasureName__": "广州_profit",
+            "__MeasureValue__": 2000
           }
         ]
+      }
+    ],
+    "stack": true,
+    "percent": true,
+    "axes": [
+      {
+        "orient": "bottom",
+        "type": "linear"
+      },
+      {
+        "orient": "left",
+        "type": "band"
       }
     ],
     "legends": {
@@ -58,63 +130,121 @@
     }
   },
   "vizSeedDSL": {
-    "chartType": "pie",
+    "chartType": "bar_percent",
     "data": [
       {
-        "__MeasureName__": "手机_北京_sales",
-        "__MeasureValue__": 54000
-      },
-      {
-        "__MeasureName__": "手机_上海_sales",
-        "__MeasureValue__": 45000
-      },
-      {
-        "__MeasureName__": "平板_北京_sales",
+        "store": "苹果专卖店",
+        "__MeasureName__": "北京_sales",
         "__MeasureValue__": 15000
       },
       {
-        "__MeasureName__": "平板_上海_sales",
+        "store": "苹果专卖店",
+        "__MeasureName__": "北京_profit",
+        "__MeasureValue__": 3000
+      },
+      {
+        "store": "苹果专卖店",
+        "__MeasureName__": "上海_sales",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "苹果专卖店",
+        "__MeasureName__": "上海_profit",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "苹果专卖店",
+        "__MeasureName__": "广州_sales",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "苹果专卖店",
+        "__MeasureName__": "广州_profit",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "电子城",
+        "__MeasureName__": "北京_sales",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "电子城",
+        "__MeasureName__": "北京_profit",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "电子城",
+        "__MeasureName__": "上海_sales",
         "__MeasureValue__": 12000
       },
       {
-        "__MeasureName__": "笔记本_北京_sales",
-        "__MeasureValue__": 32000
+        "store": "电子城",
+        "__MeasureName__": "上海_profit",
+        "__MeasureValue__": 2400
       },
       {
-        "__MeasureName__": "笔记本_上海_sales",
-        "__MeasureValue__": 28000
+        "store": "电子城",
+        "__MeasureName__": "广州_sales",
+        "__MeasureValue__": 0
       },
       {
-        "__MeasureName__": "配件_北京_sales",
-        "__MeasureValue__": 8000
+        "store": "电子城",
+        "__MeasureName__": "广州_profit",
+        "__MeasureValue__": 0
       },
       {
-        "__MeasureName__": "配件_上海_sales",
-        "__MeasureValue__": 6000
+        "store": "数码广场",
+        "__MeasureName__": "北京_sales",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "数码广场",
+        "__MeasureName__": "北京_profit",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "数码广场",
+        "__MeasureName__": "上海_sales",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "数码广场",
+        "__MeasureName__": "上海_profit",
+        "__MeasureValue__": 0
+      },
+      {
+        "store": "数码广场",
+        "__MeasureName__": "广州_sales",
+        "__MeasureValue__": 10000
+      },
+      {
+        "store": "数码广场",
+        "__MeasureName__": "广州_profit",
+        "__MeasureValue__": 2000
       }
     ],
     "fieldMap": {
-      "category": {
-        "id": "category",
+      "store": {
+        "id": "store",
         "type": "string",
-        "alias": "category",
+        "alias": "store",
         "location": "dimension",
         "domain": [
-          "手机",
-          "平板",
-          "笔记本",
-          "配件"
+          "苹果专卖店",
+          "电子城",
+          "数码广场"
         ],
         "format": {}
       },
-      "region": {
-        "id": "region",
+      "city": {
+        "id": "city",
         "type": "string",
-        "alias": "region",
+        "alias": "city",
         "location": "dimension",
         "domain": [
           "北京",
-          "上海"
+          "上海",
+          "广州"
         ],
         "format": {}
       },
@@ -124,14 +254,31 @@
         "alias": "sales",
         "location": "measure",
         "domain": [
-          54000,
           15000,
-          32000,
           8000,
-          45000,
+          6000,
           12000,
-          28000,
-          6000
+          9000,
+          5000,
+          10000,
+          4000
+        ],
+        "format": {}
+      },
+      "profit": {
+        "id": "profit",
+        "type": "number",
+        "alias": "profit",
+        "location": "measure",
+        "domain": [
+          3000,
+          1600,
+          1200,
+          2400,
+          1800,
+          1000,
+          2000,
+          800
         ],
         "format": {}
       },
@@ -141,58 +288,34 @@
         "alias": "北京_sales",
         "location": "measure"
       },
+      "北京_profit": {
+        "id": "北京_profit",
+        "type": "number",
+        "alias": "北京_profit",
+        "location": "measure"
+      },
       "上海_sales": {
         "id": "上海_sales",
         "type": "number",
         "alias": "上海_sales",
         "location": "measure"
       },
-      "手机_北京_sales": {
-        "id": "手机_北京_sales",
+      "上海_profit": {
+        "id": "上海_profit",
         "type": "number",
-        "alias": "手机_北京_sales",
+        "alias": "上海_profit",
         "location": "measure"
       },
-      "手机_上海_sales": {
-        "id": "手机_上海_sales",
+      "广州_sales": {
+        "id": "广州_sales",
         "type": "number",
-        "alias": "手机_上海_sales",
+        "alias": "广州_sales",
         "location": "measure"
       },
-      "平板_北京_sales": {
-        "id": "平板_北京_sales",
+      "广州_profit": {
+        "id": "广州_profit",
         "type": "number",
-        "alias": "平板_北京_sales",
-        "location": "measure"
-      },
-      "平板_上海_sales": {
-        "id": "平板_上海_sales",
-        "type": "number",
-        "alias": "平板_上海_sales",
-        "location": "measure"
-      },
-      "笔记本_北京_sales": {
-        "id": "笔记本_北京_sales",
-        "type": "number",
-        "alias": "笔记本_北京_sales",
-        "location": "measure"
-      },
-      "笔记本_上海_sales": {
-        "id": "笔记本_上海_sales",
-        "type": "number",
-        "alias": "笔记本_上海_sales",
-        "location": "measure"
-      },
-      "配件_北京_sales": {
-        "id": "配件_北京_sales",
-        "type": "number",
-        "alias": "配件_北京_sales",
-        "location": "measure"
-      },
-      "配件_上海_sales": {
-        "id": "配件_上海_sales",
-        "type": "number",
-        "alias": "配件_上海_sales",
+        "alias": "广州_profit",
         "location": "measure"
       },
       "__MeasureName__": {
@@ -210,8 +333,9 @@
     },
     "encodes": [
       {
-        "category": "__MeasureName__",
-        "value": "__MeasureValue__"
+        "x": "__MeasureValue__",
+        "y": "store",
+        "group": "__MeasureName__"
       }
     ],
     "style": {
@@ -249,6 +373,7 @@
       }
     },
     "dimensions": [
+      "store",
       "__MeasureName__"
     ],
     "measures": [
@@ -258,11 +383,13 @@
     "version": "1.0.0"
   },
   "chartInfo": {
-    "type": "pie",
+    "type": "bar",
+    "direction": "horizontal",
     "dataCount": 1,
     "fields": {
-      "angle": "__MeasureValue__",
-      "category": "__MeasureName__"
+      "x": "__MeasureValue__",
+      "y": "store",
+      "series": "__MeasureName__"
     }
   }
 }
