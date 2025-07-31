@@ -30,7 +30,6 @@ export const mapHorizontalBar: PipelineStep = (vizSeed: any, context: any) => {
     return vizSeed;
   }
 
-  console.log(`🎨 水平条形图自动通道映射，字段选择:`, fieldSelection);
   
   // 使用水平条形图映射策略
   const autoMapping = mapHorizontalBarChannels(fieldSelection);
@@ -43,7 +42,6 @@ export const mapHorizontalBar: PipelineStep = (vizSeed: any, context: any) => {
     }
   });
   
-  console.log(`🔗 水平条形图通道映射结果:`, filteredMapping);
   
   // 更新context和vizSeed
   const updatedEncodes = [filteredMapping];

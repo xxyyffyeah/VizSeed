@@ -1,6 +1,6 @@
 {
   "name": "yizseed",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "VizSeed DSL - 数据可视化维度重塑与图表生成工具，支持VChart、VTable等多个图表库的统一抽象",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -30,7 +30,6 @@ export const mapTwoMeasures: PipelineStep = (vizSeed: any, context: any) => {
     return vizSeed;
   }
 
-  console.log(`🎨 双指标自动通道映射，字段选择:`, fieldSelection);
   
   // 使用双指标映射策略
   const autoMapping = mapTwoMeasuresChannels(fieldSelection);
@@ -43,7 +42,6 @@ export const mapTwoMeasures: PipelineStep = (vizSeed: any, context: any) => {
     }
   });
   
-  console.log(`🔗 双指标通道映射结果:`, filteredMapping);
   
   // 更新context和vizSeed
   const updatedEncodes = [filteredMapping];

@@ -30,7 +30,6 @@ export const mapTimeSeries: PipelineStep = (vizSeed: any, context: any) => {
     return vizSeed;
   }
 
-  console.log(`🎨 时间序列自动通道映射，字段选择:`, fieldSelection);
   
   // 使用时间序列映射策略
   const autoMapping = mapTimeSeriesChannels(fieldSelection);
@@ -43,7 +42,6 @@ export const mapTimeSeries: PipelineStep = (vizSeed: any, context: any) => {
     }
   });
   
-  console.log(`🔗 时间序列通道映射结果:`, filteredMapping);
   
   // 更新context和vizSeed
   const updatedEncodes = [filteredMapping];

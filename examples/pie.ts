@@ -20,7 +20,7 @@ function buildPieChart() {
 
   const vizSeedDSL = builder
     .setChartType('pie')
-    .setDimensions(['category', 'region'])
+    .setDimensions(['category'])
     .setMeasures(['sales'])
     .build();
 

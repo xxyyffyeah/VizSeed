@@ -55,19 +55,19 @@ export function parseChartType(input: string): ChartType {
 // 通道映射接口 - 仅供内部自动映射使用
 export interface ChannelMapping {
   // 通用通道
-  x?: string;           // X轴字段（通常是指标）
-  y?: string;           // Y轴字段（可以是维度或指标）
-  color?: string;       // 颜色字段（维度）
-  group?: string;       // 分组字段（维度）
+  x?: string | string[];           // X轴字段（通常是指标）
+  y?: string | string[];           // Y轴字段（可以是维度或指标）
+  color?: string | string[];       // 颜色字段（维度）
+  group?: string | string[];       // 分组字段（维度）
   
   // 饼图专用
   category?: string;    // 分类字段（维度）
   value?: string;       // 数值字段（指标）
   
   // 表格专用
-  rowDimension?: string;    // 行维度
-  columnDimension?: string; // 列维度
-  measure?: string;         // 指标字段
+  rowDimension?: string | string[];    // 行维度
+  columnDimension?: string | string[]; // 列维度
+  measure?: string | string[];         // 指标字段
 }
 
 // 通道定义接口

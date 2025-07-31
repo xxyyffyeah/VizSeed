@@ -30,7 +30,6 @@ export const mapTableRowColumn: PipelineStep = (vizSeed: any, context: any) => {
     return vizSeed;
   }
 
-  console.log(`🎨 表格行列自动通道映射，字段选择:`, fieldSelection);
   
   // 使用表格行列映射策略
   const autoMapping = mapTableRowColumnChannels(fieldSelection);
@@ -43,7 +42,6 @@ export const mapTableRowColumn: PipelineStep = (vizSeed: any, context: any) => {
     }
   });
   
-  console.log(`🔗 表格行列通道映射结果:`, filteredMapping);
   
   // 更新context和vizSeed
   const updatedEncodes = [filteredMapping];
