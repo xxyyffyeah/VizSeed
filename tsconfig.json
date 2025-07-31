@@ -7,7 +7,6 @@
     "dist",
     "examples",
     "tests",
-    "src/specs/disabled",
     "server",
     "web"
   ],

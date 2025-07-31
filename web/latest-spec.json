@@ -1,153 +1,251 @@
 {
-  "timestamp": "2025-07-31T08:51:31.584Z",
+  "timestamp": "2025-07-31T15:19:51.012Z",
   "chartType": "pie",
   "description": "饼图 - 显示各产品类别的销售额占比",
   "spec": {
     "type": "pie",
-    "categoryField": "category",
-    "valueField": "sales",
+    "categoryField": "job_location_preference",
+    "valueField": "count",
     "data": [
       {
         "id": "VizSeedData",
         "values": [
           {
-            "category": "手机",
-            "sales": 54000
+            "job_location_preference": "In an Office (with Other Developers)",
+            "count": 1414
           },
           {
-            "category": "平板",
-            "sales": 15000
+            "job_location_preference": "In an Office (with Other Developers)",
+            "count": 43
           },
           {
-            "category": "笔记本",
-            "sales": 32000
+            "job_location_preference": "No Preference",
+            "count": 51
           },
           {
-            "category": "配件",
-            "sales": 8000
+            "job_location_preference": "From Home",
+            "count": 775
           },
           {
-            "category": "手机",
-            "sales": 45000
+            "job_location_preference": "No Answer",
+            "count": 118
           },
           {
-            "category": "平板",
-            "sales": 12000
+            "job_location_preference": "In an Office (with Other Developers)",
+            "count": 5077
           },
           {
-            "category": "笔记本",
-            "sales": 28000
+            "job_location_preference": "No Preference",
+            "count": 40
           },
           {
-            "category": "配件",
-            "sales": 6000
+            "job_location_preference": "No Answer",
+            "count": 104
+          },
+          {
+            "job_location_preference": "No Preference",
+            "count": 3293
+          },
+          {
+            "job_location_preference": "From Home",
+            "count": 23
+          },
+          {
+            "job_location_preference": "No Preference",
+            "count": 968
+          },
+          {
+            "job_location_preference": "No Answer",
+            "count": 1824
+          },
+          {
+            "job_location_preference": "From Home",
+            "count": 2055
+          },
+          {
+            "job_location_preference": "In an Office (with Other Developers)",
+            "count": 82
+          },
+          {
+            "job_location_preference": "No Answer",
+            "count": 7494
+          },
+          {
+            "job_location_preference": "From Home",
+            "count": 31
           }
         ]
       }
     ],
     "legends": {
       "visible": true,
-      "orient": "right",
-      "position": "middle"
+      "orient": "left",
+      "position": "top"
     },
     "label": {
-      "visible": true
+      "visible": true,
+      "line": {
+        "visible": true
+      },
+      "position": "outside"
     },
     "tooltip": {
       "visible": true
-    }
+    },
+    "color": [
+      "#3200A7",
+      "#004CDA",
+      "#0074F1",
+      "#0096EF",
+      "#53BFFF",
+      "#41C8E6",
+      "#30DEDE",
+      "#04D9C7",
+      "#00EAA2",
+      "#A6FF93"
+    ],
+    "innerRadius": 0.5,
+    "outerRadius": 0.8
   },
   "vizSeedDSL": {
     "chartType": "pie",
     "data": [
       {
-        "category": "手机",
-        "sales": 54000
+        "job_location_preference": "In an Office (with Other Developers)",
+        "count": 1414
       },
       {
-        "category": "平板",
-        "sales": 15000
+        "job_location_preference": "In an Office (with Other Developers)",
+        "count": 43
       },
       {
-        "category": "笔记本",
-        "sales": 32000
+        "job_location_preference": "No Preference",
+        "count": 51
       },
       {
-        "category": "配件",
-        "sales": 8000
+        "job_location_preference": "From Home",
+        "count": 775
       },
       {
-        "category": "手机",
-        "sales": 45000
+        "job_location_preference": "No Answer",
+        "count": 118
       },
       {
-        "category": "平板",
-        "sales": 12000
+        "job_location_preference": "In an Office (with Other Developers)",
+        "count": 5077
       },
       {
-        "category": "笔记本",
-        "sales": 28000
+        "job_location_preference": "No Preference",
+        "count": 40
       },
       {
-        "category": "配件",
-        "sales": 6000
+        "job_location_preference": "No Answer",
+        "count": 104
+      },
+      {
+        "job_location_preference": "No Preference",
+        "count": 3293
+      },
+      {
+        "job_location_preference": "From Home",
+        "count": 23
+      },
+      {
+        "job_location_preference": "No Preference",
+        "count": 968
+      },
+      {
+        "job_location_preference": "No Answer",
+        "count": 1824
+      },
+      {
+        "job_location_preference": "From Home",
+        "count": 2055
+      },
+      {
+        "job_location_preference": "In an Office (with Other Developers)",
+        "count": 82
+      },
+      {
+        "job_location_preference": "No Answer",
+        "count": 7494
+      },
+      {
+        "job_location_preference": "From Home",
+        "count": 31
       }
     ],
     "fieldMap": {
-      "category": {
-        "id": "category",
+      "job_location_preference": {
+        "id": "job_location_preference",
         "type": "string",
-        "alias": "category",
+        "alias": "job_location_preference",
         "location": "dimension",
         "domain": [
-          "手机",
-          "平板",
-          "笔记本",
-          "配件"
+          "In an Office (with Other Developers)",
+          "No Preference",
+          "From Home",
+          "No Answer"
         ],
         "format": {}
       },
-      "sales": {
-        "id": "sales",
+      "count": {
+        "id": "count",
         "type": "number",
-        "alias": "sales",
+        "alias": "count",
         "location": "measure",
         "domain": [
-          54000,
-          15000,
-          32000,
-          8000,
-          45000,
-          12000,
-          28000,
-          6000
+          1414,
+          43,
+          51,
+          775,
+          118,
+          5077,
+          40,
+          104,
+          3293,
+          23
         ],
         "format": {}
       }
     },
     "encodes": [
       {
-        "category": "category",
-        "value": "sales"
+        "category": "job_location_preference",
+        "value": "count"
       }
     ],
     "style": {
       "title": "",
-      "color": {
-        "colors": []
-      },
+      "color": [
+        "#3200A7",
+        "#004CDA",
+        "#0074F1",
+        "#0096EF",
+        "#53BFFF",
+        "#41C8E6",
+        "#30DEDE",
+        "#04D9C7",
+        "#00EAA2",
+        "#A6FF93"
+      ],
       "legend": {
-        "enable": true,
-        "position": ""
+        "visible": true,
+        "orient": "left",
+        "position": "top"
       },
       "label": {
-        "enable": true
+        "visible": true,
+        "line": {
+          "visible": true
+        },
+        "position": "outside"
       },
       "tooltip": {
-        "enable": true
+        "visible": true
       },
       "animation": {
-        "enable": true
+        "visible": true
       },
       "responsive": {
         "widthMode": "standard",
@@ -158,7 +256,10 @@
       "columnStack": {
         "stackRadius": 5
       },
-      "pie": {},
+      "pie": {
+        "innerRadius": 0.5,
+        "outerRadius": 0.8
+      },
       "pivotPie": {},
       "doughnut": {},
       "line": {
@@ -166,10 +267,10 @@
       }
     },
     "dimensions": [
-      "category"
+      "job_location_preference"
     ],
     "measures": [
-      "sales"
+      "count"
     ],
     "rowDimensions": [],
     "columnDimensions": [],
@@ -180,8 +281,8 @@
     "type": "pie",
     "dataCount": 1,
     "fields": {
-      "angle": "sales",
-      "category": "category"
+      "angle": "count",
+      "category": "job_location_preference"
     }
   }
 }

@@ -12,9 +12,8 @@ export const configureLegend: PipelineStep = (spec: any, context: PipelineContex
   return {
     ...spec,
     legends: {
-      visible: visualStyle.legend !== false,
-      orient: 'right',
-      position: 'middle'
+      ...visualStyle.legend,
+      visible: visualStyle.legend.enable !== false,
     }
   };
 };

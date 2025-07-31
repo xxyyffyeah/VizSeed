@@ -1,7 +1,8 @@
 import { VizSeedBuilder as IVizSeedBuilder, ChartSpec, NestedMeasure } from '../types';
 import { DataSet as IDataSet, FieldInferenceOptions } from '../types/data';
 import { ChartType, ChannelMapping, CHART_DATA_REQUIREMENTS, parseChartType } from '../types/charts';
-// VizSeedDSL类已不再使用，改为函数式pipeline构建
+import { VisualStyle } from '../types/visualStyle';
+import { createDefaultVisualStyle } from '../config/visualStyleDefaults';
 import { DataSet } from '../datasets/DataSet';
 import { PipelineContext, FieldMap, FieldSelection } from '../pipeline/PipelineCore';
 import { buildSpec, buildVizSeed } from '../pipeline/PipelineRegistry';
@@ -20,40 +21,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   private data: Record<string, any>[] = []; // 新增data
   private chartType: ChartType = ChartType.BAR;
   private encodes: ChannelMapping[] = [];
-  private visualStyle = {
-    title: '',
-    color: {
-      colors: [] as Array<{id: string, name: string, value: string}>
-    },
-    legend: {
-      enable: true,
-      position: '',
-    },
-    label: {
-      enable: true,
-    },
-    tooltip: {
-      enable: true,
-    },
-    animation: {
-      enable: true,
-    },
-    responsive: {
-      widthMode: 'standard' as 'standard' | 'adaptive',
-      heightMode: 'adaptive' as 'standard' | 'adaptive',
-    },
-    yAxis: {},
-    xAxis: {},
-    columnStack: {
-      stackRadius: 5,
-    },
-    pie: {},
-    pivotPie: {},
-    doughnut: {},
-    line: {
-      lineStyle: {},
-    }
-  };
+  private visualStyle: VisualStyle = createDefaultVisualStyle();
   private theme: 'light' | 'dark' | 'custom' = 'light'; // 默认主题
   private version: string = '1.0.0'; // 默认版本信息
   private vizSeedDSL: any | null = null; // 缓存构建结果
@@ -295,17 +263,17 @@ export class VizSeedBuilder implements IVizSeedBuilder {
   }
 
   public setLegend(visible: boolean = true): VizSeedBuilder {
-    this.visualStyle.legend.enable = visible;
+    this.visualStyle.legend.visible = visible;
     return this;
   }
 
   public setLabel(visible: boolean = true): VizSeedBuilder {
-    this.visualStyle.label.enable = visible;
+    this.visualStyle.label.visible = visible;
     return this;
   }
 
   public setTooltip(visible: boolean = true): VizSeedBuilder {
-    this.visualStyle.tooltip.enable = visible;
+    this.visualStyle.tooltip.visible = visible;
     return this;
   }
 

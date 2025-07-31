@@ -12,7 +12,8 @@ export const configureLabel: PipelineStep = (spec: any, context: PipelineContext
   return {
     ...spec,
     label: {
-      visible: visualStyle.label !== false
+      ...visualStyle.label,
+      visible: visualStyle.label.visible !== false
     }
   };
 };
