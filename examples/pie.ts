@@ -95,7 +95,7 @@ function buildPieChart() {
         .setDimensions(['job_location_preference'])
         .setStyle({
             legend: {
-                visible: true,
+                visible: false,
                 orient: 'left',
                 position: 'top'
             },

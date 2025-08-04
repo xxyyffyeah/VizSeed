@@ -13,7 +13,7 @@ export const configureLegend: PipelineStep = (spec: any, context: PipelineContex
     ...spec,
     legends: {
       ...visualStyle.legend,
-      visible: visualStyle.legend.enable !== false,
+      visible: visualStyle.legend.visible !== false,
     }
   };
 };

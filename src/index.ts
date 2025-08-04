@@ -13,7 +13,7 @@ export { pipeline } from './pipeline/PipelineCore';
 export { DataProcessor } from './utils/DataProcessor';
 
 // 版本信息
-export const VERSION = '1.1.2';
+export const VERSION = '1.1.3';
 
 // 默认导出（主要入口）
 export default VizSeedBuilder;

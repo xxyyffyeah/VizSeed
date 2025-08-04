@@ -11,6 +11,7 @@ import { xLinearAxis, yBandAxis } from '../style/Axes';
 import { initVChartBar } from '../init/initVChartBar';
 import { barGrouped } from '../aggregation/grouped';
 import { configResponsive } from '../style/Responsive';
+import { configureColor } from '../style/Color';
 
 // 创建BAR图表Pipeline
 export const createBarGroupedSpecPipeline = () => pipeline([
@@ -19,6 +20,7 @@ export const createBarGroupedSpecPipeline = () => pipeline([
   barGrouped,
   xLinearAxis,
   yBandAxis,
+  configureColor,
   configureLegend,
   configureLabel,
   configureTooltip

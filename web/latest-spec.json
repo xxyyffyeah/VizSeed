@@ -1,245 +1,322 @@
 {
-  "timestamp": "2025-07-31T15:19:51.012Z",
-  "chartType": "pie",
-  "description": "饼图 - 显示各产品类别的销售额占比",
+  "timestamp": "2025-08-04T08:44:06.508Z",
+  "chartType": "area_stacked",
+  "description": "堆叠面积图 - 显示各产品线销售额趋势的累积效果",
   "spec": {
-    "type": "pie",
-    "categoryField": "job_location_preference",
-    "valueField": "count",
+    "type": "area",
+    "xField": "product_line",
+    "yField": "(Sales)",
+    "seriesField": "year",
     "data": [
       {
         "id": "VizSeedData",
         "values": [
           {
-            "job_location_preference": "In an Office (with Other Developers)",
-            "count": 1414
+            "product_line": "Trucks and Buses",
+            "year": 2004,
+            "(Sales)": 529302.8899999999
           },
           {
-            "job_location_preference": "In an Office (with Other Developers)",
-            "count": 43
+            "product_line": "Motorcycles",
+            "year": 2005,
+            "(Sales)": 234947.53
           },
           {
-            "job_location_preference": "No Preference",
-            "count": 51
+            "product_line": "Motorcycles",
+            "year": 2003,
+            "(Sales)": 370895.58
           },
           {
-            "job_location_preference": "From Home",
-            "count": 775
+            "product_line": "Trains",
+            "year": 2003,
+            "(Sales)": 72802.29
           },
           {
-            "job_location_preference": "No Answer",
-            "count": 118
+            "product_line": "Vintage Cars",
+            "year": 2004,
+            "(Sales)": 911423.77
           },
           {
-            "job_location_preference": "In an Office (with Other Developers)",
-            "count": 5077
+            "product_line": "Classic Cars",
+            "year": 2004,
+            "(Sales)": 1762257.0899999987
           },
           {
-            "job_location_preference": "No Preference",
-            "count": 40
+            "product_line": "Trucks and Buses",
+            "year": 2003,
+            "(Sales)": 420429.93000000005
           },
           {
-            "job_location_preference": "No Answer",
-            "count": 104
+            "product_line": "Vintage Cars",
+            "year": 2005,
+            "(Sales)": 340739.31
           },
           {
-            "job_location_preference": "No Preference",
-            "count": 3293
+            "product_line": "Motorcycles",
+            "year": 2004,
+            "(Sales)": 560545.2300000004
           },
           {
-            "job_location_preference": "From Home",
-            "count": 23
+            "product_line": "Planes",
+            "year": 2004,
+            "(Sales)": 502671.7999999996
           },
           {
-            "job_location_preference": "No Preference",
-            "count": 968
+            "product_line": "Ships",
+            "year": 2004,
+            "(Sales)": 341437.97
           },
           {
-            "job_location_preference": "No Answer",
-            "count": 1824
+            "product_line": "Trucks and Buses",
+            "year": 2005,
+            "(Sales)": 178057.01999999996
           },
           {
-            "job_location_preference": "From Home",
-            "count": 2055
+            "product_line": "Vintage Cars",
+            "year": 2003,
+            "(Sales)": 650987.7599999999
           },
           {
-            "job_location_preference": "In an Office (with Other Developers)",
-            "count": 82
+            "product_line": "Classic Cars",
+            "year": 2003,
+            "(Sales)": 1484785.2899999986
           },
           {
-            "job_location_preference": "No Answer",
-            "count": 7494
+            "product_line": "Ships",
+            "year": 2003,
+            "(Sales)": 244821.09
           },
           {
-            "job_location_preference": "From Home",
-            "count": 31
+            "product_line": "Planes",
+            "year": 2005,
+            "(Sales)": 200074.16999999998
+          },
+          {
+            "product_line": "Planes",
+            "year": 2003,
+            "(Sales)": 272257.6
+          },
+          {
+            "product_line": "Trains",
+            "year": 2004,
+            "(Sales)": 116523.84999999999
+          },
+          {
+            "product_line": "Classic Cars",
+            "year": 2005,
+            "(Sales)": 672573.2800000001
+          },
+          {
+            "product_line": "Trains",
+            "year": 2005,
+            "(Sales)": 36917.329999999994
+          },
+          {
+            "product_line": "Ships",
+            "year": 2005,
+            "(Sales)": 128178.07
           }
         ]
       }
     ],
+    "stack": true,
+    "axes": [
+      {
+        "orient": "bottom",
+        "type": "band"
+      },
+      {
+        "orient": "left",
+        "type": "linear"
+      }
+    ],
     "legends": {
       "visible": true,
-      "orient": "left",
-      "position": "top"
+      "orient": "right",
+      "position": "middle"
     },
     "label": {
-      "visible": true,
-      "line": {
-        "visible": true
-      },
-      "position": "outside"
+      "visible": true
     },
     "tooltip": {
       "visible": true
-    },
-    "color": [
-      "#3200A7",
-      "#004CDA",
-      "#0074F1",
-      "#0096EF",
-      "#53BFFF",
-      "#41C8E6",
-      "#30DEDE",
-      "#04D9C7",
-      "#00EAA2",
-      "#A6FF93"
-    ],
-    "innerRadius": 0.5,
-    "outerRadius": 0.8
+    }
   },
   "vizSeedDSL": {
-    "chartType": "pie",
+    "chartType": "area_stacked",
     "data": [
       {
-        "job_location_preference": "In an Office (with Other Developers)",
-        "count": 1414
+        "product_line": "Trucks and Buses",
+        "year": 2004,
+        "(Sales)": 529302.8899999999
       },
       {
-        "job_location_preference": "In an Office (with Other Developers)",
-        "count": 43
+        "product_line": "Motorcycles",
+        "year": 2005,
+        "(Sales)": 234947.53
       },
       {
-        "job_location_preference": "No Preference",
-        "count": 51
+        "product_line": "Motorcycles",
+        "year": 2003,
+        "(Sales)": 370895.58
       },
       {
-        "job_location_preference": "From Home",
-        "count": 775
+        "product_line": "Trains",
+        "year": 2003,
+        "(Sales)": 72802.29
       },
       {
-        "job_location_preference": "No Answer",
-        "count": 118
+        "product_line": "Vintage Cars",
+        "year": 2004,
+        "(Sales)": 911423.77
       },
       {
-        "job_location_preference": "In an Office (with Other Developers)",
-        "count": 5077
+        "product_line": "Classic Cars",
+        "year": 2004,
+        "(Sales)": 1762257.0899999987
       },
       {
-        "job_location_preference": "No Preference",
-        "count": 40
+        "product_line": "Trucks and Buses",
+        "year": 2003,
+        "(Sales)": 420429.93000000005
       },
       {
-        "job_location_preference": "No Answer",
-        "count": 104
+        "product_line": "Vintage Cars",
+        "year": 2005,
+        "(Sales)": 340739.31
       },
       {
-        "job_location_preference": "No Preference",
-        "count": 3293
+        "product_line": "Motorcycles",
+        "year": 2004,
+        "(Sales)": 560545.2300000004
       },
       {
-        "job_location_preference": "From Home",
-        "count": 23
+        "product_line": "Planes",
+        "year": 2004,
+        "(Sales)": 502671.7999999996
       },
       {
-        "job_location_preference": "No Preference",
-        "count": 968
+        "product_line": "Ships",
+        "year": 2004,
+        "(Sales)": 341437.97
       },
       {
-        "job_location_preference": "No Answer",
-        "count": 1824
+        "product_line": "Trucks and Buses",
+        "year": 2005,
+        "(Sales)": 178057.01999999996
       },
       {
-        "job_location_preference": "From Home",
-        "count": 2055
+        "product_line": "Vintage Cars",
+        "year": 2003,
+        "(Sales)": 650987.7599999999
       },
       {
-        "job_location_preference": "In an Office (with Other Developers)",
-        "count": 82
+        "product_line": "Classic Cars",
+        "year": 2003,
+        "(Sales)": 1484785.2899999986
       },
       {
-        "job_location_preference": "No Answer",
-        "count": 7494
+        "product_line": "Ships",
+        "year": 2003,
+        "(Sales)": 244821.09
       },
       {
-        "job_location_preference": "From Home",
-        "count": 31
+        "product_line": "Planes",
+        "year": 2005,
+        "(Sales)": 200074.16999999998
+      },
+      {
+        "product_line": "Planes",
+        "year": 2003,
+        "(Sales)": 272257.6
+      },
+      {
+        "product_line": "Trains",
+        "year": 2004,
+        "(Sales)": 116523.84999999999
+      },
+      {
+        "product_line": "Classic Cars",
+        "year": 2005,
+        "(Sales)": 672573.2800000001
+      },
+      {
+        "product_line": "Trains",
+        "year": 2005,
+        "(Sales)": 36917.329999999994
+      },
+      {
+        "product_line": "Ships",
+        "year": 2005,
+        "(Sales)": 128178.07
       }
     ],
     "fieldMap": {
-      "job_location_preference": {
-        "id": "job_location_preference",
+      "product_line": {
+        "id": "product_line",
         "type": "string",
-        "alias": "job_location_preference",
+        "alias": "product_line",
         "location": "dimension",
         "domain": [
-          "In an Office (with Other Developers)",
-          "No Preference",
-          "From Home",
-          "No Answer"
+          "Trucks and Buses",
+          "Motorcycles",
+          "Trains",
+          "Vintage Cars",
+          "Classic Cars",
+          "Planes",
+          "Ships"
         ],
         "format": {}
       },
-      "count": {
-        "id": "count",
+      "year": {
+        "id": "year",
         "type": "number",
-        "alias": "count",
+        "alias": "year",
+        "location": "dimension",
+        "domain": [
+          2004,
+          2005,
+          2003
+        ],
+        "format": {}
+      },
+      "(Sales)": {
+        "id": "(Sales)",
+        "type": "number",
+        "alias": "(Sales)",
         "location": "measure",
         "domain": [
-          1414,
-          43,
-          51,
-          775,
-          118,
-          5077,
-          40,
-          104,
-          3293,
-          23
+          529302.8899999999,
+          234947.53,
+          370895.58,
+          72802.29,
+          911423.77,
+          1762257.0899999987,
+          420429.93000000005,
+          340739.31,
+          560545.2300000004,
+          502671.7999999996
         ],
         "format": {}
       }
     },
     "encodes": [
       {
-        "category": "job_location_preference",
-        "value": "count"
+        "x": "product_line",
+        "y": "(Sales)",
+        "color": "year"
       }
     ],
     "style": {
       "title": "",
-      "color": [
-        "#3200A7",
-        "#004CDA",
-        "#0074F1",
-        "#0096EF",
-        "#53BFFF",
-        "#41C8E6",
-        "#30DEDE",
-        "#04D9C7",
-        "#00EAA2",
-        "#A6FF93"
-      ],
+      "color": [],
       "legend": {
         "visible": true,
-        "orient": "left",
-        "position": "top"
+        "orient": "right",
+        "position": "middle"
       },
       "label": {
-        "visible": true,
-        "line": {
-          "visible": true
-        },
-        "position": "outside"
+        "visible": true
       },
       "tooltip": {
         "visible": true
@@ -256,10 +333,7 @@
       "columnStack": {
         "stackRadius": 5
       },
-      "pie": {
-        "innerRadius": 0.5,
-        "outerRadius": 0.8
-      },
+      "pie": {},
       "pivotPie": {},
       "doughnut": {},
       "line": {
@@ -267,10 +341,11 @@
       }
     },
     "dimensions": [
-      "job_location_preference"
+      "product_line",
+      "year"
     ],
     "measures": [
-      "count"
+      "(Sales)"
     ],
     "rowDimensions": [],
     "columnDimensions": [],
@@ -278,11 +353,12 @@
     "version": "1.0.0"
   },
   "chartInfo": {
-    "type": "pie",
+    "type": "area",
     "dataCount": 1,
     "fields": {
-      "angle": "count",
-      "category": "job_location_preference"
+      "x": "product_line",
+      "y": "(Sales)",
+      "series": "year"
     }
   }
 }

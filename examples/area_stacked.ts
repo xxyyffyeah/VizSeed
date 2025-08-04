@@ -17,15 +17,122 @@ const salesData = [
   { month: '2024-04', product: '平板', sales: 10000, profit: 2000 },
   { month: '2024-04', product: '笔记本', sales: 15000, profit: 3000 }
 ];
+const tmpData = [
+    {
+        "product_line": "Trucks and Buses",
+        "year": 2004,
+        "(Sales)": 529302.8899999999
+    },
+    {
+        "product_line": "Motorcycles",
+        "year": 2005,
+        "(Sales)": 234947.53
+    },
+    {
+        "product_line": "Motorcycles",
+        "year": 2003,
+        "(Sales)": 370895.58
+    },
+    {
+        "product_line": "Trains",
+        "year": 2003,
+        "(Sales)": 72802.29
+    },
+    {
+        "product_line": "Vintage Cars",
+        "year": 2004,
+        "(Sales)": 911423.77
+    },
+    {
+        "product_line": "Classic Cars",
+        "year": 2004,
+        "(Sales)": 1762257.0899999987
+    },
+    {
+        "product_line": "Trucks and Buses",
+        "year": 2003,
+        "(Sales)": 420429.93000000005
+    },
+    {
+        "product_line": "Vintage Cars",
+        "year": 2005,
+        "(Sales)": 340739.31
+    },
+    {
+        "product_line": "Motorcycles",
+        "year": 2004,
+        "(Sales)": 560545.2300000004
+    },
+    {
+        "product_line": "Planes",
+        "year": 2004,
+        "(Sales)": 502671.7999999996
+    },
+    {
+        "product_line": "Ships",
+        "year": 2004,
+        "(Sales)": 341437.97
+    },
+    {
+        "product_line": "Trucks and Buses",
+        "year": 2005,
+        "(Sales)": 178057.01999999996
+    },
+    {
+        "product_line": "Vintage Cars",
+        "year": 2003,
+        "(Sales)": 650987.7599999999
+    },
+    {
+        "product_line": "Classic Cars",
+        "year": 2003,
+        "(Sales)": 1484785.2899999986
+    },
+    {
+        "product_line": "Ships",
+        "year": 2003,
+        "(Sales)": 244821.09
+    },
+    {
+        "product_line": "Planes",
+        "year": 2005,
+        "(Sales)": 200074.16999999998
+    },
+    {
+        "product_line": "Planes",
+        "year": 2003,
+        "(Sales)": 272257.6
+    },
+    {
+        "product_line": "Trains",
+        "year": 2004,
+        "(Sales)": 116523.84999999999
+    },
+    {
+        "product_line": "Classic Cars",
+        "year": 2005,
+        "(Sales)": 672573.2800000001
+    },
+    {
+        "product_line": "Trains",
+        "year": 2005,
+        "(Sales)": 36917.329999999994
+    },
+    {
+        "product_line": "Ships",
+        "year": 2005,
+        "(Sales)": 128178.07
+    }
+]
 
 // 构建堆叠面积图
 function buildAreaStackedChart() {
-  const builder = new VizSeedBuilder(salesData);
+  const builder = new VizSeedBuilder(tmpData);
 
   const vizSeedDSL = builder
     .setChartType('area_stacked')
-    .setDimensions(['month', 'product'])
-    .setMeasures(['sales', 'profit'])
+    .setDimensions(['product_line', 'year'])
+    .setMeasures(['(Sales)'])
     .build();
 
   const vchartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
