@@ -5,7 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VizSeed Interactive Chart Editor</title>
     <script src="https://unpkg.com/@visactor/vchart@1.11.0/build/index.min.js"></script>
-  <script type="module" crossorigin src="/VizSeed/assets/index-0oFBYCaY.js"></script>
+    <script src="https://unpkg.com/@visactor/vtable@1.19.1/build/vtable.min.js"></script>
+    <script>
+      window.addEventListener('load', function() {
+        console.log('VChart loaded:', typeof window.VChart);
+        console.log('VTable loaded:', typeof window.VTable);
+        console.log('VTable object:', window.VTable);
+        if (window.VTable) {
+          console.log('VTable.ListTable:', window.VTable.ListTable);
+        }
+      });
+    </script>
+  <script type="module" crossorigin src="/VizSeed/assets/index-Dv0z4Ra3.js"></script>
   <link rel="stylesheet" crossorigin href="/VizSeed/assets/index-7ea0bAgr.css">
 </head>
 <body>

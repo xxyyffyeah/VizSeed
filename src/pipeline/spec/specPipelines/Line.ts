@@ -9,11 +9,13 @@ import { configureLabel } from '../style/Label';
 import { configureTooltip } from '../style/Tooltip';
 import { configureAxes } from '../style/Axes';
 import { initVChartLine } from '../init/initVChartLine';
+import { SortXAxis } from '../sort/SortXAxis';
 
 // 创建LINE图表Pipeline
 export const createLineSpecPipeline = () => pipeline([
   initVChartLine,
   initData,
+  SortXAxis,
   configureAxes,
   configureLegend,
   configureLabel,

@@ -1,310 +1,293 @@
 {
-  "timestamp": "2025-08-04T08:44:06.508Z",
-  "chartType": "area_stacked",
-  "description": "堆叠面积图 - 显示各产品线销售额趋势的累积效果",
+  "timestamp": "2025-08-06T08:26:08.730Z",
+  "chartType": "table",
+  "description": "表格 - 显示产品销售数据详情",
   "spec": {
-    "type": "area",
-    "xField": "product_line",
-    "yField": "(Sales)",
-    "seriesField": "year",
-    "data": [
+    "columns": [
       {
-        "id": "VizSeedData",
-        "values": [
-          {
-            "product_line": "Trucks and Buses",
-            "year": 2004,
-            "(Sales)": 529302.8899999999
-          },
-          {
-            "product_line": "Motorcycles",
-            "year": 2005,
-            "(Sales)": 234947.53
-          },
-          {
-            "product_line": "Motorcycles",
-            "year": 2003,
-            "(Sales)": 370895.58
-          },
-          {
-            "product_line": "Trains",
-            "year": 2003,
-            "(Sales)": 72802.29
-          },
-          {
-            "product_line": "Vintage Cars",
-            "year": 2004,
-            "(Sales)": 911423.77
-          },
-          {
-            "product_line": "Classic Cars",
-            "year": 2004,
-            "(Sales)": 1762257.0899999987
-          },
-          {
-            "product_line": "Trucks and Buses",
-            "year": 2003,
-            "(Sales)": 420429.93000000005
-          },
-          {
-            "product_line": "Vintage Cars",
-            "year": 2005,
-            "(Sales)": 340739.31
-          },
-          {
-            "product_line": "Motorcycles",
-            "year": 2004,
-            "(Sales)": 560545.2300000004
-          },
-          {
-            "product_line": "Planes",
-            "year": 2004,
-            "(Sales)": 502671.7999999996
-          },
-          {
-            "product_line": "Ships",
-            "year": 2004,
-            "(Sales)": 341437.97
-          },
-          {
-            "product_line": "Trucks and Buses",
-            "year": 2005,
-            "(Sales)": 178057.01999999996
-          },
-          {
-            "product_line": "Vintage Cars",
-            "year": 2003,
-            "(Sales)": 650987.7599999999
-          },
-          {
-            "product_line": "Classic Cars",
-            "year": 2003,
-            "(Sales)": 1484785.2899999986
-          },
-          {
-            "product_line": "Ships",
-            "year": 2003,
-            "(Sales)": 244821.09
-          },
-          {
-            "product_line": "Planes",
-            "year": 2005,
-            "(Sales)": 200074.16999999998
-          },
-          {
-            "product_line": "Planes",
-            "year": 2003,
-            "(Sales)": 272257.6
-          },
-          {
-            "product_line": "Trains",
-            "year": 2004,
-            "(Sales)": 116523.84999999999
-          },
-          {
-            "product_line": "Classic Cars",
-            "year": 2005,
-            "(Sales)": 672573.2800000001
-          },
-          {
-            "product_line": "Trains",
-            "year": 2005,
-            "(Sales)": 36917.329999999994
-          },
-          {
-            "product_line": "Ships",
-            "year": 2005,
-            "(Sales)": 128178.07
-          }
-        ]
-      }
-    ],
-    "stack": true,
-    "axes": [
-      {
-        "orient": "bottom",
-        "type": "band"
+        "field": "product_name",
+        "title": "product_name",
+        "width": "auto",
+        "cellType": "text"
       },
       {
-        "orient": "left",
-        "type": "linear"
+        "field": "category",
+        "title": "category",
+        "width": "auto",
+        "cellType": "text"
+      },
+      {
+        "field": "region",
+        "title": "region",
+        "width": "auto",
+        "cellType": "text"
+      },
+      {
+        "field": "date",
+        "title": "date",
+        "width": "auto",
+        "cellType": "text"
+      },
+      {
+        "field": "sales",
+        "title": "sales",
+        "width": "auto",
+        "cellType": "text",
+        "style": {
+          "textAlign": "right"
+        }
+      },
+      {
+        "field": "profit",
+        "title": "profit",
+        "width": "auto",
+        "cellType": "text",
+        "style": {
+          "textAlign": "right"
+        }
       }
     ],
-    "legends": {
-      "visible": true,
-      "orient": "right",
-      "position": "middle"
-    },
-    "label": {
-      "visible": true
-    },
-    "tooltip": {
-      "visible": true
-    }
+    "records": [
+      {
+        "product_name": "苹果",
+        "category": "水果",
+        "region": "华北",
+        "date": "2024-01-15",
+        "sales": 1200,
+        "profit": 240
+      },
+      {
+        "product_name": "香蕉",
+        "category": "水果",
+        "region": "华南",
+        "date": "2024-01-15",
+        "sales": 800,
+        "profit": 160
+      },
+      {
+        "product_name": "牛奶",
+        "category": "乳制品",
+        "region": "华东",
+        "date": "2024-01-16",
+        "sales": 1500,
+        "profit": 450
+      },
+      {
+        "product_name": "面包",
+        "category": "面包",
+        "region": "华北",
+        "date": "2024-01-16",
+        "sales": 600,
+        "profit": 180
+      },
+      {
+        "product_name": "鸡蛋",
+        "category": "蛋类",
+        "region": "华中",
+        "date": "2024-01-17",
+        "sales": 900,
+        "profit": 270
+      },
+      {
+        "product_name": "猪肉",
+        "category": "肉类",
+        "region": "华南",
+        "date": "2024-01-17",
+        "sales": 2000,
+        "profit": 400
+      },
+      {
+        "product_name": "大米",
+        "category": "粮食",
+        "region": "华东",
+        "date": "2024-01-18",
+        "sales": 1800,
+        "profit": 360
+      },
+      {
+        "product_name": "橙子",
+        "category": "水果",
+        "region": "华中",
+        "date": "2024-01-18",
+        "sales": 1100,
+        "profit": 220
+      }
+    ]
   },
   "vizSeedDSL": {
-    "chartType": "area_stacked",
+    "chartType": "table",
     "data": [
       {
-        "product_line": "Trucks and Buses",
-        "year": 2004,
-        "(Sales)": 529302.8899999999
+        "product_name": "苹果",
+        "category": "水果",
+        "region": "华北",
+        "date": "2024-01-15",
+        "sales": 1200,
+        "profit": 240
       },
       {
-        "product_line": "Motorcycles",
-        "year": 2005,
-        "(Sales)": 234947.53
+        "product_name": "香蕉",
+        "category": "水果",
+        "region": "华南",
+        "date": "2024-01-15",
+        "sales": 800,
+        "profit": 160
       },
       {
-        "product_line": "Motorcycles",
-        "year": 2003,
-        "(Sales)": 370895.58
+        "product_name": "牛奶",
+        "category": "乳制品",
+        "region": "华东",
+        "date": "2024-01-16",
+        "sales": 1500,
+        "profit": 450
       },
       {
-        "product_line": "Trains",
-        "year": 2003,
-        "(Sales)": 72802.29
+        "product_name": "面包",
+        "category": "面包",
+        "region": "华北",
+        "date": "2024-01-16",
+        "sales": 600,
+        "profit": 180
       },
       {
-        "product_line": "Vintage Cars",
-        "year": 2004,
-        "(Sales)": 911423.77
+        "product_name": "鸡蛋",
+        "category": "蛋类",
+        "region": "华中",
+        "date": "2024-01-17",
+        "sales": 900,
+        "profit": 270
       },
       {
-        "product_line": "Classic Cars",
-        "year": 2004,
-        "(Sales)": 1762257.0899999987
+        "product_name": "猪肉",
+        "category": "肉类",
+        "region": "华南",
+        "date": "2024-01-17",
+        "sales": 2000,
+        "profit": 400
       },
       {
-        "product_line": "Trucks and Buses",
-        "year": 2003,
-        "(Sales)": 420429.93000000005
+        "product_name": "大米",
+        "category": "粮食",
+        "region": "华东",
+        "date": "2024-01-18",
+        "sales": 1800,
+        "profit": 360
       },
       {
-        "product_line": "Vintage Cars",
-        "year": 2005,
-        "(Sales)": 340739.31
-      },
-      {
-        "product_line": "Motorcycles",
-        "year": 2004,
-        "(Sales)": 560545.2300000004
-      },
-      {
-        "product_line": "Planes",
-        "year": 2004,
-        "(Sales)": 502671.7999999996
-      },
-      {
-        "product_line": "Ships",
-        "year": 2004,
-        "(Sales)": 341437.97
-      },
-      {
-        "product_line": "Trucks and Buses",
-        "year": 2005,
-        "(Sales)": 178057.01999999996
-      },
-      {
-        "product_line": "Vintage Cars",
-        "year": 2003,
-        "(Sales)": 650987.7599999999
-      },
-      {
-        "product_line": "Classic Cars",
-        "year": 2003,
-        "(Sales)": 1484785.2899999986
-      },
-      {
-        "product_line": "Ships",
-        "year": 2003,
-        "(Sales)": 244821.09
-      },
-      {
-        "product_line": "Planes",
-        "year": 2005,
-        "(Sales)": 200074.16999999998
-      },
-      {
-        "product_line": "Planes",
-        "year": 2003,
-        "(Sales)": 272257.6
-      },
-      {
-        "product_line": "Trains",
-        "year": 2004,
-        "(Sales)": 116523.84999999999
-      },
-      {
-        "product_line": "Classic Cars",
-        "year": 2005,
-        "(Sales)": 672573.2800000001
-      },
-      {
-        "product_line": "Trains",
-        "year": 2005,
-        "(Sales)": 36917.329999999994
-      },
-      {
-        "product_line": "Ships",
-        "year": 2005,
-        "(Sales)": 128178.07
+        "product_name": "橙子",
+        "category": "水果",
+        "region": "华中",
+        "date": "2024-01-18",
+        "sales": 1100,
+        "profit": 220
       }
     ],
     "fieldMap": {
-      "product_line": {
-        "id": "product_line",
+      "product_name": {
+        "id": "product_name",
         "type": "string",
-        "alias": "product_line",
+        "alias": "product_name",
         "location": "dimension",
         "domain": [
-          "Trucks and Buses",
-          "Motorcycles",
-          "Trains",
-          "Vintage Cars",
-          "Classic Cars",
-          "Planes",
-          "Ships"
+          "苹果",
+          "香蕉",
+          "牛奶",
+          "面包",
+          "鸡蛋",
+          "猪肉",
+          "大米",
+          "橙子"
         ],
         "format": {}
       },
-      "year": {
-        "id": "year",
-        "type": "number",
-        "alias": "year",
+      "category": {
+        "id": "category",
+        "type": "string",
+        "alias": "category",
         "location": "dimension",
         "domain": [
-          2004,
-          2005,
-          2003
+          "水果",
+          "乳制品",
+          "面包",
+          "蛋类",
+          "肉类",
+          "粮食"
         ],
         "format": {}
       },
-      "(Sales)": {
-        "id": "(Sales)",
+      "region": {
+        "id": "region",
+        "type": "string",
+        "alias": "region",
+        "location": "dimension",
+        "domain": [
+          "华北",
+          "华南",
+          "华东",
+          "华中"
+        ],
+        "format": {}
+      },
+      "date": {
+        "id": "date",
+        "type": "date",
+        "alias": "date",
+        "location": "dimension",
+        "domain": [
+          "2024-01-15",
+          "2024-01-16",
+          "2024-01-17",
+          "2024-01-18"
+        ],
+        "format": {}
+      },
+      "sales": {
+        "id": "sales",
         "type": "number",
-        "alias": "(Sales)",
+        "alias": "sales",
         "location": "measure",
         "domain": [
-          529302.8899999999,
-          234947.53,
-          370895.58,
-          72802.29,
-          911423.77,
-          1762257.0899999987,
-          420429.93000000005,
-          340739.31,
-          560545.2300000004,
-          502671.7999999996
+          1200,
+          800,
+          1500,
+          600,
+          900,
+          2000,
+          1800,
+          1100
+        ],
+        "format": {}
+      },
+      "profit": {
+        "id": "profit",
+        "type": "number",
+        "alias": "profit",
+        "location": "measure",
+        "domain": [
+          240,
+          160,
+          450,
+          180,
+          270,
+          400,
+          360,
+          220
         ],
         "format": {}
       }
     },
     "encodes": [
       {
-        "x": "product_line",
-        "y": "(Sales)",
-        "color": "year"
+        "columnDimension": [
+          "product_name",
+          "category",
+          "region",
+          "date"
+        ],
+        "measure": [
+          "sales",
+          "profit"
+        ]
       }
     ],
     "style": {
@@ -338,14 +321,29 @@
       "doughnut": {},
       "line": {
         "lineStyle": {}
+      },
+      "theme": "DEFAULT",
+      "widthMode": "standard",
+      "heightMode": "autoHeight",
+      "autoWrapText": true,
+      "columnHeaderTitle": {
+        "textAlign": "center",
+        "textBaseline": "middle"
+      },
+      "bodyStyle": {
+        "textAlign": "center",
+        "textBaseline": "middle"
       }
     },
     "dimensions": [
-      "product_line",
-      "year"
+      "product_name",
+      "category",
+      "region",
+      "date"
     ],
     "measures": [
-      "(Sales)"
+      "sales",
+      "profit"
     ],
     "rowDimensions": [],
     "columnDimensions": [],
@@ -353,12 +351,18 @@
     "version": "1.0.0"
   },
   "chartInfo": {
-    "type": "area",
-    "dataCount": 1,
+    "dataCount": 8,
     "fields": {
-      "x": "product_line",
-      "y": "(Sales)",
-      "series": "year"
+      "dimensions": [
+        "product_name",
+        "category",
+        "region",
+        "date"
+      ],
+      "measures": [
+        "sales",
+        "profit"
+      ]
     }
   }
 }
