@@ -8,6 +8,7 @@ import './App.css';
 function App() {
   const [vizSeedCode, setVizSeedCode] = useState<string>('');
   const [currentSpec, setCurrentSpec] = useState<any>(null);
+  const [currentSpecData, setCurrentSpecData] = useState<any>(null); // 完整的JSON数据
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +22,8 @@ function App() {
       if (response.ok) {
         const specData = await response.json();
         
-        // 从latest-spec.json加载spec作为默认内容
+        // 从latest-spec.json加载完整数据和spec
+        setCurrentSpecData(specData); // 保存完整数据，包含chartType
         setCurrentSpec(specData.spec);
         
         // 从vizSeedDSL构建默认的VizSeed代码示例
@@ -119,6 +121,7 @@ function App() {
         <div className="chart-row">
           <ChartRenderer 
             spec={currentSpec}
+            specData={currentSpecData} // 传递完整数据，包含chartType
             error={error}
             isLoading={isLoading}
           />

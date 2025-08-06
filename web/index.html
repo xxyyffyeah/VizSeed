@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VizSeed Interactive Chart Editor</title>
     <script src="https://unpkg.com/@visactor/vchart@1.11.0/build/index.min.js"></script>
+    <script src="https://unpkg.com/@visactor/vtable/dist/vtable.min.js"></script>
+    <script>
+      window.addEventListener('load', function() {
+        console.log('VChart loaded:', typeof window.VChart);
+        console.log('VTable loaded:', typeof window.VTable);
+        console.log('VTable object:', window.VTable);
+        if (window.VTable) {
+          console.log('VTable.ListTable:', window.VTable.ListTable);
+        }
+      });
+    </script>
 </head>
 <body>
     <div id="root"></div>
