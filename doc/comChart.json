@@ -1,0 +1,245 @@
+{
+      rows: [],
+      columns: [],
+      indicators: [
+        {
+          indicatorKey: 'line1',
+          title: 'line1',
+          width: 'auto',
+          cellType: 'chart',
+          chartModule: 'vchart',
+          chartSpec: {
+            type: 'line',
+            data: {
+              id: 'data1'
+                },
+            xField: 'time',
+            yField: 'value'
+            },
+          style: {
+            padding: 1
+            }
+        },
+        {
+          indicatorKey: 'line2',
+          title: 'line2',
+          width: 'auto',
+          cellType: 'chart',
+          chartModule: 'vchart',
+          chartSpec: {
+            type: 'line',
+            data: {
+              id: 'line2'
+                },
+            xField: 'time',
+            yField: 'value'
+            },
+          style: {
+            padding: 1
+            }
+        }
+    ],
+      indicatorsAsCol: false,
+      records: data,
+      records: {
+        line1: [
+            {
+            time: '2: 00',
+            value: 2
+            },
+            {
+            time: '4: 00',
+            value: 14
+            },
+            {
+            time: '6: 00',
+            value: 11
+            },
+            {
+            time: '8: 00',
+            value: 14
+            },
+            {
+            time: '10: 00',
+            value: 16
+            },
+            {
+            time: '12: 00',
+            value: 17
+            },
+            {
+            time: '14: 00',
+            value: 17
+            },
+            {
+            time: '16: 00',
+            value: 16
+            },
+            {
+            time: '18: 00',
+            value: 15
+            }
+        ],
+        line2: [
+            {
+            time: '2: 00',
+            value: 12
+            },
+            {
+            time: '4: 00',
+            value: 9
+            },
+            {
+            time: '6: 00',
+            value: 11
+            },
+            {
+            time: '8: 00',
+            value: 14
+            },
+            {
+            time: '10: 00',
+            value: 16
+            },
+            {
+            time: '12: 00',
+            value: 17
+            },
+            {
+            time: '14: 00',
+            value: 17
+            },
+            {
+            time: '16: 00',
+            value: 16
+            },
+            {
+            time: '18: 00',
+            value: 15
+            }
+        ]
+    },
+      defaultRowHeight: 200,
+      defaultHeaderRowHeight: 50,
+      defaultColWidth: 980,
+      defaultHeaderColWidth: 100,
+      indicatorTitle: '指标',
+      autoWrapText: true,
+      widthMode: 'standard',
+      heightMode: 'adaptive',
+
+      theme: {
+        bodyStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                1,
+                0,
+                0,
+                1
+            ]
+        },
+        headerStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                0,
+                0,
+                1,
+                1
+            ],
+          hover: {
+            cellBgColor: '#CCE0FF'
+            }
+        },
+        rowHeaderStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                1,
+                1,
+                0,
+                0
+            ],
+          hover: {
+            cellBgColor: '#CCE0FF'
+            }
+        },
+        cornerHeaderStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                0,
+                1,
+                1,
+                0
+            ],
+          hover: {
+            cellBgColor: ''
+            }
+        },
+        cornerRightTopCellStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                0,
+                0,
+                1,
+                1
+            ],
+          hover: {
+            cellBgColor: ''
+            }
+        },
+        cornerLeftBottomCellStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                1,
+                1,
+                0,
+                0
+            ],
+          hover: {
+            cellBgColor: ''
+            }
+        },
+        cornerRightBottomCellStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                1,
+                0,
+                0,
+                1
+            ],
+          hover: {
+            cellBgColor: ''
+            }
+        },
+        rightFrozenStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                1,
+                0,
+                1,
+                1
+            ],
+          hover: {
+            cellBgColor: ''
+            }
+        },
+        bottomFrozenStyle: {
+          borderColor: 'gray',
+          borderLineWidth: [
+                1,
+                1,
+                0,
+                1
+            ],
+          hover: {
+            cellBgColor: ''
+            }
+        },
+        selectionStyle: {
+          cellBgColor: '',
+          cellBorderColor: ''
+        },
+        frameStyle: {
+          borderLineWidth: 0
+        }
+    }
+}

@@ -24,6 +24,7 @@ export const vizSeedCleanupStep: PipelineStep = (vizSeed: any, context: Pipeline
     measures: context.fieldSelection?.measures,
     rowDimensions: context.fieldSelection?.rowDimensions,
     columnDimensions: context.fieldSelection?.columnDimensions,
+    indicatorChartSpecs: context.fieldSelection?.indicatorChartSpecs || {},
     theme: context.theme,
     version: context.version
   };

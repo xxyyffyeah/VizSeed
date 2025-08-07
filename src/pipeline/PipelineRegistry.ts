@@ -35,7 +35,9 @@ const specPipelineMap: Record<string, () => any> = {
   [ChartType.DONUT]: SpecPipelines.createDonutSpecPipeline,
   
   // VTable表格类型
-  [ChartType.TABLE]: SpecPipelines.createTableSpecPipeline
+  [ChartType.TABLE]: SpecPipelines.createTableSpecPipeline,
+  [ChartType.PIVOT_TABLE]: SpecPipelines.createPivotTableSpecPipeline,
+  [ChartType.PIVOT_CHART]: SpecPipelines.createPivotChartSpecPipeline
 };
 
 // VizSeed构建Pipeline映射表 - 每个图表类型使用专门的Pipeline
@@ -60,7 +62,9 @@ const vizSeedPipelineMap: Record<string, () => any> = {
   [ChartType.DONUT]: VizSeedPipelines.createDonutVizSeedPipeline,
   
   // VTable表格类型
-  [ChartType.TABLE]: VizSeedPipelines.createTableVizSeedPipeline
+  [ChartType.TABLE]: VizSeedPipelines.createTableVizSeedPipeline,
+  [ChartType.PIVOT_TABLE]: VizSeedPipelines.createPivotTableVizSeedPipeline,
+  [ChartType.PIVOT_CHART]: VizSeedPipelines.createPivotChartVizSeedPipeline
 };
 
 // 简化的构建规范函数 - 同步版本

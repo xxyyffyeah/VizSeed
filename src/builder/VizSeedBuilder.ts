@@ -15,7 +15,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     measures: [],
     groupMeasure: [],
     rowDimensions: [],
-    columnDimensions: []
+    columnDimensions: [],
+    indicatorChartSpecs: {}
   };
   private fieldMap: FieldMap = {};
   private data: Record<string, any>[] = []; // 新增data
@@ -164,6 +165,78 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return [...this.fieldSelection.measures];
   }
 
+  // PivotChart专用API - 配置指标的图表规范
+  public setIndicatorChart(indicatorName: string, vizSeedDSL: any): VizSeedBuilder {
+    // 确保indicatorChartSpecs对象存在
+    if (!this.fieldSelection.indicatorChartSpecs) {
+      this.fieldSelection.indicatorChartSpecs = {};
+    }
+    
+    // 直接使用传入的VizSeedDSL创建新的builder来生成spec
+    const chartSpec = VizSeedBuilder.from(vizSeedDSL).buildSpec();
+    this.fieldSelection.indicatorChartSpecs[indicatorName] = chartSpec;
+    return this;
+  }
+
+  public getIndicatorChartSpecs(): Record<string, any> {
+    return { ...this.fieldSelection.indicatorChartSpecs };
+  }
+
+  // 行列维度API - 用于表格和透视表等需要区分行列的图表
+  public setRowDimensions(rowDimensions: string[]): VizSeedBuilder {
+    this.fieldSelection.rowDimensions = [...rowDimensions];
+    // 将选中的行维度字段添加到fieldMap
+    rowDimensions.forEach(dim => this.addFieldToMap(dim));
+    // 更新data以包含选定字段的数据
+    this.updateDataMap();
+    return this;
+  }
+
+  public setColumnDimensions(columnDimensions: string[]): VizSeedBuilder {
+    this.fieldSelection.columnDimensions = [...columnDimensions];
+    // 将选中的列维度字段添加到fieldMap
+    columnDimensions.forEach(dim => this.addFieldToMap(dim));
+    // 更新data以包含选定字段的数据
+    this.updateDataMap();
+    return this;
+  }
+
+  public addRowDimensionToArray(dimension: string): VizSeedBuilder {
+    if (!this.fieldSelection.rowDimensions) {
+      this.fieldSelection.rowDimensions = [];
+    }
+    if (!this.fieldSelection.rowDimensions.includes(dimension)) {
+      this.fieldSelection.rowDimensions.push(dimension);
+      // 添加到fieldMap
+      this.addFieldToMap(dimension);
+      // 更新data
+      this.updateDataMap();
+    }
+    return this;
+  }
+
+  public addColumnDimensionToArray(dimension: string): VizSeedBuilder {
+    if (!this.fieldSelection.columnDimensions) {
+      this.fieldSelection.columnDimensions = [];
+    }
+    if (!this.fieldSelection.columnDimensions.includes(dimension)) {
+      this.fieldSelection.columnDimensions.push(dimension);
+      // 添加到fieldMap
+      this.addFieldToMap(dimension);
+      // 更新data
+      this.updateDataMap();
+    }
+    return this;
+  }
+
+  public getRowDimensions(): string[] {
+    return [...(this.fieldSelection.rowDimensions || [])];
+  }
+
+  public getColumnDimensions(): string[] {
+    return [...(this.fieldSelection.columnDimensions || [])];
+  }
+
   // FieldMap相关API
   public getFieldMap(): FieldMap {
     return { ...this.fieldMap };
@@ -211,20 +284,10 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     return this.dataset.fields.some(f => f.name === fieldName);
   }
 
-  // 更新data以包含选定字段的数据
+  // 更新data以包含所有原始数据
   private updateDataMap(): void {
-    const selectedFields = [...this.fieldSelection.dimensions, ...this.fieldSelection.measures];
-    
-    // 过滤数据只包含选中的字段
-    this.data = this.dataset.rows.map(row => {
-      const filteredRow: Record<string, any> = {};
-      selectedFields.forEach(field => {
-        if (row.hasOwnProperty(field)) {
-          filteredRow[field] = row[field];
-        }
-      });
-      return filteredRow;
-    });
+    // 直接使用所有原始数据，不进行字段过滤
+    this.data = this.dataset.rows;
   }
 
 
@@ -327,7 +390,8 @@ export class VizSeedBuilder implements IVizSeedBuilder {
           measures: this.vizSeedDSL.measures,
           groupMeasure: this.vizSeedDSL.groupMeasure,
           rowDimensions: this.vizSeedDSL.rowDimensions ,
-          columnDimensions: this.vizSeedDSL.columnDimensions
+          columnDimensions: this.vizSeedDSL.columnDimensions,
+          indicatorChartSpecs: this.vizSeedDSL.indicatorChartSpecs // 从vizSeedDSL中获取
         },
         data: this.vizSeedDSL.data,
         visualStyle: this.vizSeedDSL.style,
@@ -359,7 +423,7 @@ export class VizSeedBuilder implements IVizSeedBuilder {
     
     // 检查指标数量：如果指标为0且不是特殊图表类型，则抛出错误
     if (measures.length === 0) {
-      const allowedTypesWithoutMeasures = ['wordcloud', 'listtable', 'pivottable'];
+      const allowedTypesWithoutMeasures = ['wordcloud', 'listtable'];
       if (!allowedTypesWithoutMeasures.includes(chartType)) {
         throw new Error(`${chartType}图表需要添加相应的指标字段，请调用 setMeasures() 或 addMeasureToArray() 方法添加指标`);
       }

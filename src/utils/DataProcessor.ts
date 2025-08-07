@@ -8,7 +8,12 @@ export class DataProcessor {
       return [];
     }
 
-    const fieldNames = Object.keys(rows[0]);
+    // 扫描所有记录来发现所有字段（解决稀疏数据问题）
+    const allFieldNames = new Set<string>();
+    rows.forEach(row => {
+      Object.keys(row).forEach(key => allFieldNames.add(key));
+    });
+    const fieldNames = Array.from(allFieldNames);
     const fields: FieldMeta[] = [];
 
     for (const fieldName of fieldNames) {

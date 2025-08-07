@@ -18,3 +18,5 @@ export { createScatterSpecPipeline } from './Scatter';
 export { createPieSpecPipeline } from './Pie';
 export { createDonutSpecPipeline } from './Donut';
 export { createTableSpecPipeline } from './Table';
+export { createPivotTableSpecPipeline } from './PivotTable';
+export { createPivotChartSpecPipeline } from './PivotChart';

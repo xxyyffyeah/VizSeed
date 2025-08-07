@@ -5,7 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VizSeed Interactive Chart Editor</title>
     <script src="https://unpkg.com/@visactor/vchart@1.11.0/build/index.min.js"></script>
-    <script src="https://unpkg.com/@visactor/vtable@1.19.1/build/vtable.min.js"></script>
+    <script src="https://unpkg.com/@visactor/vtable/dist/vtable.min.js"></script>
+    <!-- 专门导入VTable图表模块支持 -->
+    <script>
+      // 延迟注册图表模块，确保库完全加载
+      setTimeout(() => {
+        if (typeof VTable !== 'undefined' && typeof VChart !== 'undefined') {
+          try {
+            console.log('开始注册VChart图表模块...');
+            console.log('VTable.register:', VTable.register);
+            console.log('VChart:', VChart);
+            
+            // 多种注册方式尝试
+            if (VTable.register && VTable.register.chartModule) {
+              VTable.register.chartModule('vchart', VChart);
+              console.log('✅ 图表模块注册成功 (方式1)');
+            } else if (VTable.chartModule) {
+              VTable.chartModule('vchart', VChart);
+              console.log('✅ 图表模块注册成功 (方式2)');
+            } else {
+              console.warn('⚠️ 未找到图表模块注册方法');
+              // 尝试直接设置
+              if (VTable.register) {
+                VTable.register['chartModule'] = (name, module) => {
+                  console.log('设置图表模块:', name, module);
+                };
+                VTable.register.chartModule('vchart', VChart);
+                console.log('✅ 图表模块注册成功 (方式3)');
+              }
+            }
+          } catch(e) {
+            console.error('❌ 图表模块注册失败:', e);
+            console.log('VTable对象详情:', VTable);
+            console.log('VChart对象详情:', VChart);
+          }
+        } else {
+          console.error('❌ VTable或VChart未加载');
+        }
+      }, 100);
+    </script>
     <script>
       window.addEventListener('load', function() {
         console.log('VChart loaded:', typeof window.VChart);
@@ -13,10 +51,37 @@
         console.log('VTable object:', window.VTable);
         if (window.VTable) {
           console.log('VTable.ListTable:', window.VTable.ListTable);
+          console.log('VTable.PivotTable:', window.VTable.PivotTable);
+          console.log('VTable.PivotChart:', window.VTable.PivotChart);
+          
+          // 注册图表模块以支持PivotChart
+          if (window.VTable && window.VChart) {
+            try {
+              // 方法1: 尝试使用register API注册
+              if (window.VTable.register && window.VTable.register.chartModule) {
+                window.VTable.register.chartModule('vchart', window.VChart);
+                console.log('✅ VChart图表模块注册成功 (方法1)');
+              }
+              // 方法2: 尝试直接在VTable对象上设置
+              else if (window.VTable.chartModule) {
+                window.VTable.chartModule('vchart', window.VChart);
+                console.log('✅ VChart图表模块注册成功 (方法2)');
+              }
+              // 方法3: 检查是否需要手动设置
+              else {
+                console.warn('⚠️ 无法找到VTable图表模块注册方法');
+                console.log('可用的VTable方法:', Object.keys(window.VTable));
+              }
+            } catch(e) {
+              console.warn('⚠️ VChart图表模块注册失败:', e);
+              console.log('VTable:', window.VTable);
+              console.log('VChart:', window.VChart);
+            }
+          }
         }
       });
     </script>
-  <script type="module" crossorigin src="/VizSeed/assets/index-Dv0z4Ra3.js"></script>
+  <script type="module" crossorigin src="/VizSeed/assets/index-UG8YvTH_.js"></script>
   <link rel="stylesheet" crossorigin href="/VizSeed/assets/index-7ea0bAgr.css">
 </head>
 <body>

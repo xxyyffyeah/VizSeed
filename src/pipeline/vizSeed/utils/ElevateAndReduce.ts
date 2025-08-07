@@ -72,9 +72,9 @@ export const elevateStep: PipelineStep = (vizSeed: any, context: PipelineContext
     measures.forEach(measure => {
       const newRow: any = {};
       
-      // 复制所有维度字段
-      dimensions.forEach(dim => {
-        newRow[dim] = row[dim];
+      // 复制所有原始字段（保留所有未选中的字段）
+      Object.keys(row).forEach(key => {
+        newRow[key] = row[key];
       });
       
       // 添加特殊字段
@@ -141,6 +141,16 @@ export const reduceStep: PipelineStep = (vizSeed: any, context: PipelineContext,
   Object.entries(groupedData).forEach(([, groupRows]) => {
     const rows = groupRows as any[];
     const newRow: any = {};
+    
+    // 复制所有非维度非指标字段（保留如cost、rating等字段）
+    if (rows.length > 0) {
+      const firstRow = rows[0];
+      Object.keys(firstRow).forEach(key => {
+        if (!dimensions.includes(key) && !measures.includes(key)) {
+          newRow[key] = firstRow[key];
+        }
+      });
+    }
     
     // 设置剩余维度的值
     if (remainingDimensions.length > 0) {

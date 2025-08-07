@@ -30,7 +30,7 @@ export const initVTableList: PipelineStep = (spec: any, context: PipelineContext
     // 处理指标字段（measure是字符串数组）
     if (encode.measure && Array.isArray(encode.measure)) {
       encode.measure.forEach((fieldName: string) => {
-        if (fieldName && !fieldName.startsWith('__')) {
+        if (fieldName) {
           columns.push({
             field: fieldName,
             title: fieldName,

@@ -1,0 +1,158 @@
+{
+  "type": "pivot-table",
+  "rows": [
+    {
+      "dimensionKey": "Region",
+      "title": "地区",
+      "width": "auto"
+    }
+  ],
+  "columns": [
+    {
+      "dimensionKey": "Category", 
+      "title": "类别",
+      "width": "auto"
+    }
+  ],
+  "indicators": [
+    {
+      "indicatorKey": "Sales",
+      "title": "销售额",
+      "width": "auto",
+      "cellType": "chart",
+      "chartModule": "vchart",
+      "chartSpec": {
+        "type": "line",
+        "data": {
+          "id": "data"
+        },
+        "xField": ["Year"],
+        "yField": ["Sales"],
+        "seriesField": "Metric",
+        "color": {
+          "type": "ordinal",
+          "range": ["#1664FF", "#1AC6FF", "#FF8A00", "#3CC780"]
+        },
+        "point": {
+          "visible": true
+        },
+        "line": {
+          "style": {
+            "lineWidth": 2
+          }
+        }
+      }
+    },
+    {
+      "indicatorKey": "Profit",
+      "title": "利润",
+      "width": "auto", 
+      "cellType": "chart",
+      "chartModule": "vchart",
+      "chartSpec": {
+        "type": "line",
+        "data": {
+          "id": "data"
+        },
+        "xField": ["Year"],
+        "yField": ["Profit"],
+        "seriesField": "Metric",
+        "color": {
+          "type": "ordinal",
+          "range": ["#FF8A00", "#3CC780", "#7342DC", "#FF4757"]
+        },
+        "point": {
+          "visible": true
+        },
+        "line": {
+          "style": {
+            "lineWidth": 2,
+            "lineDash": [5, 5]
+          }
+        }
+      }
+    }
+  ],
+  "columnTree": [
+    {
+      "dimensionKey": "Category",
+      "value": "办公用品"
+    },
+    {
+      "dimensionKey": "Category",
+      "value": "家具"
+    },
+    {
+      "dimensionKey": "Category",
+      "value": "技术"
+    }
+  ],
+  "rowTree": [
+    {
+      "dimensionKey": "Region",
+      "value": "东北"
+    },
+    {
+      "dimensionKey": "Region",
+      "value": "华北"
+    },
+    {
+      "dimensionKey": "Region",
+      "value": "华南"
+    }
+  ],
+  "records": [
+    {
+      "Region": "东北",
+      "Category": "办公用品",
+      "Sales": 138099.84,
+      "Profit": 19720.60,
+      "Metric": "销售额",
+      "Year": "2019"
+    },
+    {
+      "Region": "东北",
+      "Category": "办公用品",
+      "Sales": 145000.50,
+      "Profit": 21500.75,
+      "Metric": "销售额",
+      "Year": "2020"
+    },
+    {
+      "Region": "华北",
+      "Category": "家具",
+      "Sales": 89473.97,
+      "Profit": 8657.69,
+      "Metric": "销售额",
+      "Year": "2019"
+    },
+    {
+      "Region": "华北",
+      "Category": "家具",
+      "Sales": 95000.30,
+      "Profit": 9800.45,
+      "Metric": "销售额",
+      "Year": "2020"
+    },
+    {
+      "Region": "华南",
+      "Category": "技术",
+      "Sales": 156000.25,
+      "Profit": 23800.45,
+      "Metric": "销售额",
+      "Year": "2019"
+    },
+    {
+      "Region": "华南",
+      "Category": "技术",
+      "Sales": 168000.80,
+      "Profit": 28600.75,
+      "Metric": "销售额",
+      "Year": "2020"
+    }
+  ],
+  "corner": {
+    "titleOnDimension": "row"
+  },
+  "theme": "DEFAULT"
+}

@@ -18,12 +18,14 @@ export enum ChartType {
   SCATTER = 'scatter',   // 散点图
   PIE = 'pie',           // 饼图
   DONUT = 'donut',       // 环形图
-  TABLE = 'table'        // 表格
+  TABLE = 'table',       // 表格
+  PIVOT_TABLE = 'pivottable',  // 透视表
+  PIVOT_CHART = 'pivotchart'   // 透视图
 }
 
 // Zod schema用于验证和转换字符串为ChartType枚举
 export const ChartTypeSchema = z.enum([
-  'bar', 'bar_stacked', 'bar_grouped', 'bar_percent', 'column', 'column_stacked', 'column_grouped', 'column_percent', 'line', 'area', 'area_stacked', 'area_percent', 'scatter', 'pie', 'donut', 'table'
+  'bar', 'bar_stacked', 'bar_grouped', 'bar_percent', 'column', 'column_stacked', 'column_grouped', 'column_percent', 'line', 'area', 'area_stacked', 'area_percent', 'scatter', 'pie', 'donut', 'table', 'pivottable', 'pivotchart'
 ]).transform((value) => {
   // 将字符串转换为对应的枚举值
   const enumMap: Record<string, ChartType> = {
@@ -42,7 +44,9 @@ export const ChartTypeSchema = z.enum([
     'scatter': ChartType.SCATTER,
     'pie': ChartType.PIE,
     'donut': ChartType.DONUT,
-    'table': ChartType.TABLE
+    'table': ChartType.TABLE,
+    'pivottable': ChartType.PIVOT_TABLE,
+    'pivotchart': ChartType.PIVOT_CHART
   };
   return enumMap[value];
 });
@@ -262,5 +266,27 @@ export const CHART_DATA_REQUIREMENTS: Record<ChartType, ChartDataRequirement> = 
     minDimensions: 0,
     minMeasures: 0,
     chartType: 'table'
+  },
+  pivottable: {
+    channels: {
+      dimensionChannels: ['rowDimension', 'columnDimension'],
+      measureChannels: ['measure']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 1,
+    minMeasures: 1,
+    chartType: 'pivottable'
+  },
+  pivotchart: {
+    channels: {
+      dimensionChannels: ['rowDimension', 'columnDimension'],
+      measureChannels: ['measure']
+    },
+    idealDimensions: 2,
+    idealMeasures: 1,
+    minDimensions: 1,
+    minMeasures: 1,
+    chartType: 'pivotchart'
   }
 };

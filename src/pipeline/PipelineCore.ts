@@ -28,6 +28,7 @@ export interface FieldSelection {
   groupMeasure?: NestedMeasure<string>[]; // 可选的分组指标字段ID
   rowDimensions?: string[];  // 行维度字段（用于透视表等）
   columnDimensions?: string[];  // 列维度字段（用于透视表等）
+  indicatorChartSpecs?: Record<string, any>; // PivotChart指标图表规范配置
 }
 
 // Pipeline上下文接口

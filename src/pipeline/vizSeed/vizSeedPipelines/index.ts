@@ -10,3 +10,5 @@ export { createScatterVizSeedPipeline } from './Scatter';
 export { createPieVizSeedPipeline } from './Pie';
 export { createDonutVizSeedPipeline } from './Donut';
 export { createTableVizSeedPipeline } from './Table';
+export { createPivotTableVizSeedPipeline } from './PivotTable';
+export { createPivotChartVizSeedPipeline } from './PivotChart';
